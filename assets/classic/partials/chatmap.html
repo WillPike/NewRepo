@@ -1,0 +1,24 @@
+<div class="content-box">
+  <table class="chatmap">
+    <tr>
+      <td class="chatmap-left">
+        Touch a green table to start a chat. Red tables are unavailable for messaging.
+      </td>
+      <td class="chatmap-main">
+        <div class="chatmap-main-canvas" ng-if="mapImage">
+          <img ng-src="{{mapImage | thumbnail:1024:768}}" width="100%" />
+          <div
+            class="chatmap-main-item"
+            ng-repeat="seat in seats track by seat.token"
+            ng-style="{ left: (seat.map_position_x * 100) + '%', top: (seat.map_position_y * 100) + '%' }"
+          >
+            <button type="button" ng-click="chooseSeat(seat)" ng-class="{ red: !seat.is_available }">{{seat.name}}</button>
+          </div>
+        </div>
+      </td>
+      <td class="chatmap-right">
+        <button class="red" type="button" ng-click="exitMap()">Exit</button>
+      </td>
+    </tr>
+  </table>
+</div>

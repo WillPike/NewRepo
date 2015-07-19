@@ -1,0 +1,91 @@
+<div id="page-signin-splash" class="page" ng-show="step === STEP_SPLASH && initialized">
+  <form class="form huge">
+    <h1><span>Are you a {{locationName}} VIP?</span></h1>
+    <ul class="horizontal">
+      <li><button class="button" ng-click="login()">Yes</button></li>
+      <li><button class="button" ng-click="guestLogin()">No</button></li>
+    </ul>
+    <p><a class="clickable link" ng-click="guestLogin()">Skip</a></p>
+  </form>
+</div>
+
+<div id="page-signin-login" class="page" ng-show="step === STEP_LOGIN && initialized">
+  <form class="form huge" ng-submit="doLogin()">
+    <h1><span>Log in</span></h1>
+    <ul>
+      <li><input type="email" class="input" placeholder="E-mail" ng-model="credentials.login" autocomplete="off" required /></li>
+      <li><input type="password" class="input" placeholder="Password" ng-model="credentials.password" autocomplete="off" required /></li>
+      <li><button class="button" type="submit">Login</button></li>
+    </ul>
+    <!-- <p>Not a member yet? <a ng-click="register()" class="clickable link">Register now</a></p> -->
+    <p><a class="clickable link" ng-click="guestLogin()">Skip</a></p>
+  </form>
+</div>
+
+<div id="page-signin-registration" class="page" ng-show="step === STEP_REGISTRATION && initialized">
+  <form class="form huge" ng-submit="doRegistration()">
+    <ul>
+      <li><input type="email" class="input" placeholder="E-mail" ng-model="registration.email" autocomplete="off" required /></li>
+      <li><input id="registration-password" type="password" class="input" placeholder="Password" ng-model="registration.password" autocomplete="off" minlength="6" required /></li>
+      <li><input id="registration-password2" type="password" class="input" placeholder="Confirm Password" ng-model="registration.password2" autocomplete="off" required /></li>
+      <li><button type="submit">Sign Me Up</button></li>
+    </ul>
+  </form>
+
+  <form class="form huge" ng-submit="doRegistration()">
+    <ul>
+      <li><button class="socialbutton socialbutton-facebook" ng-click="loginFacebook()"></button></li>
+      <li><button class="socialbutton socialbutton-twitter" ng-click="loginTwitter()"></button></li>
+      <li><button class="socialbutton socialbutton-google" ng-click="loginGoogle()"></button></li>
+    </ul>
+  </form>
+
+  <script type="text/javascript">
+    var password1 = document.getElementById('registration-password');
+    var password2 = document.getElementById('registration-password2');
+
+    var checkPasswordValidity = function() {
+        if (password2.value !== password2.value) {
+            password2.setCustomValidity('Passwords must match.');
+        } else {
+            password2.setCustomValidity('');
+        }
+    };
+
+    password1.addEventListener('change', checkPasswordValidity, false);
+    password2.addEventListener('change', checkPasswordValidity, false);
+  </script>
+</div>
+
+<div id="page-signin-guests" class="page" ng-show="step === STEP_GUESTS && initialized">
+  <form class="form huge" ng-submit="submitGuestCount()">
+    <h1><span>Number of guests</span></h1>
+    <ul>
+      <li><output id="guests-count-output" class="output" for="guests-count">{{session.guestCount}}</output></li>
+      <li><input id="guests-count" type="range" ng-model="session.guestCount" min="1" max="10" /></li>
+      <li><button class="button" type="submit">Next</button></li>
+    </ul>
+  </form>
+</div>
+
+<div id="page-signin-event" class="page" ng-show="step === STEP_EVENT && initialized">
+  <form class="form huge">
+    <h1><span>Is this a special event?</span></h1>
+    <ul class="horizontal">
+      <li><button class="button" ng-click="submitSpecialEvent(true)">Yes</button></li>
+      <li><button class="button" ng-click="submitSpecialEvent(false)">No</button></li>
+    </ul>
+  </form>
+</div>
+
+<div id="page-signin-reset" class="page" ng-show="step === STEP_RESET && initialized">
+  <form class="form huge" ng-submit="passwordResetSubmit()">
+    <ul>
+      <li><input type="email" name="email" class="input" placeholder="E-mail" ng-model="passwordreset.email" autocomplete="off" required/></li>
+    </ul>
+    <ul class="horizontal">
+      <li><button class="button" type="submit">Submit</button></li>
+      <li><button class="button" type="button" ng-click="passwordResetCancel()">Cancel</button></li>
+    </ul>
+  </form>
+</div>

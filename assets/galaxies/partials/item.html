@@ -1,0 +1,74 @@
+<div class="page" ng-show="type === 1">
+  <div class="modal-box page-item-box">
+    <gallery
+      class="page-item-photo"
+      ng-show="step < 2"
+      images="entry.item.photos"
+      imagewidth="470"
+      imageheight="410" />
+
+    <button class="modal-close" ng-click="goBack()" ng-show="step < 2"></button>
+
+    <article class="page-item-info" ng-show="step < 2">
+      <h1>{{entry.item.title}}</h1>
+      <h2>{{formatPrice(entry.item.order.price)}}</h2>
+      <p>{{entry.item.description}}</p>
+    </article>
+
+    <form class="page-item-count form" ng-show="step === 0">
+      <h3>How many would you like?</h3>
+      <ul>
+        <li><output id="item-count-output" class="output" for="item-count">{{entry.quantity}}</output></li>
+        <li><input id="item-count" type="range" ng-model="entry.quantity" min="1" max="9" /></li>
+      </ul>
+    </form>
+
+    <form class="page-item-controls form" ng-show="step === 0">
+      <ul class="horizontal">
+        <li><button class="button secondary" ng-click="previousStep()">Back</button></li>
+        <li><button class="button" ng-click="nextStep()">{{ entry.hasModifiers ? 'Next' : 'Add to Order'}}</button></li>
+      </ul>
+    </form>
+
+    <form class="page-item-modifiers form" ng-show="step === 1">
+      <h3>Make it your way <span ng-show="entries.length > 1">Order #{{entryIndex + 1}}</span></h3>
+      <div class="scroller">
+        <div class="scrollee">
+          <table class="modifiers-list">
+            <tr>
+              <td class="modifier-category" ng-repeat="category in currentEntry.modifiers">
+                <ul>
+                  <li class="modifier-item clickable" ng-repeat="modifier in category.modifiers" ng-click="updateModifiers(category, modifier)">
+                    <h4>{{modifier.data.title}}<span ng-show="modifier.data.price > 0">&nbsp;+{{formatPrice(modifier.data.price)}}</span></h4>
+                    <img ng-src="{{getMediaUrl(modifier.data.image, 100, 100)}}" />
+                    <input
+                      type="checkbox"
+                      class="modifier-checkbox"
+                      id="{{modifier.data.id}}"
+                      ng-model="modifier.isSelected" />
+                    <label for="{{modifier.data.id}}"></label>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </form>
+
+    <form class="page-item-controls form" ng-show="step === 1">
+      <ul class="horizontal">
+        <li><button class="button secondary" ng-click="previousStep()">Back</button></li>
+        <li><button class="button" ng-click="nextStep()">{{ (entries.length - 1) === entryIndex ? 'Add to Order' : 'Next' }}</button></li>
+      </ul>
+    </form>
+
+    <form class="page-item-done form" ng-show="step === 2">
+      <h2><span>Item has been added to your order!</span></h2>
+      <ul class="horizontal">
+        <li><button class="button secondary" ng-click="goBack()">Add More</button></li>
+        <li><button class="button" ng-click="submitOrder()">Place Order</button></li>
+      </ul>
+    </form>
+  </div>
+</div>

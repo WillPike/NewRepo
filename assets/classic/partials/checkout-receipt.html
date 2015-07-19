@@ -1,0 +1,23 @@
+<div ng-show="current.receipt_method == undefined">
+  <h2 class="checkout-group-title">Choose a receipt option below</h2>
+  <ul class="buttons-vertical">
+    <li>
+      <table class="checkout-receipt-input">
+        <tr>
+          <td class="checkout-receipt-left"><input type="email" placeholder="E-mail receipt" ng-model="current.receipt_email" /></td>
+          <td class="checkout-receipt-right"><button id="checkout-button-email" class="button" ng-click="receiptEmail()">Send</button></td>
+        </tr>
+      </table>
+    </li>
+    <li>
+      <table class="checkout-receipt-input">
+        <tr>
+          <td class="checkout-receipt-left"><input type="tel" placeholder="Text receipt" ng-model="current.receipt_phone" /></td>
+          <td class="checkout-receipt-right"><button id="checkout-button-sms" class="button" ng-click="receiptSms()">Send</button></td>
+        </tr>
+      </table>
+    </li>
+    <li><button id="checkout-button-print" class="button" ng-click="receiptPrint()">Print</button></li>
+    <li><button id="checkout-button-noreceipt" class="button" ng-click="receiptNone()">No Receipt</button></li>
+  </ul>
+</div>

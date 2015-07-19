@@ -1,0 +1,138 @@
+<div id="screen-cart-order" class="screen" ng-show="state === STATE_CART">
+  <div class="screen-title">
+    <h1>Review Items</h1>
+  </div>
+  <div class="screen-body" ng-show="currentOrder && currentOrder.length === 0">
+    <form class="screen-body-part cart-body-table">
+      <p>Cart is empty.</p>
+    </form>
+  </div>
+  <div class="screen-body" ng-show="currentOrder && currentOrder.length > 0">
+    <form class="screen-body-part cart-body-table">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="cart-column-description"></th>
+            <th class="cart-column-quantity">Quantity</th>
+            <th class="cart-column-price">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="data in currentOrder">
+            <td class="cart-column-description">
+              <h3>{{data.name || data.item.title}}
+                <span ng-show="!giftSeat">
+                  <a class="link" ng-show="data.hasModifiers" ng-click="editItem(data)">Revise Order</a> <b ng-show="data.hasModifiers">|</b>
+                  <a class="link" ng-click="removeFromCart(data)">Remove</a>
+                </span>
+              </h3>
+              <ul class="cart-modifiers" ng-show="data.hasModifiers">
+                <li ng-repeat="modifier in getModifiers(data)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> +{{formatPrice(modifier.data.price)}}</i></li>
+              </ul>
+            </td>
+            <td class="cart-column-quantity">
+              <quantity min="1" max="9" quantity="data.quantity" />
+            </td>
+            <td class="cart-column-price">
+              <h3>{{formatPrice(calculatePrice(data))}}<i ng-show="currency">{{currency}}</i></h3>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ul class="cart-order-options">
+        <li><label>Order to-go?</label><switch selected="options.toGo" /></li>
+      </ul>
+
+      <div class="cart-order-total form vertical">
+        <h4>Order Total <b>{{formatPrice(calculateTotalPrice(currentOrder))}}</b><i ng-show="currency"> {{currency}}</i></h4>
+      </div>
+    </form>
+  </div>
+</div>
+
+<form class="form vertical screen-floater screen-cart-controls" ng-show="state === STATE_CART">
+  <button class="button" ng-click="submitCart()" ng-show="currentOrder.length > 0">Submit order ({{currentOrder.length}})</button>
+  <button class="button grey" ng-click="closeCart()">Back</button>
+  <hr/>
+  <button class="button button-assistance" ng-click="requestAssistance()" ng-class="{ disabled: !requestAssistanceAvailable }">Request Server</button>
+</form>
+
+<div class="modal" ng-show="state === STATE_CART && editableItem">
+  <form class="modal-box vertical" ng-submit="closeEditor()">
+    <button type="submit" class="modal-close"></button>
+
+    <h1>Revise Your Order</h1>
+
+    <div class="scroller">
+      <div class="scrollee">
+        <table class="modifiers-list">
+          <tr>
+            <td class="modifier-category" ng-repeat="category in editableItem.modifiers">
+              <ul>
+                <li class="modifier-item clickable" ng-repeat="modifier in category.modifiers" ng-click="updateModifiers(category, modifier)">
+                  <h4>{{modifier.data.title}}<span ng-show="modifier.data.price > 0">&nbsp;+{{formatPrice(modifier.data.price)}}</span></h4>
+                  <img ng-src="{{getMediaUrl(modifier.data.image, 100, 100)}}" />
+                  <input
+                    type="checkbox"
+                    class="modifier-checkbox"
+                    id="{{modifier.data.id}}"
+                    ng-model="modifier.isSelected" />
+                  <label for="{{modifier.data.id}}"></label>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <button type="submit" class="button screen-cart-editor-submit">Submit</button>
+  </form>
+</div>
+
+<div id="screen-cart-history" class="screen" ng-show="state === STATE_HISTORY">
+  <div class="screen-title">
+    <h1>{{customerName}} Bill</h1>
+  </div>
+  <div class="screen-body" ng-show="totalOrder && totalOrder.length > 0">
+    <form class="screen-body-part cart-body-table">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="cart-column-description"></th>
+            <th class="cart-column-quantity">Quantity</th>
+            <th class="cart-column-price">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="data in totalOrder">
+            <td class="cart-column-description">
+              <h3>{{data.name || data.item.title}}</h3>
+              <ul class="cart-modifiers" ng-show="data.hasModifiers">
+                <li ng-repeat="modifier in getModifiers(data)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> +{{formatPrice(modifier.data.price)}}</i></li>
+              </ul>
+            </td>
+            <td class="cart-column-quantity">
+              <span>{{data.quantity}}</span>
+            </td>
+            <td class="cart-column-price">
+              <h3>{{formatPrice(calculatePrice(data))}}<i ng-show="currency">{{currency}}</i></h3>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="cart-order-total form vertical">
+        <h4>Total <b>{{formatPrice(calculateTotalPrice(totalOrder))}}</b><i ng-show="currency"> {{currency}}</i></h4>
+        <button class="button green" ng-click="payCheck()">Pay Now</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<form class="form vertical screen-floater screen-cart-controls" ng-show="state === STATE_HISTORY">
+  <button class="button grey" ng-click="closeCart()">Back</button>
+  <hr/>
+  <button class="button button-assistance" ng-click="requestAssistance()" ng-class="{ disabled: !requestAssistanceAvailable }">Request Server</button>
+</form>

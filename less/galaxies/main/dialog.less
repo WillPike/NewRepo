@@ -1,0 +1,82 @@
+@modal-background: rgba(29,33,35,0.8);
+
+#dialog-busy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#dialog-alert {
+  position: absolute;
+  left: 0;
+  top: 40%;
+  right: 0;
+  min-height: 10em;
+  background-color: rgba(0,0,0,0.5);
+  color: #fff;
+  padding: 3em 35em;
+}
+
+#dialog-alert p{
+  text-align:center;
+  font-size:2em;
+}
+
+#dialog-confirm {
+  position: absolute;
+  left: 0;
+  top: 20%;
+  right: 0;
+  min-height: 10em;
+  background-color: @modal-background;
+  color: #fff;
+  padding: 3em 35em;
+}
+
+#dialog-confirm form{
+  width:75em;
+  margin:0 auto 0;
+}
+
+#dialog-modal, .modal {
+  width: 100%;
+  height: 100%;
+  background-color: @modal-background;
+  position:absolute;
+}
+
+.modal-box {
+  position:relative;
+  margin:5em auto 0;
+  center:0;
+  background:#fff;
+  width:50%;
+  overflow:hidden;
+}
+
+.modal-box h1, .modal-box h2, .modal-box h3 {
+  color:#393939;
+}
+
+.modal-box.vertical h1 {
+  font-size:2.6em;
+  width:60%;
+  text-align:center;
+  color:#393939;
+  border-bottom:1px solid #c3c3c3;
+  margin:4em auto 2em;
+  padding:0 0 1em;
+}
+
+.modal-close {
+  position:absolute;
+  cursor:pointer;
+  border:0;
+  right:0;
+  top:0;
+  width:5em;
+  height:5em;
+  background: url('@{images}/button-close.png') no-repeat center center !important;
+}

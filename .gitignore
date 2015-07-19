@@ -3,5 +3,6 @@
 
 bower_components
 node_modules
+libs
 
 npm-debug.log

@@ -1,4 +1,5 @@
 {
   "registry": "https://build.managesnap.com:8082",
-  "timeout": 300000
+  "timeout": 300000,
+  "directory" : "libs"
 }

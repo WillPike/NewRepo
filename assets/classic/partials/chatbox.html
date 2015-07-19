@@ -1,0 +1,30 @@
+<table class="chatbox">
+  <tr class="chatbox-content">
+    <td>
+      <div class="chatbox-scroller" scrollglue>
+        <div class="chatbox-msg" ng-class="{ unread: isUnread(message) }" ng-repeat="message in messages track by message.id">
+          <span class="chatbox-msg-from">{{getFromName(message)}}:</span>
+          <div class="chatbox-msg-text">
+            <span ng-if="!message.status">{{message.text}}</span>
+            <i ng-if="message.status">{{getStatusText(message)}}</i>
+          </div>
+        </div>
+      </div>
+    </td>
+  </tr>
+  <tr class="chatbox-controls" ng-if="!readonly">
+    <td>
+      <form ng-show="isConnected" ng-submit="sendMessage()">
+        <div>
+          <textarea
+            ng-disabled="!isConnected || !chatEnabled"
+            placeholder="{{ chatEnabled ? 'Type your message here' : 'Turn Chat on to send a message.' }}"
+            ng-model="chat.message"
+            ng-focus="markAsRead()"
+            on-keydown="onKeydown" />
+        </div>
+        <button ng-disabled="!isConnected || !chatEnabled || !chat.message" type="submit">Send</button>
+      </form>
+    </td>
+  </tr>
+</table>
