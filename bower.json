@@ -1,0 +1,12 @@
+{
+  "name": "dts-snap-web",
+  "version": "1.0.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
