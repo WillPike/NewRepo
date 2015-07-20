@@ -1,10 +1,10 @@
 {
   "name": "dts-snap-web",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "ignore": [
     "**/.*",
-    "*.js",
-    "*.html",
+    "./*.js",
+    "./*.html",
     "libs",
     "node_modules",
     "package.json",
