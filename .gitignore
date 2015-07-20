@@ -4,5 +4,6 @@
 bower_components
 node_modules
 libs
+temp
 
 npm-debug.log
