@@ -5,14 +5,14 @@
   "ignore": [
     "**/.*",
     "config.js",
-    "index.html",
     "Gruntfile.js",
     "bower_components",
     "node_modules",
     "package.json",
     "server.js",
     "test",
-    "tests"
+    "tests",
+    "views"
   ],
   "dependencies": {
     "angular": "~1.2.16",

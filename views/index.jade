@@ -1,0 +1,11 @@
+extends _base
+
+block head
+  title SNAP
+
+block body
+  div(id="area-startup" ng-controller="StartupCtrl" ng-include="'assets/galaxies/partials/background.html'")
+  script(type="text/javascript").
+    (function() {
+      angular.bootstrap(document, ['SNAPStartup']);
+    })();

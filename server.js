@@ -1,15 +1,12 @@
-var express = require("express"),
+var express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
     errorHandler = require('errorhandler'),
     methodOverride = require('method-override'),
     hostname = process.env.HOSTNAME || 'localhost',
     port = parseInt(process.env.PORT, 10) || 8080,
-    publicDir = __dirname;
-
-app.get("/", function (req, res) {
-  res.redirect("/index.html");
-});
+    publicDir = __dirname,
+    bwr = require('./bower.json');
 
 app.use(methodOverride());
 app.use(bodyParser.json());
@@ -21,6 +18,15 @@ app.use(errorHandler({
   dumpExceptions: true,
   showStack: true
 }));
+
+app.set('views', './views');
+app.set('view engine', 'jade');
+
+app.locals.pretty = true;
+app.set('bwr', bwr);
+
+app.get('/', function(req, res) { res.redirect('/index'); });
+app.get('/index', function(req, res) { res.render('index'); });
 
 console.log("Server listening at http://%s:%s", hostname, port);
 app.listen(port, hostname);
