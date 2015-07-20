@@ -46,7 +46,8 @@
     "dts-api-client": "~2.0.23",
     "lato": "~0.3.0",
     "fontawesome": "~4.3.0",
-    "bxslider-4": "~4.2.5"
+    "bxslider-4": "~4.2.5",
+    "socketcluster-client": "~2.3.0"
   },
   "resources": {
     "libs": [
@@ -79,7 +80,8 @@
       "angular-sanitize/angular-sanitize.js",
       "angular-bacon/dist/angular-bacon.js",
       "dts-api-client/dist/dts-api-client.js",
-      "bxslider-4/dist/jquery.bxslider.js"
+      "bxslider-4/dist/jquery.bxslider.js",
+      "socketcluster-client/socketcluster.js"
     ]
   }
 }

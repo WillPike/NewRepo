@@ -71,9 +71,6 @@ module.exports = function(grunt) {
           'temp/snap.js': [
             'src/js/shared/**/*.js',
             'src/js/**/*.js'
-          ],
-          'dist/js/libs.js': [
-            'node_modules/sc2-client/socketcluster.js'
           ]
         }
       },
@@ -134,11 +131,6 @@ module.exports = function(grunt) {
       snap: {
         files: {
           'dist/js/snap.min.js': 'dist/js/snap.js'
-        }
-      },
-      libs: {
-        files: {
-          'dist/js/libs.min.js': 'dist/js/libs.js'
         }
       }
     },
