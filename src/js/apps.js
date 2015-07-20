@@ -29,7 +29,9 @@
     var getPartialUrl = name => _getPartialUrl(SNAPConfig, SNAPHosts, SNAPEnvironment, name),
         staticHostRegex = () => _staticHostRegex(SNAPHosts);
 
-    $sceDelegateProvider.resourceUrlWhitelist(['self', staticHostRegex()]);
+    if (SNAPHosts.static.host) {
+      $sceDelegateProvider.resourceUrlWhitelist(['self', staticHostRegex()]);
+    }
 
     $locationProvider.html5Mode(false);
 
@@ -45,6 +47,20 @@
     $routeProvider.when('/chatmap', { templateUrl: getPartialUrl('chatmap'), controller: 'ChatMapCtrl' });
     $routeProvider.when('/survey', { templateUrl: getPartialUrl('survey'), controller: 'SurveyCtrl' });
     $routeProvider.otherwise({ redirectTo: '/' });
+  }]);
+
+  angular.module('SNAPStartup', [
+    'ngRoute',
+    'SNAP.configs',
+    'SNAP.controllers',
+    'SNAP.directives',
+    'SNAP.filters',
+    'SNAP.services'
+  ]).
+  config(
+    ['$locationProvider', '$routeProvider', '$sceDelegateProvider',
+    ($locationProvider, $routeProvider, $sceDelegateProvider) => {
+      alert('SNAPStartup');
   }]);
 
   angular.module('SNAPAuxiliares', [

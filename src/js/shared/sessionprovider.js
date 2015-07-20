@@ -8,6 +8,39 @@ window.app.SessionProvider = class SessionProvider {
 
     this.businessSessionExpired = new signals.Signal();
     this.customerSessionExpired = new signals.Signal();
+
+    this._businessToken = null;
+
+    var self = this;
+    this._BusinessSessionStore.read().then(token => {
+      if (token && token.access_token) {
+        if (token.expires) {
+          var expires = moment.unix(token.expires);
+
+          if (expires.isAfter(moment())) {
+            self._businessToken = token.access_token;
+          }
+        }
+        else {
+          self._businessToken = token.access_token;
+        }
+      }
+    });
+  }
+
+  get businessToken() {
+    var token = this._businessToken;
+
+    if (token && token.access_token && token.expires) {
+      var expires = moment.unix(token.expires);
+
+      if (expires.isBefore(moment())) {
+        this._businessToken = token = null;
+        this.businessSessionExpired.dispatch();
+      }
+    }
+
+    return token;
   }
 
   getBusinessToken() {
