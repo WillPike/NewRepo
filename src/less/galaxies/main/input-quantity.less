@@ -1,0 +1,36 @@
+.quantity input[type='number'] {
+  font-size:2.7em;
+  text-align:center;
+  position: relative;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  color:#000;
+
+  /* Spin Buttons modified */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+  }
+}
+
+.quantity td {
+  padding:0 !important;
+}
+
+.quantity .quantity-decrease, .quantity .quantity-increase {
+  border:0;
+  overflow:hidden;
+  shadow:none;
+  text-indent:-10em;
+  width:5em;
+  height:5em;
+}
+
+.quantity .quantity-decrease {
+  background:url('@{images}/button-decrease.png') no-repeat center center;
+}
+
+.quantity .quantity-increase {
+  background:url('@{images}/button-increase.png') no-repeat center center;
+}

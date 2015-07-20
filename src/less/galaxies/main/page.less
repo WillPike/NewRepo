@@ -1,0 +1,41 @@
+@page-scrollee-padding-left: @page-padding-left - @menu-tile-spacing;
+@page-scrollee-padding-right: @page-padding-right - @menu-tile-spacing;
+
+.page .scroller {
+  position:absolute;
+  top:@page-content-y;
+  bottom:0;
+  height:auto;
+  width:100%;
+}
+
+.page .scrollee {
+  padding-left:@page-scrollee-padding-left;  
+}
+
+.page .tile-table {
+  padding-right:@page-scrollee-padding-right;
+}
+
+.page-navigation {
+  position:absolute;
+  top:2em;
+  left:@page-padding-left;
+  right:@page-padding-right;
+}
+
+.page-navigation h1 {
+  color:#e8e8e8;
+  font-size:3.5em;
+  font-weight: @font-weight-light;
+  text-align:center;
+}
+
+.page-navigation button {
+  width:10em;
+  height:100%;
+  background: url('@{images}/button-back.png') no-repeat left center;
+  position:absolute;
+  left:0;
+  top:0;
+}
