@@ -109,14 +109,26 @@ module.exports = function(grunt) {
       options: {
         cleancss: true
       },
-      all: {
+      classic: {
+        options: {
+          modifyVars: {
+            images: '"../../assets/classic/images"'
+          }
+        },
         files: {
-          'temp/css/classic/main.css': 'temp/main_classic.less',
-          'temp/css/classic/desktop.css': 'src/less/classic/desktop.less',
-          'temp/css/classic/mobile.css': 'src/less/classic/mobile.less',
-          'temp/css/galaxies/main.css': 'temp/main_galaxies.less',
-          'temp/css/galaxies/desktop.css': 'src/less/galaxies/desktop.less',
-          'temp/css/galaxies/mobile.css': 'src/less/galaxies/mobile.less'
+          'temp/css/classic_main.css': 'temp/main_classic.less',
+          'temp/css/classic_desktop.css': 'src/less/classic/desktop.less',
+          'temp/css/classic_mobile.css': 'src/less/classic/mobile.less'
+        }
+      },
+      galaxies: {
+        options: {
+          images: '"../../assets/galaxies/images"'
+        },
+        files: {
+          'temp/css/galaxies_main.css': 'temp/main_galaxies.less',
+          'temp/css/galaxies_desktop.css': 'src/less/galaxies/desktop.less',
+          'temp/css/galaxies_mobile.css': 'src/less/galaxies/mobile.less'
         }
       }
     },
