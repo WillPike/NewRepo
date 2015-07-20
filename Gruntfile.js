@@ -79,14 +79,8 @@ module.exports = function(grunt) {
       },
       css: {
         files: {
-          'temp/main_classic.less': [
-            'libs/normalize-css/normalize.css',
-            'src/less/classic/main/*.less'
-          ],
-          'temp/main_galaxies.less': [
-            'libs/normalize-css/normalize.css',
-            'src/less/galaxies/main/*.less'
-          ]
+          'temp/main_classic.less': 'src/less/classic/main/*.less',
+          'temp/main_galaxies.less': 'src/less/galaxies/main/*.less'
         }
       }
     },

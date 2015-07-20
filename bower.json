@@ -7,11 +7,10 @@
     "config.js",
     "index.html",
     "Gruntfile.js",
-    "libs",
+    "bower_components",
     "node_modules",
     "package.json",
     "server.js",
-    "src",
     "test",
     "tests"
   ],
@@ -53,6 +52,9 @@
     "libs": [
       "lato",
       "roboto-fontface"
+    ],
+    "css": [
+      "normalize-css/normalize.css"
     ],
     "js": [
       "jquery/dist/jquery.js",
