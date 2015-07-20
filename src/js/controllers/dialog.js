@@ -1,5 +1,8 @@
 angular.module('SNAP.controllers')
-.controller('DialogCtrl', ['$scope', '$timeout', 'ActivityMonitor', 'DialogManager', function($scope, $timeout, ActivityMonitor, DialogManager) {
+.controller('DialogCtrl',
+  ['$scope', '$timeout', 'ActivityMonitor', 'DialogManager',
+  ($scope, $timeout, ActivityMonitor, DialogManager) => {
+
   var alertStack = [],
       confirmStack = [];
   var alertIndex = -1,

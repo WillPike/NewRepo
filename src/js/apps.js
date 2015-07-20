@@ -57,11 +57,7 @@
     'SNAP.filters',
     'SNAP.services'
   ]).
-  config(
-    ['$locationProvider', '$routeProvider', '$sceDelegateProvider',
-    ($locationProvider, $routeProvider, $sceDelegateProvider) => {
-      alert('SNAPStartup');
-  }]);
+  config(() => {});
 
   angular.module('SNAPAuxiliares', [
     'ngRoute',

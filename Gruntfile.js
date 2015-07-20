@@ -26,21 +26,21 @@ module.exports = function(grunt) {
     watch: {
       css: {
         files: 'src/less/**/*',
-        tasks: ['devbuildcss'],
+        tasks: ['buildcss'],
         options: {
           interrupt: true,
         }
       },
       js: {
         files: ['src/js/**/*'],
-        tasks: ['devbuildjs'],
+        tasks: ['buildjs'],
         options: {
           interrupt: true,
         }
       },
       assets: {
         files: ['assets/**/*'],
-        tasks: ['devbuildassets'],
+        tasks: ['buildassets'],
         options: {
           interrupt: true,
         }
@@ -114,7 +114,9 @@ module.exports = function(grunt) {
       },
       galaxies: {
         options: {
-          images: '"../../assets/galaxies/images"'
+          modifyVars: {
+            images: '"../../assets/galaxies/images"'
+          }
         },
         files: {
           'temp/css/galaxies_main.css': 'temp/main_galaxies.less',
@@ -155,9 +157,6 @@ module.exports = function(grunt) {
   grunt.registerTask('buildassets', []);
   grunt.registerTask('buildcss', ['concat:css', 'less', 'cssmin']);
   grunt.registerTask('buildjs', ['concat:js', 'babel:client', 'uglify']);
-  grunt.registerTask('devbuildcss', ['concat:css', 'less']);
-  grunt.registerTask('devbuildjs', ['concat:js', 'babel:client']);
-  grunt.registerTask('devbuildassets', ['buildassets']);
   grunt.registerTask('run', ['concurrent:dev']);
   grunt.registerTask('dev', ['build', 'concurrent:dev']);
   grunt.registerTask('debug', ['build', 'concurrent:debug']);

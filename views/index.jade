@@ -1,10 +1,12 @@
-extends _base
+extends _galaxies
 
-block head
-  title SNAP
+block content
+  #area-startup(class="area-view wide", ng-controller="StartupCtrl", ng-include="'/assets/galaxies/partials/startup.html'")
 
-block body
-  div(id="area-startup" ng-controller="StartupCtrl" ng-include="'assets/galaxies/partials/background.html'")
+block overlay
+  #area-dialog(ng-controller="DialogCtrl",ng-include="'/assets/galaxies/partials/dialog.html'",ng-show="visible")
+
+block end
   script(type="text/javascript").
     (function() {
       angular.bootstrap(document, ['SNAPStartup']);

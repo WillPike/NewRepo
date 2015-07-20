@@ -2,10 +2,13 @@ doctype html
 html
   head
     meta(charset="utf-8")
+    meta(name="viewport", content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+    link(href="/favicon.ico", rel="icon", type="image/x-icon")
+    link(href="/bower_components/normalize-css/normalize.css", rel="stylesheet")
     each path in settings.bwr.resources.js
-      script(src='bower_components/' + path)
-    script(src='config.js')
-    script(src='dist/js/snap.js')
+      script(src='/bower_components/' + path)
+    script(src='/config.js')
+    script(src='/dist/js/snap.js')
     block head
   body
     block body

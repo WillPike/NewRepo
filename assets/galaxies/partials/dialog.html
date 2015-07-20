@@ -8,7 +8,13 @@
       </ul>
     </form>
   </div>
-  <div id="dialog-busy" ng-show="isBusy"></div>
+  <div id="dialog-busy" class="center-parent" ng-show="isBusy">
+    <div class="column">
+      <form class="form huge center">
+        <div class="busy" />
+      </form>
+    </div>
+  </div>
   <div id="dialog-alert" ng-show="showAlert">
     <form class="form huge">
       <h1 ng-if="alertTitle"><span>{{alertTitle}}</span></h1>
