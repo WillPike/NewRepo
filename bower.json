@@ -1,11 +1,12 @@
 {
   "name": "dts-snap-web",
   "version": "1.0.6",
-  "main": "",
+  "main": "dist/js/snap.js",
   "ignore": [
     "**/.*",
-    "bower.json",
-    "Gruntfile.js",    
+    "config.js",
+    "index.html",
+    "Gruntfile.js",
     "libs",
     "node_modules",
     "package.json",

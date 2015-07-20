@@ -75,16 +75,11 @@ module.exports = function(grunt) {
         files: {
           'temp/main_classic.less': [
             'libs/normalize-css/normalize.css',
-            'libs/roboto-fontface/roboto-fontface.less',
             'src/less/classic/main/*.less'
           ],
           'temp/main_galaxies.less': [
             'libs/normalize-css/normalize.css',
-            'libs/lato/less/*.less',
-            '!libs/lato/less/lato.less',
-            '!libs/lato/less/variables.less',
-            'src/less/galaxies/main/*.less',
-            'libs/bxslider-4/src/less/*.less',
+            'src/less/galaxies/main/*.less'
           ]
         }
       }
@@ -106,11 +101,7 @@ module.exports = function(grunt) {
     },
     less: {
       options: {
-        cleancss: true,
-        modifyVars: {
-          'roboto-font-path': '"../../assets/classic/fonts"',
-          'lato-font-path': '"../../assets/galaxies/fonts"'
-        }
+        cleancss: true
       },
       all: {
         files: {
