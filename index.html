@@ -36,9 +36,32 @@
     <script src="/bower_components/bxslider-4/dist/jquery.bxslider.js"></script>
 
     <script src="/dist/js/libs.js"></script>
+    <script src="/config.js"></script>
     <script src="/dist/js/snap.js"></script>
 </head>
 <body>
+  <div id="area-container">
+  	<div id="area-background" ng-controller="BackgroundCtrl" ng-include="'/assets/galaxies/partials/background.html'" />
+  	<div id="area-content">
+  		<div id="area-navigation" ng-controller="GalaxiesNavigationCtrl" ng-include="'/assets/galaxies/partials/navigation.html'" ng-show="visible"></div>
+  		<div id="area-advertisement" ng-controller="GalaxiesAdvertisementCtrl" ng-include="'/assets/galaxies/partials/advertisement.html'" ng-show="visible"></div>
+  		<div id="area-modal" ng-controller="ModalCtrl" ng-include="'/assets/galaxies/partials/modal.html'" ng-show="visible"></div>
+  		<div ng-view ng-class="{ wide: wide }" class="area-view"></div>
+  		<div id="area-home" ng-controller="GalaxiesHomeCtrl" ng-include="'/assets/galaxies/partials/home.html'" ng-show="visible" class="area-view"></div>
+  		<div id="area-menu" ng-controller="GalaxiesMenuCtrl" ng-include="'/assets/galaxies/partials/menu.html'" ng-show="visible" class="area-view"></div>
+  		<div id="area-category" ng-controller="GalaxiesCategoryCtrl" ng-include="'/assets/galaxies/partials/category.html'" ng-show="visible" class="area-view"></div>
+  		<div id="area-item" ng-controller="GalaxiesItemCtrl" ng-include="'/assets/galaxies/partials/item.html'" ng-show="visible" class="area-view"></div>
+  		<div id="area-web" ng-controller="WebCtrl" ng-include="'/assets/galaxies/partials/web.html'" ng-show="visible" class="area-view"></div>
+  		<div id="area-cart" ng-controller="GalaxiesCartCtrl" ng-include="'/assets/galaxies/partials/cart.html'" ng-show="visible" class="area-view"></div>
+  	</div>
+  </div>
+  <div id="area-screensaver" ng-controller="ScreensaverCtrl" ng-include="'/assets/galaxies/partials/screensaver.html'" ng-show="visible"></div>
+  <div id="area-notifiation" ng-controller="NotificationCtrl" ng-include="'/assets/galaxies/partials/notification.html'" ng-show="visible"></div>
+  <div id="area-dialog" ng-controller="DialogCtrl" ng-include="'/assets/galaxies/partials/dialog.html'" ng-show="visible"></div>
+
   <script type="text/javascript">
+    (function() {
+      angular.bootstrap(document, ['SNAPApplication']);
+    })();
   </script>
 </body>

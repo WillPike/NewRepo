@@ -120,8 +120,11 @@ window.app.ShellManager = class ShellManager {
   }
 
   getAssetUrl(file) {
-    return this.$$sce.trustAsResourceUrl(`//${this._Hosts.static.host}${this._Hosts.static.path}/dist/${this._Environment.version}` +
-      `/assets/${this._Config.theme.layout}/${file}`);
+    var host = this._Hosts.static.host ?
+      `//${this._Hosts.static.host}${this._Hosts.static.path}` :
+      '';
+
+    return this.$$sce.trustAsResourceUrl(`${host}/assets/${this._Config.theme.layout}/${file}`);
   }
 
   getPartialUrl(name) {

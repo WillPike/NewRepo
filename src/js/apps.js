@@ -1,11 +1,14 @@
 (function() {
-  function staticHostRegex() {
+  function _staticHostRegex(SNAP_HOSTS_CONFIG) {
     return new RegExp('.*' + SNAP_HOSTS_CONFIG.static + '.*');
   }
 
-  function getPartialUrl(name) {
-    return `//${SNAP_HOSTS_CONFIG.static.host}${SNAP_HOSTS_CONFIG.static.path}/dist/${SNAP_ENVIRONMENT.version}` +
-      `/assets/${SNAP_CONFIG.theme.layout}/partials/${name}.html`;
+  function _getPartialUrl(SNAP_CONFIG, SNAP_HOSTS_CONFIG, SNAP_ENVIRONMENT, name) {
+    var host = SNAP_HOSTS_CONFIG.static.host ?
+      `//${SNAP_HOSTS_CONFIG.static.host}${SNAP_HOSTS_CONFIG.static.path}` :
+      '';
+
+    return `${host}/assets/${SNAP_CONFIG.theme.layout}/partials/${name}.html`;
   }
 
   angular.module('SNAPApplication', [
@@ -20,8 +23,11 @@
     'SNAP.services'
   ]).
   config(
-    ['$locationProvider', '$routeProvider', '$sceDelegateProvider',
-    ($locationProvider, $routeProvider, $sceDelegateProvider) => {
+    ['$locationProvider', '$routeProvider', '$sceDelegateProvider', 'SNAPConfig', 'SNAPHosts', 'SNAPEnvironment',
+    ($locationProvider, $routeProvider, $sceDelegateProvider, SNAPConfig, SNAPHosts, SNAPEnvironment) => {
+
+    var getPartialUrl = name => _getPartialUrl(SNAPConfig, SNAPHosts, SNAPEnvironment, name),
+        staticHostRegex = () => _staticHostRegex(SNAPHosts);
 
     $sceDelegateProvider.resourceUrlWhitelist(['self', staticHostRegex()]);
 
@@ -53,8 +59,10 @@
     'SNAP.services'
   ]).
   config(
-    ['$locationProvider', '$routeProvider',
-    ($locationProvider, $routeProvider) => {
+    ['$locationProvider', '$routeProvider', 'SNAPConfig', 'SNAPHosts', 'SNAPEnvironment',
+    ($locationProvider, $routeProvider, SNAPConfig, SNAPHosts, SNAPEnvironment) => {
+
+    var getPartialUrl = name => _getPartialUrl(SNAPConfig, SNAPHosts, SNAPEnvironment, name);
 
     $locationProvider.html5Mode(false);
 
