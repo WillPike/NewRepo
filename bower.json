@@ -48,5 +48,30 @@
     "lato": "~0.3.0",
     "fontawesome": "~4.3.0",
     "bxslider-4": "~4.2.5"
-  }
+  },
+  "resources": [
+    "jquery/dist/jquery.js",
+    "jquery.kinetic/jquery.kinetic.js",
+    "hammerjs/hammer.js",
+    "js-signals/dist/signals.js",
+    "es6-promise/promise.js",
+    "jSignature/src/jSignature.js",
+    "bacon/dist/Bacon.js",
+    "log4javascript/js/log4javascript.js",
+    "react/react.js",
+    "store/dist/store2.js",
+    "moment/moment.js",
+    "rateit/src/jquery.rateit.js",
+    "swfobject/swfobject/swfobject.js",
+    "URIjs/src/URI.js",
+    "angular/angular.js",
+    "angular-animate/angular-animate.js",
+    "angular-route/angular-route.js",
+    "angular-resource/angular-resource.js",
+    "angular-touch/angular-touch.js",
+    "angular-sanitize/angular-sanitize.js",
+    "angular-bacon/dist/angular-bacon.js",
+    "dts-api-client/dist/dts-api-client.js",
+    "bxslider-4/dist/jquery.bxslider.js"
+  ]
 }
