@@ -68,6 +68,9 @@ module.exports = function(grunt) {
           'temp/snap.js': [
             'src/js/shared/**/*.js',
             'src/js/**/*.js'
+          ],
+          'temp/libs.js': [
+            'node_modules/sc2-client/socketcluster.min.js'
           ]
         }
       },
@@ -95,7 +98,8 @@ module.exports = function(grunt) {
       },
       client: {
         files: {
-          'dist/js/snap.js': 'temp/snap.js'
+          'dist/js/snap.js': 'temp/snap.js',
+          'dist/js/libs.min.js': 'temp/libs.js'
         }
       }
     },
@@ -142,7 +146,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', []);
   grunt.registerTask('validate', ['jshint']);
-  grunt.registerTask('build', ['clean', 'buildcss', 'buildjs', 'buildassets']);
+  grunt.registerTask('build', ['clean', 'buildcss', 'buildjs', 'buildassets', 'clean:temp']);
   grunt.registerTask('buildassets', []);
   grunt.registerTask('buildcss', ['concat:css', 'less', 'cssmin']);
   grunt.registerTask('buildjs', ['concat:js', 'babel:client', 'uglify']);

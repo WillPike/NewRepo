@@ -11,7 +11,7 @@
     "node_modules",
     "package.json",
     "server.js",
-    "static",
+    "src",
     "test",
     "tests"
   ],
