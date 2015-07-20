@@ -12,7 +12,10 @@ window.app.DialogManager = class DialogManager {
   }
 
   alert(message, title) {
-    this.alertRequested.dispatch(message, title);
+    var self = this;
+    return new Promise((resolve, reject) => {
+      self.alertRequested.dispatch(message, title, resolve, reject);
+    });
   }
 
   notification(message) {
@@ -21,7 +24,7 @@ window.app.DialogManager = class DialogManager {
 
   confirm(message) {
     var self = this;
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
       self.confirmRequested.dispatch(message, resolve, reject);
     });
   }

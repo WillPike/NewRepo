@@ -1,47 +1,42 @@
 @modal-background: rgba(29,33,35,0.8);
 
-#dialog-busy {
+#dialog-busy, #dialog-alert, #dialog-confirm {
   position: absolute;
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
+  background: @modal-background;
 }
 
 #dialog-busy .column {
   width:60em;
 }
 
-#dialog-alert {
-  position: absolute;
-  left: 0;
-  top: 40%;
-  right: 0;
+#dialog-alert .form, #dialog-confirm .form {
   min-height: 10em;
   background-color: rgba(0,0,0,0.5);
   color: #fff;
-  padding: 3em 35em;
+  padding: 3em 0;
 }
 
-#dialog-alert p{
+#dialog-alert .column, #dialog-confirm .column {
+  width:100%;
+}
+
+#dialog-alert p {
   text-align:center;
   font-size:2em;
+  padding: 0 15em;
 }
 
-#dialog-confirm {
-  position: absolute;
-  left: 0;
-  top: 20%;
-  right: 0;
-  min-height: 10em;
-  background-color: @modal-background;
-  color: #fff;
-  padding: 3em 35em;
+#dialog-alert h1, #dialog-confirm h1{
+  padding: 0 15em;
 }
 
-#dialog-confirm form{
-  width:75em;
-  margin:0 auto 0;
+#dialog-confirm ul {
+  width:85em;
+  margin:0 auto;
 }
 
 #dialog-modal, .modal {

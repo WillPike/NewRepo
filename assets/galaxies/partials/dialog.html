@@ -1,14 +1,16 @@
 <div id="dialog-modal" ng-click="closeAlert()">
   <div id="dialog-confirm" ng-show="showConfirm">
-    <form class="form huge">
-      <h1><span>{{confirmText}}</span></h1>
-      <ul class="horizontal">
-        <li><button type="button" class="button secondary" ng-click="closeConfirm(false)">Decline</button></li>
-        <li><button type="button" class="button" ng-click="closeConfirm(true)">Confirm</button></li>
-      </ul>
-    </form>
+    <div class="column">
+      <form class="form huge center">
+        <h1><span>{{confirmText}}</span></h1>
+        <ul class="horizontal">
+          <li><button type="button" class="button secondary" ng-click="closeConfirm(false)">Decline</button></li>
+          <li><button type="button" class="button" ng-click="closeConfirm(true)">Confirm</button></li>
+        </ul>
+      </form>
+    </div>
   </div>
-  <div id="dialog-busy" class="center-parent" ng-show="isBusy">
+  <div id="dialog-busy" ng-show="isBusy">
     <div class="column">
       <form class="form huge center">
         <div class="busy" />
@@ -16,9 +18,11 @@
     </div>
   </div>
   <div id="dialog-alert" ng-show="showAlert">
-    <form class="form huge">
-      <h1 ng-if="alertTitle"><span>{{alertTitle}}</span></h1>
-      <p>{{alertText}}</p>
-    </form>
+    <div class="column">
+      <form class="form huge center">
+        <h1 ng-show="alertTitle"><span>{{alertTitle}}</span></h1>
+        <p>{{alertText}}</p>
+      </form>
+    </div>
   </div>
 </div>

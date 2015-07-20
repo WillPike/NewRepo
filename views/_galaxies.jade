@@ -11,5 +11,7 @@ block body
     #area-container
       #area-content
         block content
+    #area-notifiation(ng-controller="NotificationCtrl",ng-include="'/assets/galaxies/partials/notification.html'",ng-show="visible")
+    #area-dialog(ng-controller="DialogCtrl",ng-include="'/assets/galaxies/partials/dialog.html'",ng-show="visible")
     block overlay
   block end

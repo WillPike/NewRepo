@@ -8,5 +8,4 @@ angular.module('SNAP.controllers')
   $timeout(() => {
     job = DialogManager.startJob();
   }, 1000);
-
 }]);

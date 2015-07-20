@@ -3,9 +3,6 @@ extends _galaxies
 block content
   #area-startup(class="area-view wide", ng-controller="StartupCtrl", ng-include="'/assets/galaxies/partials/startup.html'")
 
-block overlay
-  #area-dialog(ng-controller="DialogCtrl",ng-include="'/assets/galaxies/partials/dialog.html'",ng-show="visible")
-
 block end
   script(type="text/javascript").
     (function() {

@@ -23,6 +23,12 @@ angular.module('SNAP.controllers')
       $timeout.cancel(alertTimer);
     }
 
+    var alert = alertStack[alertIndex];
+
+    if (alert && alert.resolve) {
+      alert.resolve();
+    }
+
     alertIndex++;
 
     if (alertIndex === alertStack.length) {
@@ -132,24 +138,26 @@ angular.module('SNAP.controllers')
 
     var confirm = confirmStack[confirmIndex];
 
-    if (confirmed) {
-      if (confirm.resolve) {
-        confirm.resolve();
+    if (confirm) {
+      if (confirmed) {
+        if (confirm.resolve) {
+          confirm.resolve();
+        }
       }
-    }
-    else {
-      if (confirm.reject) {
-        confirm.reject();
+      else {
+        if (confirm.reject) {
+          confirm.reject();
+        }
       }
     }
 
     showNextConfirm();
   };
 
-  DialogManager.alertRequested.add(function(message, title) {
+  DialogManager.alertRequested.add(function(message, title, resolve, reject) {
     message = getMessage(message);
 
-    alertStack.push({ title: title, message: message });
+    alertStack.push({ title: title, message: message, resolve: resolve, reject: reject });
 
     if (!$scope.showAlert) {
       $timeout(showNextAlert);
