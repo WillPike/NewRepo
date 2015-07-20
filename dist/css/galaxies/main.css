@@ -516,7 +516,7 @@ ul.bxslider {
 /* LOADER */
 .photo-gallery .bx-loading {
   min-height: 50px;
-  background: url('../../assets/galaxies/images/slider-loader.gif') center center no-repeat #ffffff;
+  background: url('/assets/galaxies/images/slider-loader.gif') center center no-repeat #ffffff;
   height: 100%;
   width: 100%;
   position: absolute;
@@ -562,7 +562,7 @@ ul.bxslider {
 /* DIRECTION CONTROLS (NEXT / PREV) */
 .photo-gallery .bx-prev {
   left: 10px;
-  background: url('../../assets/galaxies/images/slider-controls.png') no-repeat 0 -32px;
+  background: url('/assets/galaxies/images/slider-controls.png') no-repeat 0 -32px;
 }
 .photo-gallery .bx-prev:hover,
 .photo-gallery .bx-prev:focus {
@@ -570,7 +570,7 @@ ul.bxslider {
 }
 .photo-gallery .bx-next {
   right: 10px;
-  background: url('../../assets/galaxies/images/slider-controls.png') no-repeat -43px -32px;
+  background: url('/assets/galaxies/images/slider-controls.png') no-repeat -43px -32px;
 }
 .photo-gallery .bx-next:hover,
 .photo-gallery .bx-next:focus {
@@ -599,7 +599,7 @@ ul.bxslider {
   width: 10px;
   height: 11px;
   outline: 0;
-  background: url('../../assets/galaxies/images/slider-controls.png') -86px -11px no-repeat;
+  background: url('/assets/galaxies/images/slider-controls.png') -86px -11px no-repeat;
   margin: 0 3px;
 }
 .photo-gallery .bx-controls-auto .bx-start:hover,
@@ -613,7 +613,7 @@ ul.bxslider {
   width: 9px;
   height: 11px;
   outline: 0;
-  background: url('../../assets/galaxies/images/slider-controls.png') -86px -44px no-repeat;
+  background: url('/assets/galaxies/images/slider-controls.png') -86px -44px no-repeat;
   margin: 0 3px;
 }
 .photo-gallery .bx-controls-auto .bx-stop:hover,
@@ -813,7 +813,7 @@ ul.bxslider {
   top: 0;
   width: 5em;
   height: 5em;
-  background: url('../../assets/galaxies/images/button-close.png') no-repeat center center !important;
+  background: url('/assets/galaxies/images/button-close.png') no-repeat center center !important;
 }
 .button {
   text-transform: uppercase;
@@ -843,7 +843,7 @@ ul.bxslider {
   background-color: #999999;
 }
 .button.button-assistance {
-  background: url('../../assets/galaxies/images/icon-assistance.png') no-repeat left center #f26323;
+  background: url('/assets/galaxies/images/icon-assistance.png') no-repeat left center #f26323;
   text-align: left;
   text-indent: 60px;
 }
@@ -931,7 +931,7 @@ ul.bxslider {
   display: block;
   width: 1.8em;
   height: 2.6em;
-  background: url('../../assets/galaxies/images/popout-top.png') no-repeat center center;
+  background: url('/assets/galaxies/images/popout-top.png') no-repeat center center;
   background-size: 100% 100%;
   margin: 0 auto;
   font-size: 3.5em;
@@ -980,14 +980,14 @@ button.clickable {
   display: none;
 }
 .modifier-checkbox + label {
-  background: url('../../assets/galaxies/images/checkbox-off.png') no-repeat center center #e6e6e6;
+  background: url('/assets/galaxies/images/checkbox-off.png') no-repeat center center #e6e6e6;
   display: inline-block;
   position: relative;
   height: 3.5em;
   max-width: 15em;
 }
 .modifier-checkbox:checked + label {
-  background: url('../../assets/galaxies/images/checkbox-on.png') no-repeat center center #8ac435;
+  background: url('/assets/galaxies/images/checkbox-on.png') no-repeat center center #8ac435;
 }
 .quantity input[type='number'] {
   font-size: 2.7em;
@@ -1016,10 +1016,10 @@ button.clickable {
   height: 5em;
 }
 .quantity .quantity-decrease {
-  background: url('../../assets/galaxies/images/button-decrease.png') no-repeat center center;
+  background: url('/assets/galaxies/images/button-decrease.png') no-repeat center center;
 }
 .quantity .quantity-increase {
-  background: url('../../assets/galaxies/images/button-increase.png') no-repeat center center;
+  background: url('/assets/galaxies/images/button-increase.png') no-repeat center center;
 }
 .form input[type='range'] {
   -webkit-appearance: none;
@@ -1501,10 +1501,10 @@ button.clickable {
   top: 0;
   width: 8em;
   height: 9.5em;
-  background: url('../../assets/galaxies/images/icon-dropdown.png') no-repeat center center #1d2123;
+  background: url('/assets/galaxies/images/icon-dropdown.png') no-repeat center center #1d2123;
 }
 #page-navigation-dropdown.active {
-  background-image: url('../../assets/galaxies/images/icon-dropup.png');
+  background-image: url('/assets/galaxies/images/icon-dropup.png');
   background-color: #121313;
 }
 .page-navigation-dropmenu {
@@ -1600,7 +1600,7 @@ button.clickable {
 .page-navigation button {
   width: 10em;
   height: 100%;
-  background: url('../../assets/galaxies/images/button-back.png') no-repeat left center;
+  background: url('/assets/galaxies/images/button-back.png') no-repeat left center;
   position: absolute;
   left: 0;
   top: 0;

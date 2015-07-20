@@ -1122,7 +1122,7 @@ button:disabled {
   font-size: 1.3em;
 }
 .cart-cancel {
-  background: url('../../assets/classic/images/button-cart-clear.png') no-repeat left center;
+  background: url('/assets/classic/images/button-cart-clear.png') no-repeat left center;
 }
 .cart-submit {
   background: #25a237;
@@ -1471,7 +1471,7 @@ button:disabled {
 #checkout-cardreader {
   width: 287px;
   height: 376px;
-  background: url('../../assets/classic/images/image-cardreader.png') no-repeat;
+  background: url('/assets/classic/images/image-cardreader.png') no-repeat;
   margin: 0 auto 0;
 }
 #checkout-split-mode .checkout-group-title {
@@ -1745,16 +1745,16 @@ button:disabled {
 }
 .socialbutton-facebook {
   left: 0;
-  background: url('../../assets/classic/images/button-login-facebook.png') no-repeat;
+  background: url('/assets/classic/images/button-login-facebook.png') no-repeat;
 }
 .socialbutton-twitter {
   right: 0;
-  background: url('../../assets/classic/images/button-login-twitter.png') no-repeat;
+  background: url('/assets/classic/images/button-login-twitter.png') no-repeat;
 }
 .socialbutton-google {
   position: relative;
   margin: 0 auto;
-  background: url('../../assets/classic/images/button-login-google.png') no-repeat;
+  background: url('/assets/classic/images/button-login-google.png') no-repeat;
 }
 #checkout-card-form .modal-form-container {
   width: 80%;
@@ -1882,7 +1882,7 @@ button:disabled {
   position: relative;
   display: -moz-inline-box;
   display: inline-block;
-  background: url('../../assets/classic/images/button-rating.png');
+  background: url('/assets/classic/images/button-rating.png');
   width: 75px;
   height: 75px;
   outline: none;
@@ -1901,22 +1901,22 @@ button:disabled {
   right: 0px;
 }
 .rateit .rateit-hover {
-  background: url('../../assets/classic/images/button-rating.png') left -75px;
+  background: url('/assets/classic/images/button-rating.png') left -75px;
 }
 .rateit .rateit-hover-rtl {
   background-position: right -32px;
 }
 .rateit .rateit-selected {
-  background: url('../../assets/classic/images/button-rating.png') left -75px;
+  background: url('/assets/classic/images/button-rating.png') left -75px;
 }
 .rateit .rateit-selected-rtl {
   background-position: right -16px;
 }
 .rateit .rateit-preset {
-  background: url('../../assets/classic/images/button-rating.png') left -75px;
+  background: url('/assets/classic/images/button-rating.png') left -75px;
 }
 .rateit .rateit-preset-rtl {
-  background: url('../../assets/classic/images/button-rating.png') left -75px;
+  background: url('/assets/classic/images/button-rating.png') left -75px;
 }
 .chat-left {
   position: absolute;
@@ -1995,10 +1995,10 @@ button:disabled {
   padding-top: 40px;
 }
 .chat-send-gift {
-  background: url('../../assets/classic/images/button-send-drink.png') no-repeat center 0;
+  background: url('/assets/classic/images/button-send-drink.png') no-repeat center 0;
 }
 .chat-cancel-gift {
-  background: url('../../assets/classic/images/button-chat-close.png') no-repeat center 0;
+  background: url('/assets/classic/images/button-chat-close.png') no-repeat center 0;
 }
 .chat-controls-seat h2 {
   font-size: 25px;
@@ -2027,7 +2027,7 @@ button:disabled {
   border: 0;
   width: 100%;
   height: 175px;
-  background: url('../../assets/classic/images/button-location-map.png') no-repeat 0 0 #f1f1f1;
+  background: url('/assets/classic/images/button-location-map.png') no-repeat 0 0 #f1f1f1;
   position: relative;
   color: #7b7c80;
   text-align: center;
@@ -2098,7 +2098,7 @@ button:disabled {
   display: block;
   width: 36px;
   height: 36px;
-  background: url('../../assets/classic/images/button-chat-close.png') no-repeat;
+  background: url('/assets/classic/images/button-chat-close.png') no-repeat;
   overflow: hidden;
   text-indent: -1000px;
   border: 0;
@@ -2155,7 +2155,7 @@ button:disabled {
   width: 80px;
   height: 100%;
   right: 0;
-  background: url('../../assets/classic/images/button-chat-submit.png') no-repeat 0 center #f1f1f1;
+  background: url('/assets/classic/images/button-chat-submit.png') no-repeat 0 center #f1f1f1;
   overflow: hidden;
   text-indent: -1000px;
 }
