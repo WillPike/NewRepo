@@ -47,10 +47,13 @@ module.exports = function(grunt) {
       }
     },
     cssmin: {
+      options: {
+        keepSpecialComments: 0
+      },
       dist: {
         files: [{
           expand: true,
-          cwd: 'dist/css/',
+          cwd: 'temp/css/',
           src: ['**/*.css', '!*.min.css'],
           dest: 'dist/css/',
           ext: '.min.css'
@@ -109,12 +112,12 @@ module.exports = function(grunt) {
       },
       all: {
         files: {
-          'dist/css/classic/main.css': 'temp/main_classic.less',
-          'dist/css/classic/desktop.css': 'src/less/classic/desktop.less',
-          'dist/css/classic/mobile.css': 'src/less/classic/mobile.less',
-          'dist/css/galaxies/main.css': 'temp/main_galaxies.less',
-          'dist/css/galaxies/desktop.css': 'src/less/galaxies/desktop.less',
-          'dist/css/galaxies/mobile.css': 'src/less/galaxies/mobile.less'
+          'temp/css/classic/main.css': 'temp/main_classic.less',
+          'temp/css/classic/desktop.css': 'src/less/classic/desktop.less',
+          'temp/css/classic/mobile.css': 'src/less/classic/mobile.less',
+          'temp/css/galaxies/main.css': 'temp/main_galaxies.less',
+          'temp/css/galaxies/desktop.css': 'src/less/galaxies/desktop.less',
+          'temp/css/galaxies/mobile.css': 'src/less/galaxies/mobile.less'
         }
       }
     },
