@@ -5,7 +5,7 @@ var express = require("express"),
     methodOverride = require('method-override'),
     hostname = process.env.HOSTNAME || 'localhost',
     port = parseInt(process.env.PORT, 10) || 8080,
-    publicDir = __dirname;
+    publicDir = __dirname + '/static';
 
 app.get("/", function (req, res) {
   res.redirect("/index.html");
