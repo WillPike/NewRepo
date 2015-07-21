@@ -11,6 +11,9 @@ window.app.DialogManager = class DialogManager {
     this._modals = 0;
   }
 
+  get jobs() { return this._jobs; }
+  get modals() { return this._modals; }
+
   alert(message, title) {
     var self = this;
     return new Promise((resolve, reject) => {

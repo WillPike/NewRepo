@@ -1,5 +1,12 @@
 @modal-background: rgba(29,33,35,0.8);
 
+#dialog-modal, .modal {
+  width: 100%;
+  height: 100%;
+  background-color: @modal-background;
+  position:absolute;
+}
+
 #dialog-busy, #dialog-alert, #dialog-confirm {
   position: absolute;
   left: 0;
@@ -37,13 +44,6 @@
 #dialog-confirm ul {
   width:85em;
   margin:0 auto;
-}
-
-#dialog-modal, .modal {
-  width: 100%;
-  height: 100%;
-  background-color: @modal-background;
-  position:absolute;
 }
 
 .modal-box {

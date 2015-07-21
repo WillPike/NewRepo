@@ -128,12 +128,12 @@ angular.module('SNAP.controllers')
   $scope.showAlert = false;
   $scope.showConfirm = false;
 
-  $scope.closeAlert = function() {
+  $scope.closeAlert = () => {
     ActivityMonitor.activityDetected();
     showNextAlert();
   };
 
-  $scope.closeConfirm = function(confirmed) {
+  $scope.closeConfirm = confirmed => {
     ActivityMonitor.activityDetected();
 
     var confirm = confirmStack[confirmIndex];
@@ -154,7 +154,7 @@ angular.module('SNAP.controllers')
     showNextConfirm();
   };
 
-  DialogManager.alertRequested.add(function(message, title, resolve, reject) {
+  function alertRequested(message, title, resolve, reject) {
     message = getMessage(message);
 
     alertStack.push({ title: title, message: message, resolve: resolve, reject: reject });
@@ -162,9 +162,11 @@ angular.module('SNAP.controllers')
     if (!$scope.showAlert) {
       $timeout(showNextAlert);
     }
-  });
+  }
 
-  DialogManager.confirmRequested.add(function(message, resolve, reject) {
+  DialogManager.alertRequested.add(alertRequested);
+
+  function confirmRequested(message, resolve, reject) {
     message = getMessage(message);
 
     confirmStack.push({ message: message, resolve: resolve, reject: reject });
@@ -172,17 +174,24 @@ angular.module('SNAP.controllers')
     if (!$scope.showConfirm) {
       $timeout(showNextConfirm);
     }
-  });
+  }
 
-  DialogManager.jobStarted.add(function() {
+  DialogManager.confirmRequested.add(confirmRequested);
+
+  function jobStarted() {
     if (document.activeElement && document.activeElement !== document.body) {
       document.activeElement.blur();
     }
 
     updateVisibility(true);
-  });
+  }
 
+  DialogManager.jobStarted.add(jobStarted);
   DialogManager.jobEnded.add(function() {
     updateVisibility(false);
   });
+
+  if (DialogManager.jobs > 0) {
+    jobStarted();
+  }
 }]);

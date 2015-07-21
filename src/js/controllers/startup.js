@@ -1,11 +1,13 @@
 angular.module('SNAP.controllers')
 .controller('StartupCtrl',
-  ['$scope', '$timeout', 'DialogManager',
-  ($scope, $timeout, DialogManager) => {
+  ['$scope', 'CommandBoot', 'DialogManager',
+  ($scope, CommandBoot, DialogManager) => {
 
-  var job;
+  var job = DialogManager.startJob();
 
-  $timeout(() => {
-    job = DialogManager.startJob();
-  }, 1000);
+  CommandBoot().then(result => {
+    
+  }, e => {
+    DialogManager.endJob(job);
+  });
 }]);
