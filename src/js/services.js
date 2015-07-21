@@ -19,11 +19,11 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('DtsApi', ['SNAPHosts', 'SessionProvider', (SNAPHosts, SessionProvider) => {
     return new app.BackendApi(SNAPHosts, SessionProvider);
   }])
-  .factory('ManagementService', ['$resource', 'SNAPEnvironment', ($resource, SNAPEnvironment) => {
-    return new app.ManagementService($resource, SNAPEnvironment);
+  .factory('ManagementService', ['Logger', (Logger) => {
+    return new app.CordovaManagementService(Logger);
   }])
   .factory('SessionService', ['$resource', ($resource) => {
-    return new app.SessionService($resource);
+    return new app.WebSessionService($resource);
   }])
   .factory('SocketClient', ['SessionProvider', 'Logger', (SessionProvider, Logger) => {
     return new app.SocketClient(SessionProvider, Logger);
@@ -89,6 +89,9 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   }])
   .factory('AnalyticsManager', ['TelemetryService', 'AnalyticsModel', 'Logger', (TelemetryService, AnalyticsModel, Logger) => {
     return new app.AnalyticsManager(TelemetryService, AnalyticsModel, Logger);
+  }])
+  .factory('AuthenticationManager', ['DtsApi', 'SessionProvider', 'SNAPEnvironment', 'WebBrowser', (DtsApi, SessionProvider, SNAPEnvironment, WebBrowser) => {
+    return new app.AuthenticationManager(DtsApi, SessionProvider, SNAPEnvironment, WebBrowser);
   }])
   .factory('CustomerManager', ['SNAPConfig', 'SNAPEnvironment', 'DtsApi', 'CustomerModel', (SNAPConfig, SNAPEnvironment, DtsApi, CustomerModel) => {
     return new app.CustomerManager(SNAPConfig, SNAPEnvironment, DtsApi, CustomerModel);

@@ -14,7 +14,8 @@ angular.module('SNAP.configs', [])
   }
  })
  .constant('SNAPEnvironment', {
-  customer_application: {"client_id":"91381a86b3b444fd876df80b22d7fa6e","callback_url":"https://web.managesnap.com/oauth2/customer/callback"},
+  main_application: {"client_id":"d67610b1c91044d8abd55cbda6c619f0","callback_url":"http://localhost/callback/snap","scope":""},
+  customer_application: {"client_id":"91381a86b3b444fd876df80b22d7fa6e","callback_url":"http://localhost/callback/customer"},
   facebook_application: {"client_id":"349729518545313","redirect_url":"https://web.managesnap.com/callback/facebook"},
   googleplus_application: {"client_id":"678998250941-1dmebp4ksni9tsjth45tsht8l7cl1mrn.apps.googleusercontent.com","redirect_url":"https://web.managesnap.com/callback/googleplus"},
   twitter_application: {"consumer_key":"yQ8XJ15PmaPOi4L5DJPikGCI0","redirect_url":"https://web.managesnap.com/callback/twitter"}

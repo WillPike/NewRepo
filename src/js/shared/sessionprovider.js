@@ -108,4 +108,16 @@ window.app.SessionProvider = class SessionProvider {
       }, reject);
     });
   }
+
+  clear() {
+    var self = this;
+    return new Promise(resolve => {
+      return self._BusinessSessionStore.clear().then(() => {
+        return self._CustomerSessionStore.read().then(() => {
+          self._businessToken = null;
+          resolve();
+        });
+      });
+    });
+  }
 };

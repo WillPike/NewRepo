@@ -1,4 +1,4 @@
-window.app.ManagementService = class ManagementService {
+window.app.HomebrewManagementService = class HomebrewManagementService {
   constructor($resource, SNAPEnvironment) {
     this._api = {
       'rotateScreen': $resource('/management/rotate-screen', {}, { query: { method: 'GET' } }),
@@ -13,18 +13,34 @@ window.app.ManagementService = class ManagementService {
       'setDisplayBrightness': $resource('/management/brightness', {}, { query: { method: 'GET' } })
     };
     this._SNAPEnvironment = SNAPEnvironment;
+
+    this.isExternalBrowser = this._SNAPEnvironment.platform !== 'web';
   }
 
   rotateScreen() {
     this._api.rotateScreen.query();
   }
 
-  openBrowser(url) {
-    this._api.openBrowser.query({ url: url });
+  openBrowser(url, browserRef) {
+    var self = this;
+    return new Promise(resolve => {
+      return self._api.openBrowser.query({ url: url }).then(resolve => {
+        var browser = new app.WebBrowserReference();
+        browser.onNavigated.dispatch(url);
+        resolve(browser);
+      });
+    });
   }
 
-  closeBrowser() {
-    this._api.closeBrowser.query();
+  closeBrowser(browserRef) {
+    var self = this;
+    return new Promise(resolve => {
+      if (browserRef) {
+        browserRef.onExit.dispatch();
+      }
+      
+      return self._api.closeBrowser.query();
+    });
   }
 
   startCardReader() {

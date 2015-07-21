@@ -1,4 +1,4 @@
-window.app.SessionService = class SessionService {
+window.app.WebSessionService = class WebSessionService {
   constructor($resource) {
     this._api = {
       'session': $resource('/oauth2/snap/session', {}, { query: { method: 'GET' } })

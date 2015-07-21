@@ -13,10 +13,12 @@ window.app.WebBrowser = class WebBrowser {
     this.onOpen = new signals.Signal();
     this.onClose = new signals.Signal();
     this.onNavigated = new signals.Signal();
+
+    this._browser = null;
   }
 
   get isExternal() {
-    return this._SNAPEnvironment.platform !== 'web';
+    return this._ManagementService.isExternalBrowser;
   }
 
   navigated(url) {
@@ -30,23 +32,52 @@ window.app.WebBrowser = class WebBrowser {
   }
 
   open(url) {
+    var self = this;
+
     if (this.isExternal) {
-      this._ManagementService.openBrowser(url);
+      return this._ManagementService.openBrowser(url, this._browser).then(browser => {
+        self._browser = browser;
+        self.onOpen.dispatch(url, self._browser);
+        self._browserOpened = true;
+
+        self._browser.onNavigated.add(url => {
+          self.onNavigated.dispatch();
+          self._browserOpened = false;
+          self._browser = null;
+        });
+        self._browser.onExit.addOnce(() => {
+          self.onClose.dispatch();
+          self._browserOpened = false;
+          self._browser = null;
+        });
+
+        return browser;
+      });
     }
 
-    this.onOpen.dispatch(url);
+    this.onOpen.dispatch(url, null);
     this._browserOpened = true;
+
+    return Promise.resolve(null);
   }
 
   close() {
+    var self = this;
+
     if (this._browserOpened) {
       if (this.isExternal) {
-        this._ManagementService.closeBrowser();
+        return this._ManagementService.closeBrowser(this._browser).then(() => {
+          self._browser = null;
+          self.onClose.dispatch();
+          self._browserOpened = false;
+        });
       }
 
       this.onClose.dispatch();
       this._browserOpened = false;
     }
+
+    return Promise.resolve();
   }
 
   getAppUrl(url) {
