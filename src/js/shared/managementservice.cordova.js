@@ -7,8 +7,6 @@ window.app.CordovaManagementService = class CordovaManagementService {
     if (!window.cordova) {
       this._Logger.warn('Cordova is not available.');
     }
-
-    this.isExternalBrowser = true;
   }
 
   rotateScreen() {
@@ -30,11 +28,11 @@ window.app.CordovaManagementService = class CordovaManagementService {
   }
 
   startCardReader() {
-
+    return Promise.resolve();
   }
 
   stopCardReader() {
-
+    return Promise.resolve();
   }
 
   reset() {
@@ -45,18 +43,18 @@ window.app.CordovaManagementService = class CordovaManagementService {
   }
 
   getSoundVolume() {
-
+    return Promise.resolve(100);
   }
 
   setSoundVolume(value) {
-
+    return Promise.resolve();
   }
 
   getDisplayBrightness() {
-
+    return Promise.resolve(100);
   }
 
   setDisplayBrightness(value) {
-
+    return Promise.resolve();
   }
 };

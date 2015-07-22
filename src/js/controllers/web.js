@@ -3,35 +3,11 @@ angular.module('SNAP.controllers')
   ['$scope', '$timeout', 'ActivityMonitor', 'WebBrowser',
   ($scope, $timeout, ActivityMonitor, WebBrowser) => {
 
-  var browserRef;
-
-  $scope.navigated = e => {
-    if (browserRef) {
-      browserRef.onNavigated.dispatch(e.target.src);
-    }
-  };
-
-  WebBrowser.onOpen.add((url, browser) => {
-    browserRef = browser;
-
+  WebBrowser.onOpen.add(() => {
     ActivityMonitor.enabled = false;
-
-    if (!WebBrowser.isExternal) {
-      $timeout(() => {
-        $scope.browserUrl = url;
-        $scope.visible = true;
-      });
-    }
   });
 
   WebBrowser.onClose.add(() => {
     ActivityMonitor.enabled = true;
-
-    if (!WebBrowser.isExternal) {
-      $timeout(() => {
-        $scope.browserUrl = WebBrowser.getAppUrl('/blank');
-        $scope.visible = false;
-      });
-    }
   });
 }]);

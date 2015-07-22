@@ -13,8 +13,6 @@ window.app.HomebrewManagementService = class HomebrewManagementService {
       'setDisplayBrightness': $resource('/management/brightness', {}, { query: { method: 'GET' } })
     };
     this._SNAPEnvironment = SNAPEnvironment;
-
-    this.isExternalBrowser = this._SNAPEnvironment.platform !== 'web';
   }
 
   rotateScreen() {
@@ -38,7 +36,7 @@ window.app.HomebrewManagementService = class HomebrewManagementService {
       if (browserRef) {
         browserRef.onExit.dispatch();
       }
-      
+
       return self._api.closeBrowser.query();
     });
   }

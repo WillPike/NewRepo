@@ -17,67 +17,45 @@ window.app.WebBrowser = class WebBrowser {
     this._browser = null;
   }
 
-  get isExternal() {
-    return this._ManagementService.isExternalBrowser;
-  }
-
-  navigated(url) {
-    this.onNavigated.dispatch(url);
-
-    let host = URI(url).hostname();
-
-    if (this._localHosts.indexOf(host) === -1) {
-      this._AnalyticsModel.logUrl(url);
-    }
-  }
-
   open(url) {
     var self = this;
 
-    if (this.isExternal) {
-      return this._ManagementService.openBrowser(url, this._browser).then(browser => {
-        self._browser = browser;
-        self.onOpen.dispatch(url, self._browser);
-        self._browserOpened = true;
+    return this._ManagementService.openBrowser(url, this._browser).then(browser => {
+      self._browser = browser;
+      self.onOpen.dispatch(url, self._browser);
+      self._browserOpened = true;
 
-        self._browser.onNavigated.add(url => {
-          self.onNavigated.dispatch();
-          self._browserOpened = false;
-          self._browser = null;
-        });
-        self._browser.onExit.addOnce(() => {
-          self.onClose.dispatch();
-          self._browserOpened = false;
-          self._browser = null;
-        });
+      self._browser.onNavigated.add(url => {
+        self.onNavigated.dispatch(url);
 
-        return browser;
+        let host = URI(url).hostname();
+
+        if (self._localHosts.indexOf(host) === -1) {
+          self._AnalyticsModel.logUrl(url);
+        }
       });
-    }
+      self._browser.onExit.addOnce(() => {
+        self.onClose.dispatch();
+        self._browserOpened = false;
+        self._browser = null;
+      });
 
-    this.onOpen.dispatch(url, null);
-    this._browserOpened = true;
-
-    return Promise.resolve(null);
+      return browser;
+    });
   }
 
   close() {
     var self = this;
 
-    if (this._browserOpened) {
-      if (this.isExternal) {
-        return this._ManagementService.closeBrowser(this._browser).then(() => {
-          self._browser = null;
-          self.onClose.dispatch();
-          self._browserOpened = false;
-        });
-      }
-
-      this.onClose.dispatch();
-      this._browserOpened = false;
+    if (!this._browserOpened) {
+      return Promise.resolve();
     }
 
-    return Promise.resolve();
+    return this._ManagementService.closeBrowser(this._browser).then(() => {
+      self._browser = null;
+      self.onClose.dispatch();
+      self._browserOpened = false;
+    });
   }
 
   getAppUrl(url) {
