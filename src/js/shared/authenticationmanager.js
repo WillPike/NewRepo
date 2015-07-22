@@ -1,27 +1,38 @@
 window.app.AuthenticationManager = class AuthenticationManager {
   /* global moment, signals */
 
-  constructor(BackendApi, SessionProvider, SNAPEnvironment, WebBrowser) {
+  constructor(BackendApi, SessionProvider, SNAPEnvironment, WebBrowser, Logger) {
     this._BackendApi = BackendApi;
     this._SessionProvider = SessionProvider;
     this._SNAPEnvironment = SNAPEnvironment;
     this._WebBrowser = WebBrowser;
+    this._Logger = Logger;
   }
 
   validate() {
+    this._Logger.debug('Validating access token...');
+
     var self = this;
     return new Promise((resolve, reject) => {
-      var token = self._SessionProvider.businessToken;
-
-      if (!self._validateToken(token)) {
-        return reject('No valid token found.');
-      }
-
-      resolve();
+      var token = self._SessionProvider.fetchApiToken().then(
+        token => {
+          if (!self._validateToken(token)) {
+            self._Logger.debug('Token is not valid.');
+            resolve();
+          }
+          else {
+            self._Logger.debug('Token is valid.');
+            resolve(token);
+          }
+        },
+        e => resolve('No token found.')
+      );      
     });
   }
 
   authorize() {
+    this._Logger.debug('Authorizing API access...');
+
     var self = this;
     return new Promise((resolve, reject) => {
       self._SessionProvider.clear().then(() => {
@@ -45,13 +56,21 @@ window.app.AuthenticationManager = class AuthenticationManager {
             }
 
             if (parameterMap.access_token !== undefined && parameterMap.access_token !== null) {
-              return resolve({
+              var token = {
                 access_token: parameterMap.access_token,
                 expires_in: parameterMap.expires_in
-              });
+              };
+
+              self._Logger.debug('New access token issued.', token);
+
+              self._SessionProvider.apiToken = token;
+
+              return resolve();
             }
 
-            reject('Problem authenticating: ' + url);
+            self._Logger.debug('Problem issuing new access token.', parameterMap);
+
+            resolve('Problem authenticating: ' + url);
           });
         }, reject);
       }, reject);

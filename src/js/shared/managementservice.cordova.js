@@ -15,7 +15,7 @@ window.app.CordovaManagementService = class CordovaManagementService {
 
   openBrowser(url, browserRef) {
     return new Promise(resolve => {
-      browserRef = window.open(url, '_blank', 'location=no');
+      browserRef = window.open(url, '_blank', 'location=yes,clearcache=yes,clearsessioncache=yes,zoom=no,hardwareback=no');
       resolve(new app.CordovaWebBrowserReference(browserRef));
     });
   }
@@ -39,6 +39,13 @@ window.app.CordovaManagementService = class CordovaManagementService {
     var self = this;
     return new Promise((resolve, reject) => {
 
+    });
+  }
+
+  loadApplication() {
+    var self = this;
+    return new Promise((resolve, reject) => {
+      window.open('application.html', '_self');
     });
   }
 

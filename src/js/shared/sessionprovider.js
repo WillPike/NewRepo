@@ -33,11 +33,15 @@ window.app.SessionProvider = class SessionProvider {
   fetchApiToken() {
     var self = this;
     return new Promise((resolve, reject) => {
-      if (self._apiToken) {
-        return resolve(self._apiToken);
-      }
+      self._ApiSessionStore.read().then(token => {
+        self.apiToken = token;
 
-      reject();
+        if (token) {
+          return resolve(self._apiToken);
+        }
+
+        reject();
+      }, reject);
     });
   }
 

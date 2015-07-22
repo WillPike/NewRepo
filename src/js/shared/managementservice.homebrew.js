@@ -58,6 +58,13 @@ window.app.HomebrewManagementService = class HomebrewManagementService {
     });
   }
 
+  loadApplication() {
+    var self = this;
+    return new Promise((resolve, reject) => {
+      window.location.assign('/snap/' + encodeURIComponent(self._SNAPEnvironment.platform));
+    });
+  }
+
   getSoundVolume() {
     return this._api.getSoundVolume.query().$promise;
   }

@@ -73,7 +73,7 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   }])
   .factory('StorageProvider', () =>  {
     return (id) => {
-      return new app.LocalStorageStore(id);
+      return new app.CordovaLocalStorageStore(id);
     };
   })
 
@@ -87,8 +87,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('AnalyticsManager', ['TelemetryService', 'AnalyticsModel', 'Logger', (TelemetryService, AnalyticsModel, Logger) => {
     return new app.AnalyticsManager(TelemetryService, AnalyticsModel, Logger);
   }])
-  .factory('AuthenticationManager', ['DtsApi', 'SessionProvider', 'SNAPEnvironment', 'WebBrowser', (DtsApi, SessionProvider, SNAPEnvironment, WebBrowser) => {
-    return new app.AuthenticationManager(DtsApi, SessionProvider, SNAPEnvironment, WebBrowser);
+  .factory('AuthenticationManager', ['DtsApi', 'SessionProvider', 'SNAPEnvironment', 'WebBrowser', 'Logger', (DtsApi, SessionProvider, SNAPEnvironment, WebBrowser, Logger) => {
+    return new app.AuthenticationManager(DtsApi, SessionProvider, SNAPEnvironment, WebBrowser, Logger);
   }])
   .factory('CustomerManager', ['SNAPConfig', 'SNAPEnvironment', 'DtsApi', 'CustomerModel', 'SessionProvider', (SNAPConfig, SNAPEnvironment, DtsApi, CustomerModel, SessionProvider) => {
     return new app.CustomerManager(SNAPConfig, SNAPEnvironment, DtsApi, CustomerModel, SessionProvider);

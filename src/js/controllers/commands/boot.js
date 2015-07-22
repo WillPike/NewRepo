@@ -1,17 +1,15 @@
 angular.module('SNAP.controllers')
 .factory('CommandBoot',
-  ['Logger', 'AuthenticationManager',
-  (Logger, AuthenticationManager) => {
+  ['AuthenticationManager',
+  (AuthenticationManager) => {
 
   return function() {
-    return new Promise((resolve, reject) => {
-      AuthenticationManager.authorize().then(token => {
-        console.log(token);
-        resolve();
-      }, e => {
-        console.error(e);
-        reject(e);
-      });
+    return AuthenticationManager.validate().then(token => {
+      if (!token) {
+        return AuthenticationManager.authorize();
+      }
+
+      return Promise.resolve();
     });
   };
 }]);
