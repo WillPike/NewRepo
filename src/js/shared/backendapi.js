@@ -5,11 +5,11 @@ window.app.BackendApi = class BackendApi {
     var self = this;
 
     function businessTokenProvider() {
-      return self._SessionProvider.getBusinessToken();
+      return self._SessionProvider.fetchApiToken();
     }
 
     function customerTokenProvider() {
-      return self._SessionProvider.getCustomerToken();
+      return self._SessionProvider.fetchCustomerToken();
     }
 
     for (var key in DtsApiClient) {

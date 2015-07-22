@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('SignInCtrl',
-  ['$scope', '$timeout', 'CustomerManager', 'DialogManager', 'NavigationManager', 'SessionManager', 'SocialManager', 'SNAPConfig', 'WebBrowser',
-  ($scope, $timeout, CustomerManager, DialogManager, NavigationManager, SessionManager, SocialManager, SNAPConfig, WebBrowser) => {
+  ['$scope', '$timeout', 'CommandCustomerLogin', 'CommandCustomerGuestLogin', 'CommandCustomerSocialLogin', 'CommandCustomerSignup', 'CustomerManager', 'DialogManager', 'NavigationManager', 'SessionManager', 'SNAPConfig', 'WebBrowser',
+  ($scope, $timeout, CommandCustomerLogin, CommandCustomerGuestLogin, CommandCustomerSocialLogin, CommandCustomerSignup, CustomerManager, DialogManager, NavigationManager, SessionManager, SNAPConfig, WebBrowser) => {
 
   var STEP_SPLASH = 1,
       STEP_LOGIN = 2,
@@ -37,7 +37,7 @@ angular.module('SNAP.controllers')
   $scope.guestLogin = () => {
     var job = DialogManager.startJob();
 
-    CustomerManager.guestLogin().then(() => {
+    CommandCustomerGuestLogin().then(() => {
       DialogManager.endJob(job);
       $timeout(() => $scope.step = STEP_GUESTS);
     }, () => {
@@ -49,7 +49,9 @@ angular.module('SNAP.controllers')
   $scope.doLogin = (credentials) => {
     var job = DialogManager.startJob();
 
-    CustomerManager.login(credentials || $scope.credentials).then(() => {
+    $scope.credentials.username = $scope.credentials.email;
+
+    CommandCustomerLogin($scope.credentials).then(() => {
       DialogManager.endJob(job);
       $timeout(() => $scope.step = STEP_GUESTS);
     }, () => {
@@ -64,17 +66,17 @@ angular.module('SNAP.controllers')
 
   $scope.loginFacebook = () => {
     socialBusy();
-    SocialManager.loginFacebook().then(socialLogin, socialError);
+    CommandCustomerSocialLogin.facebook().then(socialLogin, socialError);
   };
 
   $scope.loginTwitter = () => {
     socialBusy();
-    SocialManager.loginTwitter().then(socialLogin, socialError);
+    CommandCustomerSocialLogin.twitter().then(socialLogin, socialError);
   };
 
   $scope.loginGoogle = () => {
     socialBusy();
-    SocialManager.loginGooglePlus().then(socialLogin, socialError);
+    CommandCustomerSocialLogin.googleplus().then(socialLogin, socialError);
   };
 
   //-----------------------------------------------
@@ -87,18 +89,13 @@ angular.module('SNAP.controllers')
   };
 
   $scope.doRegistration = () => {
-    var job = DialogManager.startJob();
-
     $scope.registration.username = $scope.registration.email;
 
-    CustomerManager.signUp($scope.registration).then(() => {
-      $timeout(() => {
-        $scope.doLogin({
-          login: $scope.registration.username,
-          password: $scope.registration.password
-        });
-      });
+    var job = DialogManager.startJob();
+
+    CommandCustomerSignup($scope.registration).then(() => {
       DialogManager.endJob(job);
+      $timeout(() => $scope.step = STEP_GUESTS);
     }, () => {
       DialogManager.endJob(job);
       DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
@@ -165,14 +162,9 @@ angular.module('SNAP.controllers')
   //
   //------------------------------------------------------------------------
 
-  function socialLogin(auth) {
-    CustomerManager.loginSocial(auth).then(() => {
-      socialBusyEnd();
-      $timeout(() => $scope.step = STEP_GUESTS);
-    }, () => {
-      socialBusyEnd();
-      DialogManager.alert(ALERT_GENERIC_ERROR);
-    });
+  function socialLogin() {
+    socialBusyEnd();
+    $timeout(() => $scope.step = STEP_GUESTS);
   }
 
   function socialError() {

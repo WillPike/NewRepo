@@ -1,9 +1,10 @@
 window.app.CustomerManager = class CustomerManager {
   /* global moment */
 
-  constructor(Config, Environment, DtsApi, CustomerModel) {
+  constructor(Config, Environment, DtsApi, CustomerModel, SessionProvider) {
     this._api = DtsApi;
     this._CustomerModel = CustomerModel;
+    this._SessionProvider = SessionProvider;
     this._customerAppId = Environment.customer_application.client_id;
   }
 
@@ -32,6 +33,7 @@ window.app.CustomerManager = class CustomerManager {
   logout() {
     var self = this;
     return new Promise(resolve => {
+      self._SessionProvider.customerToken = null;
       self._CustomerModel.profile = null;
       resolve();
     });
@@ -45,58 +47,12 @@ window.app.CustomerManager = class CustomerManager {
     });
   }
 
-  login(credentials) {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      self._api.oauth2.getTokenWithCredentials(
-        self._customerAppId,
-        credentials.login,
-        credentials.password
-      ).then(result => {
-        if (!result) {
-          return reject();
-        }
-
-        if (result.error || !result.access_token) {
-          return reject(result.error);
-        }
-
-        var session = {
-          access_token: result.access_token
-        };
-
-        if (result.expires_in) {
-          session.expires = moment().add(result.expires_in, 'seconds').unix();
-        }
-
-        self._CustomerModel.session = session;
-
-        self._loadProfile().then(resolve, e => {
-          self._CustomerModel.session = null;
-          reject(e);
-        });
-      }, reject);
-    });
+  login() {
+    return this._loadProfile();
   }
 
-  loginSocial(token) {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      var session = {
-        access_token: token.access_token
-      };
-
-      if (token.expires_in) {
-        session.expires = moment().add(token.expires_in, 'seconds').unix();
-      }
-
-      self._CustomerModel.session = session;
-
-      self._loadProfile().then(resolve, e => {
-        self._CustomerModel.session = null;
-        reject(e);
-      });
-    });
+  loginSocial() {
+    return this._loadProfile();
   }
 
   signUp(registration) {

@@ -22,9 +22,6 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('ManagementService', ['Logger', (Logger) => {
     return new app.CordovaManagementService(Logger);
   }])
-  .factory('SessionService', ['$resource', ($resource) => {
-    return new app.WebSessionService($resource);
-  }])
   .factory('SocketClient', ['SessionProvider', 'Logger', (SessionProvider, Logger) => {
     return new app.SocketClient(SessionProvider, Logger);
   }])
@@ -71,8 +68,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('SurveyModel', ['SNAPConfig', 'StorageProvider', (SNAPConfig, StorageProvider) => {
     return new app.SurveyModel(SNAPConfig, StorageProvider);
   }])
-  .factory('SessionProvider', ['SessionService', 'StorageProvider', (SessionService, StorageProvider) => {
-    return new app.SessionProvider(SessionService, StorageProvider);
+  .factory('SessionProvider', ['StorageProvider', (StorageProvider) => {
+    return new app.SessionProvider(StorageProvider);
   }])
   .factory('StorageProvider', () =>  {
     return (id) => {
@@ -93,8 +90,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('AuthenticationManager', ['DtsApi', 'SessionProvider', 'SNAPEnvironment', 'WebBrowser', (DtsApi, SessionProvider, SNAPEnvironment, WebBrowser) => {
     return new app.AuthenticationManager(DtsApi, SessionProvider, SNAPEnvironment, WebBrowser);
   }])
-  .factory('CustomerManager', ['SNAPConfig', 'SNAPEnvironment', 'DtsApi', 'CustomerModel', (SNAPConfig, SNAPEnvironment, DtsApi, CustomerModel) => {
-    return new app.CustomerManager(SNAPConfig, SNAPEnvironment, DtsApi, CustomerModel);
+  .factory('CustomerManager', ['SNAPConfig', 'SNAPEnvironment', 'DtsApi', 'CustomerModel', 'SessionProvider', (SNAPConfig, SNAPEnvironment, DtsApi, CustomerModel, SessionProvider) => {
+    return new app.CustomerManager(SNAPConfig, SNAPEnvironment, DtsApi, CustomerModel, SessionProvider);
   }])
   .factory('ChatManager', ['AnalyticsModel', 'ChatModel', 'CustomerModel', 'LocationModel', 'SocketClient', (AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient) => {
     return new app.ChatManager(AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient);

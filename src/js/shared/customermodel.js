@@ -5,10 +5,8 @@ window.app.CustomerModel = class CustomerModel {
     var self = this;
 
     this._accountStore = storageProvider('snap_customer');
-    this._sessionStore = storageProvider('snap_customer_accesstoken');
 
     this._profile = null;
-    this._session = null;
 
     this._isGuest = false;
     this._isEnabled = Boolean(Config.accounts);
@@ -72,21 +70,6 @@ window.app.CustomerModel = class CustomerModel {
           self.session = null;
         }
       });
-    }
-  }
-
-  get session() {
-    return this._session;
-  }
-
-  set session(value) {
-    this._session = value || null;
-
-    if (!value) {
-      this._sessionStore.clear();
-    }
-    else {
-      this._sessionStore.write(this._session);
     }
   }
 };
