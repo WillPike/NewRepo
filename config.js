@@ -24,6 +24,6 @@ angular.module('SNAP.configs', [])
    api: {"host":"api2.managesnap.com","secure":"true"},
    content: {"host":"content.managesnap.com","secure":"true"},
    media: {"host":"content.managesnap.com","secure":"true"},
-   static: {},
+   static: {"path":"/"},
    socket: {"host":"api2.managesnap.com","secure":"true","port":8080,"path":"/socket/"}
  });

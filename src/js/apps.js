@@ -8,7 +8,7 @@
       `//${SNAP_HOSTS_CONFIG.static.host}${SNAP_HOSTS_CONFIG.static.path}` :
       `${SNAP_HOSTS_CONFIG.static.path}`;
 
-    return `${host}/assets/${SNAP_CONFIG.theme.layout}/partials/${name}.html`;
+    return `${host}assets/${SNAP_CONFIG.theme.layout}/partials/${name}.html`;
   }
 
   angular.module('SNAPApplication', [
