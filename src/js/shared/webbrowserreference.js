@@ -3,6 +3,7 @@ window.app.WebBrowserReference = class WebBrowserReference {
     this.browser = browserRef;
     this.onNavigated = new signals.Signal();
     this.onExit = new signals.Signal();
+    this.onCallback = new signals.Signal();
   }
 
   exit() {

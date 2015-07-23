@@ -17,10 +17,10 @@ window.app.WebBrowser = class WebBrowser {
     this._browser = null;
   }
 
-  open(url) {
+  open(url, options) {
     var self = this;
 
-    return this._ManagementService.openBrowser(url, this._browser).then(browser => {
+    return this._ManagementService.openBrowser(url, this._browser, options).then(browser => {
       self._browser = browser;
       self.onOpen.dispatch(url, self._browser);
       self._browserOpened = true;
@@ -62,5 +62,11 @@ window.app.WebBrowser = class WebBrowser {
     var host = this.$$window.location.protocol + '//' + this.$$window.location.hostname +
       (this.$$window.location.port ? ':' + this.$$window.location.port: '');
     return host + url;
+  }
+
+  callback(data) {
+    if (this._browser) {
+      this._browser.onCallback.dispatch(data);
+    }
   }
 };

@@ -14,19 +14,17 @@ window.app.AuthenticationManager = class AuthenticationManager {
 
     var self = this;
     return new Promise((resolve, reject) => {
-      var token = self._SessionProvider.fetchApiToken().then(
-        token => {
-          if (!self._validateToken(token)) {
-            self._Logger.debug('Token is not valid.');
-            resolve();
-          }
-          else {
-            self._Logger.debug('Token is valid.');
-            resolve(token);
-          }
-        },
-        e => resolve('No token found.')
-      );      
+      self._SessionProvider.fetchApiToken().then(token => {
+        if (!self._validateToken(token)) {
+          self._Logger.debug('Token is not valid.');
+          resolve(null);
+        }
+        else {
+          self._Logger.debug('Token is valid.');
+          resolve(token);
+        }
+      },
+      e => resolve(null));
     });
   }
 
@@ -39,8 +37,8 @@ window.app.AuthenticationManager = class AuthenticationManager {
         var application = self._SNAPEnvironment.main_application,
             authUrl = self._BackendApi.oauth2.getTokenAuthorizeUrl(application.client_id, application.callback_url, application.scope);
 
-        self._WebBrowser.open(authUrl).then(browser => {
-          browser.onNavigated.add(url => {
+        self._WebBrowser.open(authUrl, { system: true }).then(browser => {
+          function handleCallback(url) {
             if (url.indexOf(application.callback_url) !== 0) {
               return;
             }
@@ -71,7 +69,10 @@ window.app.AuthenticationManager = class AuthenticationManager {
             self._Logger.debug('Problem issuing new access token.', parameterMap);
 
             resolve('Problem authenticating: ' + url);
-          });
+          }
+
+          browser.onCallback.add(url => handleCallback(url));          
+          browser.onNavigated.add(url => handleCallback(url));
         }, reject);
       }, reject);
     });
