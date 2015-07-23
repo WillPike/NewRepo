@@ -63,18 +63,15 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
       throw new Error('Missing hosts configuration.');
     }
 
+    if (!this.config) {
+      throw new Error('Missing application configuration.');
+    }
+
     var path = this.hosts.static.host ?
       `//${this.hosts.static.host}${this.hosts.static.path}` :
       `${this.hosts.static.path}`;
-    var theme = this.config ?
-      this.config.theme.layout :
-      'generic';
 
-    if (theme === 'generic') {
-      console.log('Missing application configuration, falling back to generic layout theme.');
-    }
-
-    return `${path}assets/${theme}/partials/${name}.html`;
+    return `${path}assets/${this.config.theme.layout}/partials/${name}.html`;
   }
 };
 

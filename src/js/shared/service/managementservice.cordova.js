@@ -52,7 +52,7 @@ window.app.CordovaManagementService = class CordovaManagementService {
   loadApplication() {
     var self = this;
     return new Promise((resolve, reject) => {
-      window.open(`application.html`, '_self');
+      window.open(`snap.html`, '_self');
     });
   }
 
