@@ -119,6 +119,12 @@ window.app.ShellManager = class ShellManager {
     });
   }
 
+  getAppUrl(url) {
+    var host = window.location.protocol + '//' + window.location.hostname +
+      (window.location.port ? ':' + window.location.port: '');
+    return host + url;
+  }
+
   getAssetUrl(file) {
     var path = this._getPath(this._Hosts.static);
 

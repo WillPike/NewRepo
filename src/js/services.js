@@ -28,8 +28,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('TelemetryService', ['$resource', ($resource) => {
     return new app.TelemetryService($resource);
   }])
-  .factory('WebBrowser', ['$window', 'AnalyticsModel', 'ManagementService', 'SNAPEnvironment', 'SNAPHosts', ($window, AnalyticsModel, ManagementService, SNAPEnvironment, SNAPHosts) => {
-    window.SnapWebBrowser = new app.WebBrowser($window, AnalyticsModel, ManagementService, SNAPEnvironment, SNAPHosts);
+  .factory('WebBrowser', ['AnalyticsModel', 'ManagementService', 'SNAPEnvironment', 'SNAPHosts', ($window, AnalyticsModel, ManagementService, SNAPEnvironment, SNAPHosts) => {
+    window.SnapWebBrowser = new app.WebBrowser(AnalyticsModel, ManagementService, SNAPEnvironment, SNAPHosts);
     return window.SnapWebBrowser;
   }])
 

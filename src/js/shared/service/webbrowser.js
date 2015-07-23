@@ -1,8 +1,7 @@
 window.app.WebBrowser = class WebBrowser {
   /* global signals, URI */
 
-  constructor($window, AnalyticsModel, ManagementService, SNAPEnvironment, SNAPHosts) {
-    this.$$window = $window;
+  constructor(AnalyticsModel, ManagementService, SNAPEnvironment, SNAPHosts) {
     this._AnalyticsModel = AnalyticsModel;
     this._ManagementService = ManagementService;
     this._SNAPEnvironment = SNAPEnvironment;
@@ -58,15 +57,15 @@ window.app.WebBrowser = class WebBrowser {
     });
   }
 
-  getAppUrl(url) {
-    var host = this.$$window.location.protocol + '//' + this.$$window.location.hostname +
-      (this.$$window.location.port ? ':' + this.$$window.location.port: '');
-    return host + url;
-  }
+  //-----------------------------------------------
+  //    External methods
+  //-----------------------------------------------
 
   callback(data) {
     if (this._browser) {
       this._browser.onCallback.dispatch(data);
     }
+
+    this.close();
   }
 };
