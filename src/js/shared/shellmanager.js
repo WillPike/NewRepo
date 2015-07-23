@@ -120,11 +120,9 @@ window.app.ShellManager = class ShellManager {
   }
 
   getAssetUrl(file) {
-    var host = this._Hosts.static.host ?
-      `//${this._Hosts.static.host}${this._Hosts.static.path}` :
-      '';
+    var path = this._getPath(this._Hosts.static);
 
-    return this.$$sce.trustAsResourceUrl(`${host}/assets/${this._Config.theme.layout}/${file}`);
+    return this.$$sce.trustAsResourceUrl(`${path}assets/${this._Config.theme.layout}/${file}`);
   }
 
   getPartialUrl(name) {
@@ -136,11 +134,12 @@ window.app.ShellManager = class ShellManager {
       return null;
     }
 
+    var path = this._getPath(this._Hosts.media);
+
     if (typeof media === 'string' || media instanceof String) {
       if (media.substring(0, 4) !== 'http' && media.substring(0, 2) !== '//') {
         extension = extension || 'jpg';
-        return this.$$sce.trustAsResourceUrl(`${window.location.protocol}//${this._Hosts.media.host}` +
-          `/media/${media}_${width}_${height}.${extension}`);
+        return this.$$sce.trustAsResourceUrl(`${path}media/${media}_${width}_${height}.${extension}`);
       }
 
       return media;
@@ -151,7 +150,7 @@ window.app.ShellManager = class ShellManager {
     }
 
     var type = this.getMediaType(media);
-    var url = `${window.location.protocol}//${this._Hosts.media.host}/media/${media.token}`;
+    var url = `${path}media/${media.token}`;
 
     if (!type) {
       return null;
@@ -226,5 +225,36 @@ window.app.ShellManager = class ShellManager {
   get predicateOdd() {
     var index = 0;
     return () => index++ % 2 === 0;
+  }
+
+  _getPath(res) {
+    var path = '';
+
+    if (res.protocol) {
+      path += `${res.profocol}://`;
+    }
+    else if (res.secure) {
+      path += `https://`;
+    }
+    else if (res.secure === false) {
+      path += `http://`;
+    }
+
+    if (res.host) {
+      if (!res.protocol) {
+        path += '//';
+      }
+      path += res.host;
+    }
+
+    if (res.path) {
+      path += res.path;
+    }
+
+    if (path.length > 0 && !path.endsWith('/')) {
+      path += '/';
+    }
+
+    return path;
   }
 };

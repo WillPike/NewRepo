@@ -1,5 +1,5 @@
 window.app.SocketClient = class SocketClient {
-  constructor(SessionProvider, Logger) {
+  constructor(SessionProvider, Hosts, Logger) {
     var self = this;
 
     this._SessionProvider = SessionProvider;
@@ -11,8 +11,10 @@ window.app.SocketClient = class SocketClient {
     this._isConnected = false;
 
     this._socket = socketCluster.connect({
-      path: '/sockets/',
-      port: 8080
+      hostname: Hosts.socket.host,
+      path: Hosts.socket.path,
+      port: Hosts.socket.port,
+      secure: Hosts.socket.secure
     });
     this._socket.on('connect', status => {
       self._Logger.debug(`Socket connected.`);

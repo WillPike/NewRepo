@@ -22,8 +22,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('ManagementService', ['Logger', (Logger) => {
     return new app.CordovaManagementService(Logger);
   }])
-  .factory('SocketClient', ['SessionProvider', 'Logger', (SessionProvider, Logger) => {
-    return new app.SocketClient(SessionProvider, Logger);
+  .factory('SocketClient', ['SessionProvider', 'SNAPHosts', 'Logger', (SessionProvider, SNAPHosts, Logger) => {
+    return new app.SocketClient(SessionProvider, SNAPHosts, Logger);
   }])
   .factory('TelemetryService', ['$resource', ($resource) => {
     return new app.TelemetryService($resource);
