@@ -19,7 +19,7 @@ window.app.CordovaManagementService = class CordovaManagementService {
     return new Promise(resolve => {
       var target = options.system ? '_system' : '_blank',
           settings = {
-            
+
           };
 
       browserRef = window.open(url, target, 'location=yes,clearcache=yes,clearsessioncache=yes,zoom=no,hardwareback=no');
@@ -52,7 +52,7 @@ window.app.CordovaManagementService = class CordovaManagementService {
   loadApplication() {
     var self = this;
     return new Promise((resolve, reject) => {
-      window.open('application.html', '_self');
+      window.open(`application.html`, '_self');
     });
   }
 
