@@ -5,8 +5,8 @@ angular.module('SNAP.controllers')
 
 angular.module('SNAP.controllers')
 .controller('ItemCtrl',
-  ['$scope', '$timeout', 'AnalyticsModel', 'CustomerModel', 'DataManager', 'DialogManager', 'NavigationManager', 'OrderManager', 'CartModel', 'LocationModel', 'ShellManager', 'WebBrowser', 'SNAPEnvironment', 'ChatManager',
-  ($scope, $timeout, AnalyticsModel, CustomerModel, DataManager, DialogManager, NavigationManager, OrderManager, CartModel, LocationModel, ShellManager, WebBrowser, SNAPEnvironment, ChatManager) => {
+  ['$scope', '$timeout', 'AnalyticsModel', 'CustomerModel', 'DataManager', 'DialogManager', 'NavigationManager', 'OrderManager', 'CartModel', 'LocationModel', 'ShellManager', 'SNAPEnvironment', 'ChatManager',
+  ($scope, $timeout, AnalyticsModel, CustomerModel, DataManager, DialogManager, NavigationManager, OrderManager, CartModel, LocationModel, ShellManager, SNAPEnvironment, ChatManager) => {
 
   var ItemImage = React.createClass({
     render: function() {
@@ -52,7 +52,7 @@ angular.module('SNAP.controllers')
       var url = '/flash#url=' + encodeURIComponent(getMediaUrl(response.flash.media, 0, 0, 'swf')) +
         '&width=' + encodeURIComponent(response.flash.width) +
         '&height=' + encodeURIComponent(response.flash.height);
-      $scope.flashUrl = WebBrowser.getAppUrl(url);
+      $scope.flashUrl = ShellManager.getAppUrl(url);
       WebBrowser.open($scope.flashUrl);
     }
     else if (type === 1) {

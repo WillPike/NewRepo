@@ -4,8 +4,8 @@ angular.module('SNAP.controllers')
 
 angular.module('SNAP.controllers')
 .controller('HomeCtrl',
-  ['$scope', '$timeout', 'ChatManager', 'DataProvider', 'ShellManager', 'CustomerManager', 'OrderManager', 'DialogManager', 'NavigationManager', 'LocationModel', 'SurveyManager', 'SNAPConfig', 'SNAPEnvironment', 'CommandReset',
-  ($scope, $timeout, ChatManager, DataProvider, ShellManager, CustomerManager, OrderManager, DialogManager, NavigationManager, LocationModel, SurveyManager, SNAPConfig, SNAPEnvironment, CommandReset) => {
+  ['$scope', '$timeout', 'ChatManager', 'DataProvider', 'ShellManager', 'CustomerManager', 'OrderManager', 'DialogManager', 'NavigationManager', 'LocationModel', 'SurveyManager', 'SNAPLocation', 'SNAPEnvironment', 'CommandReset',
+  ($scope, $timeout, ChatManager, DataProvider, ShellManager, CustomerManager, OrderManager, DialogManager, NavigationManager, LocationModel, SurveyManager, SNAPLocation, SNAPEnvironment, CommandReset) => {
 
   var HomeMenu = React.createClass({
     render: function() {
@@ -130,7 +130,7 @@ angular.module('SNAP.controllers')
   refreshCloseoutRequest();
   refreshSurvey();
 
-  $scope.chatAvailable = Boolean(SNAPConfig.chat);
+  $scope.chatAvailable = Boolean(SNAPLocation.chat);
 
   $scope.requestAssistance = () => {
     if (!$scope.requestAssistanceAvailable){

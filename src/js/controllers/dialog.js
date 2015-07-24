@@ -117,6 +117,9 @@ angular.module('SNAP.controllers')
           case ALERT_ERROR_NO_SEAT:
             message = "Device is not assigned to any table.";
             break;
+          case ALERT_ERROR_STARTUP:
+            message = "Unable to start the application.";
+            break;
       }
     }
 

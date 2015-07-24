@@ -44,7 +44,7 @@ window.app.ChatManager = class ChatManager {
       self._sendStatusRequest();
     });
 
-    this._SocketClient.subscribe(this.ROOMS.LOCATION + this._LocationModel.location, message => {
+    this._SocketClient.subscribe(this.ROOMS.LOCATION + this._LocationModel.location.token, message => {
       switch (message.operation) {
         case self.OPERATIONS.CHAT_MESSAGE:
           self._onMessage(message);
@@ -250,7 +250,7 @@ window.app.ChatManager = class ChatManager {
 
   startGift(device_token) {
     let device = this._LocationModel.getDevice(device_token);
-  
+
     this.model.giftDevice = device_token;
     this.model.giftSeat = device.seat;
   }
@@ -407,7 +407,7 @@ window.app.ChatManager = class ChatManager {
   _getTopic(message) {
       return message.to_device ?
         this.ROOMS.DEVICE + message.to_device :
-        this.ROOMS.LOCATION + this._LocationModel.location;
+        this.ROOMS.LOCATION + this._LocationModel.location.token;
   }
 
   _addMessageID(message) {

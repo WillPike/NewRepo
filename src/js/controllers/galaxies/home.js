@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('GalaxiesHomeCtrl',
-  ['$scope', '$timeout', 'DataManager', 'NavigationManager', 'ShellManager', 'SNAPConfig',
-  ($scope, $timeout, DataManager, NavigationManager, ShellManager, SNAPConfig) => {
+  ['$scope', '$timeout', 'DataManager', 'NavigationManager', 'ShellManager', 'SNAPLocation',
+  ($scope, $timeout, DataManager, NavigationManager, ShellManager, SNAPLocation) => {
 
   var HomeMenu = React.createClass({
     render: function() {
@@ -14,7 +14,7 @@ angular.module('SNAP.controllers')
           key: 'intro'
         }, React.DOM.div({}, [
             React.DOM.h1({ key: 'intro-title' },
-              home.intro.title || `Welcome to ${SNAPConfig.location_name}`
+              home.intro.title || `Welcome to ${SNAPLocation.location_name}`
             ),
             React.DOM.p({ key: 'intro-text' },
               home.intro.text

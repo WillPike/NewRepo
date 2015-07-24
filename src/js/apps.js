@@ -9,15 +9,15 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
   constructor() {
     this.hosts = {
       api: { 'host': 'api2.managesnap.com', 'secure': true },
-      content: { 'host': 'content.managesnap.com' },
-      media: { 'host': 'content.managesnap.com' },
+      content: { 'host': 'content.managesnap.com', 'secure': false },
+      media: { 'host': 'content.managesnap.com', 'secure': false },
       static: { 'path': '/' },
       socket: { 'host': 'web-dev.managesnap.com', 'secure': true, 'port':8080, 'path': '/socket/' }
     };
 
     this.environment = {
-      main_application: { 'client_id': 'd67610b1c91044d8abd55cbda6c619f0', 'callback_url': 'http://localhost/callback/snap', 'scope': '' },
-      customer_application: { 'client_id': '91381a86b3b444fd876df80b22d7fa6e', 'callback_url': 'http://localhost/callback/customer' },
+      main_application: { 'client_id': 'd67610b1c91044d8abd55cbda6c619f0', 'callback_url': 'snap://callback/api', 'scope': '' },
+      customer_application: { 'client_id': '91381a86b3b444fd876df80b22d7fa6e' },
       facebook_application: { 'client_id': '349729518545313', 'redirect_url': 'https://web.managesnap.com/callback/facebook' },
       googleplus_application: { 'client_id': '678998250941-1dmebp4ksni9tsjth45tsht8l7cl1mrn.apps.googleusercontent.com', 'redirect_url': 'https://web.managesnap.com/callback/googleplus' },
       twitter_application: { 'consumer_key': 'yQ8XJ15PmaPOi4L5DJPikGCI0', 'redirect_url': 'https://web.managesnap.com/callback/twitter' }
@@ -31,13 +31,13 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
   configure() {
     var self = this;
     return new Promise((resolve, reject) => {
-      var store = new app.CordovaLocalStorageStore('snap_config');
+      var store = new app.CordovaLocalStorageStore('snap_location');
 
       store.read().then(config => {
-        self._config = config || null;
+        self.location = config || null;
 
         angular.module('SNAP.configs', [])
-          .constant('SNAPConfig', self.config)
+          .constant('SNAPLocation', self.location)
           .constant('SNAPEnvironment', self.environment)
           .constant('SNAPHosts', self.hosts);
 
@@ -63,15 +63,15 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
       throw new Error('Missing hosts configuration.');
     }
 
-    if (!this.config) {
-      throw new Error('Missing application configuration.');
+    if (!this.location) {
+      throw new Error('Missing location configuration.');
     }
 
     var path = this.hosts.static.host ?
       `//${this.hosts.static.host}${this.hosts.static.path}` :
       `${this.hosts.static.path}`;
 
-    return `${path}assets/${this.config.theme.layout}/partials/${name}.html`;
+    return `${path}assets/${this.location.theme.layout}/partials/${name}.html`;
   }
 };
 

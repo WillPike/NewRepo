@@ -3,11 +3,16 @@ angular.module('SNAP.controllers')
   ['$scope', 'CommandBoot', 'DialogManager', 'ManagementService',
   ($scope, CommandBoot, DialogManager, ManagementService) => {
 
-  var job = DialogManager.startJob();
+  function workflow() {
+    var job = DialogManager.startJob();
 
-  CommandBoot().then(() => {
-    ManagementService.loadApplication();
-  }, e => {
-    DialogManager.endJob(job);
-  });
+    CommandBoot().then(() => {
+      ManagementService.loadApplication();
+    }, e => {
+      DialogManager.endJob(job);
+      DialogManager.alert(ALERT_ERROR_STARTUP).then(() => workflow());
+    });
+  }
+
+  workflow();
 }]);

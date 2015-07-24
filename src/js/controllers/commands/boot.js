@@ -1,15 +1,20 @@
 angular.module('SNAP.controllers')
 .factory('CommandBoot',
-  ['AuthenticationManager',
-  (AuthenticationManager) => {
+  ['AuthenticationManager', 'LocationManager',
+  (AuthenticationManager, LocationManager) => {
+
+  function loadLocation() {
+    return LocationManager.loadConfig()
+      .then(() => LocationManager.loadSeats());
+  }
 
   return function() {
-    return AuthenticationManager.validate().then(token => {
-      if (!token) {
-        return AuthenticationManager.authorize();
+    return AuthenticationManager.validate().then(authorized => {
+      if (!authorized) {
+        return AuthenticationManager.authorize().then(() => loadLocation());
       }
 
-      return Promise.resolve();
+      return loadLocation();
     });
   };
 }]);

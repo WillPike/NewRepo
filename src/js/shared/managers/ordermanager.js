@@ -1,12 +1,10 @@
 window.app.OrderManager = class OrderManager {
-  constructor(ChatModel, CustomerModel, DataProvider, DtsApi, LocationModel, OrderModel) {
+  constructor(ChatModel, CustomerModel, DtsApi, OrderModel) {
     var self = this;
 
     this._DtsApi = DtsApi;
     this._ChatModel = ChatModel;
     this._CustomerModel = CustomerModel;
-    this._DataProvider = DataProvider;
-    this._LocationModel = LocationModel;
     this._OrderModel = OrderModel;
 
     this._ChatModel.giftSeatChanged.add(giftSeat => {
@@ -18,13 +16,6 @@ window.app.OrderManager = class OrderManager {
       if (!giftSeat) {
         self.model.orderCart = self.model.orderCartStash;
       }
-    });
-
-    this._DataProvider.seats().then(seats => {
-      self._LocationModel.seats = seats;
-      self._DtsApi.location.getCurrentSeat().then(seat => {
-        self._LocationModel.seat = seat;
-      });
     });
   }
 

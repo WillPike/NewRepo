@@ -1,7 +1,7 @@
 window.app.ChatModel = class ChatModel {
   /* global signals */
 
-  constructor(SNAPConfig, SNAPEnvironment, storageProvider) {
+  constructor(SNAPLocation, SNAPEnvironment, storageProvider) {
     var self = this;
 
     this._preferencesStore = storageProvider('snap_chat_preferences');
@@ -30,7 +30,7 @@ window.app.ChatModel = class ChatModel {
     this.giftReady = new signals.Signal();
     this.giftAccepted = new signals.Signal();
 
-    this._isEnabled = SNAPConfig.chat;
+    this._isEnabled = SNAPLocation.chat;
     this._pendingDevices = [];
     this._activeDevices = [];
     this._lastReads = {};

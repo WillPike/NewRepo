@@ -28,7 +28,7 @@ angular.module('SNAP.controllers')
                 '&width=' + encodeURIComponent(item.flash.width) +
                 '&height=' + encodeURIComponent(item.flash.height);
 
-      WebBrowser.open(WebBrowser.getAppUrl(url));
+      WebBrowser.open(ShellManager.getAppUrl(url));
     }
 
     $timeout(() => {

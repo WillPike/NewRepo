@@ -16,15 +16,15 @@ window.app.AuthenticationManager = class AuthenticationManager {
     return new Promise((resolve, reject) => {
       self._SessionProvider.fetchApiToken().then(token => {
         if (!self._validateToken(token)) {
-          self._Logger.debug('Token is not valid.');
-          resolve(null);
+          self._Logger.debug('Authorization is not valid.');
+          resolve(false);
         }
         else {
-          self._Logger.debug('Token is valid.');
-          resolve(token);
+          self._Logger.debug('Authorization is valid.');
+          resolve(true);
         }
       },
-      e => resolve(null));
+      e => resolve(false));
     });
   }
 
@@ -67,11 +67,10 @@ window.app.AuthenticationManager = class AuthenticationManager {
             }
 
             self._Logger.debug('Problem issuing new access token.', parameterMap);
-
-            resolve('Problem authenticating: ' + url);
+            reject('Problem authenticating: ' + url);
           }
 
-          browser.onCallback.add(url => handleCallback(url));          
+          browser.onCallback.add(url => handleCallback(url));
           browser.onNavigated.add(url => handleCallback(url));
         }, reject);
       }, reject);

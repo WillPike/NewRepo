@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('SignInCtrl',
-  ['$scope', '$timeout', 'CommandCustomerLogin', 'CommandCustomerGuestLogin', 'CommandCustomerSocialLogin', 'CommandCustomerSignup', 'CustomerManager', 'DialogManager', 'NavigationManager', 'SessionManager', 'SNAPConfig', 'WebBrowser',
-  ($scope, $timeout, CommandCustomerLogin, CommandCustomerGuestLogin, CommandCustomerSocialLogin, CommandCustomerSignup, CustomerManager, DialogManager, NavigationManager, SessionManager, SNAPConfig, WebBrowser) => {
+  ['$scope', '$timeout', 'CommandCustomerLogin', 'CommandCustomerGuestLogin', 'CommandCustomerSocialLogin', 'CommandCustomerSignup', 'CustomerManager', 'DialogManager', 'NavigationManager', 'SessionManager', 'SNAPLocation', 'WebBrowser',
+  ($scope, $timeout, CommandCustomerLogin, CommandCustomerGuestLogin, CommandCustomerSocialLogin, CommandCustomerSignup, CustomerManager, DialogManager, NavigationManager, SessionManager, SNAPLocation, WebBrowser) => {
 
   var STEP_SPLASH = 1,
       STEP_LOGIN = 2,
@@ -17,7 +17,7 @@ angular.module('SNAP.controllers')
   $scope.STEP_EVENT = STEP_EVENT;
   $scope.STEP_RESET = STEP_RESET;
 
-  $scope.locationName = SNAPConfig.location_name;
+  $scope.locationName = SNAPLocation.location_name;
 
   //------------------------------------------------------------------------
   //
