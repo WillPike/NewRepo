@@ -1,10 +1,10 @@
 window.app.CustomerManager = class CustomerManager {
   /* global moment */
 
-  constructor(Config, Environment, DtsApi, CustomerModel, SessionProvider) {
+  constructor(Config, Environment, DtsApi, CustomerModel, SessionModel) {
     this._api = DtsApi;
     this._CustomerModel = CustomerModel;
-    this._SessionProvider = SessionProvider;
+    this._SessionModel = SessionModel;
     this._customerAppId = Environment.customer_application.client_id;
   }
 
@@ -33,7 +33,7 @@ window.app.CustomerManager = class CustomerManager {
   logout() {
     var self = this;
     return new Promise(resolve => {
-      self._SessionProvider.customerToken = null;
+      self._SessionModel.customerToken = null;
       self._CustomerModel.profile = null;
       resolve();
     });

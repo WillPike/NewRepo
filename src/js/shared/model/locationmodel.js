@@ -1,12 +1,20 @@
 window.app.LocationModel = class LocationModel extends app.AbstractModel {
-  constructor(SNAPEnvironment, SNAPLocation, storageProvider) {
+  constructor(DtsApi, SNAPEnvironment, SNAPLocation, storageProvider) {
     super(storageProvider);
 
-    this._defineProperty('device', 'snap_device');
+    var self = this;
+
+    this._defineProperty('device', 'snap_device', null, () => DtsApi.hardware.getCurrentDevice());
     this._defineProperty('devices', undefined, []);
-    this._defineProperty('location', 'snap_location', SNAPLocation);
-    this._defineProperty('seat', 'snap_seat');
-    this._defineProperty('seats', 'snap_seats', []);
+    this._defineProperty('seat', 'snap_seat', null, () => DtsApi.location.getCurrentSeat());
+    this._defineProperty('seats', 'snap_seats', [], () => DtsApi.location.getSeats());
+    this._defineProperty('location', 'snap_location', SNAPLocation, () => {
+      if (!self.device) {
+        return Promise.reject('Device data is missing.');
+      }
+
+      return DtsApi.snap.getConfig(self.device.location_token);
+    });
 
     this.initialize();
   }

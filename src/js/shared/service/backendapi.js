@@ -1,15 +1,23 @@
 window.app.BackendApi = class BackendApi {
-  constructor(Hosts, SessionProvider) {
-    this._SessionProvider = SessionProvider;
+  constructor(Hosts, SessionModel) {
+    this._SessionModel = SessionModel;
 
     var self = this;
 
     function businessTokenProvider() {
-      return self._SessionProvider.fetchApiToken().then(token => token.access_token);
+      if (!self._SessionModel.apiToken) {
+        return Promise.reject();
+      }
+
+      return Promise.resolve(self._SessionModel.apiToken.access_token);
     }
 
     function customerTokenProvider() {
-      return self._SessionProvider.fetchCustomerToken().then(token => token.access_token);
+      if (!self._SessionModel.customerToken) {
+        return Promise.reject();
+      }
+
+      return Promise.resolve(self._SessionModel.customerToken.access_token);
     }
 
     for (var key in DtsApiClient) {

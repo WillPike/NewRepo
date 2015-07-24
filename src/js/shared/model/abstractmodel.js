@@ -3,36 +3,37 @@ window.app.AbstractModel = class AbstractModel {
 
   constructor(storageProvider) {
     this._storageProvider = storageProvider;
-    this._storedProperties = {};
+    this._properties = {};
   }
 
-  _defineProperty(name, storeName, defaultValue) {
+  _defineProperty(name, storeName, defaultValue, providerFunction) {
     var self = this,
-        _name = '_' + name,
-        _signal = name + 'Changed',
-        store;
+        property = this._properties[name] = { name: '_' + name };
 
     if (storeName) {
-      store = this._storageProvider(storeName);
-      this._storedProperties[name] = store;
+      property.store = this._storageProvider(storeName);
     }
 
-    this[_signal] = new signals.Signal();
+    if (providerFunction) {
+      property.provider = providerFunction;
+    }
+
+    this[name + 'Changed'] = property.signal = new signals.Signal();
 
     Object.defineProperty(this, name, {
       get: function() {
-        return self[_name] || defaultValue;
+        return self[property.name] || defaultValue;
       },
       set: function(value) {
-        if (value === self[_name]) {
+        if (value === self[property.name]) {
           return;
         }
 
-        self[_name] = value;
+        self[property.name] = value;
 
-        if (store) {
-          store.write(value).then(() => {
-            self[_signal].dispatch(value);
+        if (property.store) {
+          property.store.write(value).then(() => {
+            property.signal.dispatch(value);
           });
         }
       }
@@ -41,27 +42,71 @@ window.app.AbstractModel = class AbstractModel {
 
   _initProperty(name) {
     var self = this,
-        _name = '_' + name,
-        _signal = name + 'Changed';
-    return this._storedProperties[name].read().then(value => {
-      self[_name] = value;
-      self[_signal].dispatch(value);
+        property = this._properties[name];
+
+    if (!property) {
+      throw new Error(`Property '${name}' not found.`);
+    }
+
+    if (property.initialized) {
+      throw new Error(`Property '${name}' is already initialized.`);
+    }
+
+    if (!property.store) {
+      property.initialized = true;
+      return Promise.resolve();
+    }
+
+    return property.store.read().then(value => {
+      property.initialized = true;
+      self[property.name] = value;
+      property.signal.dispatch(value);
     });
   }
 
   initialize() {
-    return Object.keys(this._storedProperties).map(key => this._initProperty(key));
+    return Promise.all(Object.keys(this._properties)
+      .filter(key => !this._properties[key].initialized)
+      .map(key => this._initProperty(key)));
+  }
+
+  fetch(propertyName) {
+    var property = this._properties[propertyName];
+
+    if (!property) {
+      throw new Error(`Property '${propertyName}' not found.`);
+    }
+
+    if (!property.provider) {
+      throw new Error(`Property '${propertyName}' has no provider.`);
+    }
+
+    var self = this;
+    return property.provider().then(value => {
+      self[propertyName] = value;
+      return value;
+    });
+  }
+
+  fetchAll() {
+    return Promise.all(Object.keys(this._properties)
+      .filter(key => this._properties[key].provider)
+      .map(key => this.fetch(key)));
+  }
+
+  clear() {
+    return Promise.all(Object.keys(this._properties)
+      .filter(key => this._properties[key].store)
+      .map(key => this._properties[key].store.clear()));
   }
 
   _propertyChanged(name) {
-    var _name = '_' + name,
-        _signal = name + 'Changed',
-        store = this._storedProperties[name];
+    var property = this._properties[name];
 
-    this[_signal].dispatch(this[_name]);
+    property.signal.dispatch(this[property.name]);
 
-    if (store) {
-      store.write(this[_name]);
+    if (property.store) {
+      property.store.write(this[property.name]);
     }
   }
 };

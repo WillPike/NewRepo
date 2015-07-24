@@ -1,21 +1,25 @@
 window.app.AuthenticationManager = class AuthenticationManager {
   /* global moment, signals */
 
-  constructor(BackendApi, SessionProvider, SNAPEnvironment, WebBrowser, Logger) {
+  constructor(BackendApi, SessionModel, SNAPEnvironment, WebBrowser, Logger) {
     this._BackendApi = BackendApi;
-    this._SessionProvider = SessionProvider;
+    this._SessionModel = SessionModel;
     this._SNAPEnvironment = SNAPEnvironment;
     this._WebBrowser = WebBrowser;
     this._Logger = Logger;
   }
 
   validate() {
+    var self = this,
+        model = self._SessionModel;
+
     this._Logger.debug('Validating access token...');
 
-    var self = this;
     return new Promise((resolve, reject) => {
-      self._SessionProvider.fetchApiToken().then(token => {
-        if (!self._validateToken(token)) {
+      model.initialize().then(() => {
+        var token = model.apiToken;
+
+        if (!token || !self._validateToken(token)) {
           self._Logger.debug('Authorization is not valid.');
           resolve(false);
         }
@@ -33,7 +37,7 @@ window.app.AuthenticationManager = class AuthenticationManager {
 
     var self = this;
     return new Promise((resolve, reject) => {
-      self._SessionProvider.clear().then(() => {
+      self._SessionModel.clear().then(() => {
         var application = self._SNAPEnvironment.main_application,
             authUrl = self._BackendApi.oauth2.getTokenAuthorizeUrl(application.client_id, application.callback_url, application.scope);
 
@@ -61,7 +65,7 @@ window.app.AuthenticationManager = class AuthenticationManager {
 
               self._Logger.debug('New access token issued.', token);
 
-              self._SessionProvider.apiToken = token;
+              self._SessionModel.apiToken = token;
 
               return resolve();
             }
@@ -102,7 +106,7 @@ window.app.AuthenticationManager = class AuthenticationManager {
           session.expires = moment().add(result.expires_in, 'seconds').unix();
         }
 
-        self._SessionProvider.customerToken = session;
+        self._SessionModel.customerToken = session;
 
         resolve();
       }, reject);
@@ -120,7 +124,7 @@ window.app.AuthenticationManager = class AuthenticationManager {
         session.expires = moment().add(token.expires_in, 'seconds').unix();
       }
 
-      self._SessionProvider.customerToken = session;
+      self._SessionModel.customerToken = session;
 
       resolve();
     });

@@ -1,8 +1,8 @@
 window.app.SocketClient = class SocketClient {
-  constructor(SessionProvider, Hosts, Logger) {
+  constructor(SessionModel, Hosts, Logger) {
     var self = this;
 
-    this._SessionProvider = SessionProvider;
+    this._SessionModel = SessionModel;
     this._Logger = Logger;
 
     this.isConnectedChanged = new signals.Signal();
@@ -45,7 +45,7 @@ window.app.SocketClient = class SocketClient {
 
   _authenticate() {
     var self = this;
-    this._SessionProvider.getBusinessToken().then(token => {
+    this._SessionModel.getBusinessToken().then(token => {
       self._socket.emit('authenticate', {
         access_token: token
       }, err => {

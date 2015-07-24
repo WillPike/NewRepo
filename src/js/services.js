@@ -16,14 +16,14 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
     window.SnapCardReader = new app.CardReader(ManagementService);
     return window.SnapCardReader;
   }])
-  .factory('DtsApi', ['SNAPHosts', 'SessionProvider', (SNAPHosts, SessionProvider) => {
-    return new app.BackendApi(SNAPHosts, SessionProvider);
+  .factory('DtsApi', ['SNAPHosts', 'SessionModel', (SNAPHosts, SessionModel) => {
+    return new app.BackendApi(SNAPHosts, SessionModel);
   }])
   .factory('ManagementService', ['Logger', (Logger) => {
     return new app.CordovaManagementService(Logger);
   }])
-  .factory('SocketClient', ['SessionProvider', 'SNAPHosts', 'Logger', (SessionProvider, SNAPHosts, Logger) => {
-    return new app.SocketClient(SessionProvider, SNAPHosts, Logger);
+  .factory('SocketClient', ['SessionModel', 'SNAPHosts', 'Logger', (SessionModel, SNAPHosts, Logger) => {
+    return new app.SocketClient(SessionModel, SNAPHosts, Logger);
   }])
   .factory('TelemetryService', ['$resource', ($resource) => {
     return new app.TelemetryService($resource);
@@ -56,8 +56,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('HeatMap', () => {
     return new app.HeatMap(document.body);
   })
-  .factory('LocationModel', ['SNAPEnvironment', 'SNAPLocation', 'StorageProvider', (SNAPEnvironment, SNAPLocation, StorageProvider) => {
-    return new app.LocationModel(SNAPEnvironment, SNAPLocation, StorageProvider);
+  .factory('LocationModel', ['DtsApi', 'SNAPEnvironment', 'SNAPLocation', 'StorageProvider', (DtsApi, SNAPEnvironment, SNAPLocation, StorageProvider) => {
+    return new app.LocationModel(DtsApi, SNAPEnvironment, SNAPLocation, StorageProvider);
   }])
   .factory('OrderModel', ['StorageProvider', (StorageProvider) => {
     return new app.OrderModel(StorageProvider);
@@ -68,8 +68,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('SurveyModel', ['SNAPLocation', 'StorageProvider', (SNAPLocation, StorageProvider) => {
     return new app.SurveyModel(SNAPLocation, StorageProvider);
   }])
-  .factory('SessionProvider', ['StorageProvider', (StorageProvider) => {
-    return new app.SessionProvider(StorageProvider);
+  .factory('SessionModel', ['StorageProvider', (StorageProvider) => {
+    return new app.SessionModel(StorageProvider);
   }])
   .factory('StorageProvider', () =>  {
     return (id) => {
@@ -87,11 +87,11 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('AnalyticsManager', ['TelemetryService', 'AnalyticsModel', 'Logger', (TelemetryService, AnalyticsModel, Logger) => {
     return new app.AnalyticsManager(TelemetryService, AnalyticsModel, Logger);
   }])
-  .factory('AuthenticationManager', ['DtsApi', 'SessionProvider', 'SNAPEnvironment', 'WebBrowser', 'Logger', (DtsApi, SessionProvider, SNAPEnvironment, WebBrowser, Logger) => {
-    return new app.AuthenticationManager(DtsApi, SessionProvider, SNAPEnvironment, WebBrowser, Logger);
+  .factory('AuthenticationManager', ['DtsApi', 'SessionModel', 'SNAPEnvironment', 'WebBrowser', 'Logger', (DtsApi, SessionModel, SNAPEnvironment, WebBrowser, Logger) => {
+    return new app.AuthenticationManager(DtsApi, SessionModel, SNAPEnvironment, WebBrowser, Logger);
   }])
-  .factory('CustomerManager', ['SNAPLocation', 'SNAPEnvironment', 'DtsApi', 'CustomerModel', 'SessionProvider', (SNAPLocation, SNAPEnvironment, DtsApi, CustomerModel, SessionProvider) => {
-    return new app.CustomerManager(SNAPLocation, SNAPEnvironment, DtsApi, CustomerModel, SessionProvider);
+  .factory('CustomerManager', ['SNAPLocation', 'SNAPEnvironment', 'DtsApi', 'CustomerModel', 'SessionModel', (SNAPLocation, SNAPEnvironment, DtsApi, CustomerModel, SessionModel) => {
+    return new app.CustomerManager(SNAPLocation, SNAPEnvironment, DtsApi, CustomerModel, SessionModel);
   }])
   .factory('ChatManager', ['AnalyticsModel', 'ChatModel', 'CustomerModel', 'LocationModel', 'SocketClient', (AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient) => {
     return new app.ChatManager(AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient);
