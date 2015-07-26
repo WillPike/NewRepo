@@ -1,0 +1,13 @@
+extends _galaxies
+
+block body
+  #body
+    #area-container
+      #area-content
+        #area-startup(class='area-view wide', ng-controller='StartupCtrl', ng-include=getSnap('assets/galaxies/partials/startup.html', true))
+    #area-notifiation(ng-controller='NotificationCtrl',ng-include=getSnap('assets/galaxies/partials/notification.html', true),ng-show='visible')
+    #area-dialog(ng-controller='DialogCtrl',ng-include=getSnap('assets/galaxies/partials/dialog.html', true),ng-show='visible')
+  script(type='text/javascript').
+    (function() {
+      (new snap.StartupCordovaApplication()).initialize();
+    })();

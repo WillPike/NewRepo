@@ -2,16 +2,6 @@ extends _base
 
 block head
   title SNAP
-  link(href="/bower_components/lato/css/lato.min.css", rel="stylesheet")
-  link(href="/dist/css/galaxies_main.min.css", rel="stylesheet")
-  link(href="/dist/css/galaxies_desktop.min.css", rel="stylesheet")
-
-block body
-  #body
-    #area-container
-      #area-content
-        block content
-    #area-notifiation(ng-controller="NotificationCtrl",ng-include="'/assets/galaxies/partials/notification.html'",ng-show="visible")
-    #area-dialog(ng-controller="DialogCtrl",ng-include="'/assets/galaxies/partials/dialog.html'",ng-show="visible")
-    block overlay
-  block end
+  link(href=getLib('lato/css/lato.min.css'), rel='stylesheet')
+  link(href=getSnap('dist/css/galaxies_main.min.css'), rel='stylesheet')
+  link(href=getSnap('dist/css/galaxies_mobile.min.css'), rel='stylesheet')

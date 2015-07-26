@@ -61,6 +61,12 @@ window.app.WebBrowser = class WebBrowser {
   //    External methods
   //-----------------------------------------------
 
+  navigated(url) {
+    if (this._browser) {
+      this._browser.onNavigated.dispatch(url);
+    }
+  }
+
   callback(data) {
     if (this._browser) {
       this._browser.onCallback.dispatch(data);

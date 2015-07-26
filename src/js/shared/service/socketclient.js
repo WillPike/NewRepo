@@ -45,20 +45,16 @@ window.app.SocketClient = class SocketClient {
 
   _authenticate() {
     var self = this;
-    this._SessionModel.getBusinessToken().then(token => {
-      self._socket.emit('authenticate', {
-        access_token: token
-      }, err => {
-        if (err) {
-          self._Logger.warn(`Unable to authenticate socket: ${err.message}`);
-          return;
-        }
+    self._socket.emit('authenticate', {
+      access_token: self._SessionModel.apiToken
+    }, err => {
+      if (err) {
+        self._Logger.warn(`Unable to authenticate socket: ${err.message}`);
+        return;
+      }
 
-        self._isConnected = true;
-        self.isConnectedChanged.dispatch(self.isConnected);
-      });
-    }, e => {
-      self._Logger.warn(`Unable to perform socket authentication: ${e.message}`);
+      self._isConnected = true;
+      self.isConnectedChanged.dispatch(self.isConnected);
     });
   }
 };

@@ -25,8 +25,9 @@ app.set('view engine', 'jade');
 app.locals.pretty = true;
 app.set('bwr', bwr);
 
-app.get('/', function(req, res) { res.redirect('/index'); });
-app.get('/index', function(req, res) { res.render('index'); });
+app.get('/', function(req, res) { res.redirect('/startup.html'); });
+app.get('/startup.html', function(req, res) { res.render('startup'); });
+app.get('/snap.html', function(req, res) { res.render('snap'); });
 
 console.log("Server listening at http://%s:%s", hostname, port);
 app.listen(port, hostname);

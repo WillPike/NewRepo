@@ -24,11 +24,30 @@ window.app.AuthenticationManager = class AuthenticationManager {
           resolve(false);
         }
         else {
-          self._Logger.debug('Authorization is valid.');
-          resolve(true);
+          self._Logger.debug('Validating authorization session...');
+
+          self._BackendApi.oauth2.getSession().then(session => {
+            session = URI('?' + session).query(true); //ToDo: remove this hack
+
+            if (session && session.valid === 'true') {
+              self._Logger.debug('Authorization is valid.', session);
+              resolve(true);
+            }
+            else {
+              self._Logger.debug('Authorization is not valid or expired.', session);
+              resolve(false);
+            }
+          },
+          e => {
+            self._Logger.debug('Unable to validate authorization.', e);
+            resolve(null);
+          });
         }
       },
-      e => resolve(false));
+      e => {
+        self._Logger.debug('Error validating authorization.', e);
+        resolve(null);
+      });
     });
   }
 

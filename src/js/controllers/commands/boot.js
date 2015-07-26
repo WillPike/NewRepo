@@ -10,7 +10,7 @@ angular.module('SNAP.controllers')
 
   return function() {
     return AuthenticationManager.validate().then(authorized => {
-      if (!authorized) {
+      if (authorized === false) {
         return AuthenticationManager.authorize().then(() => loadLocation());
       }
 

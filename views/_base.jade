@@ -1,14 +1,22 @@
+- isCordova = settings.cordova;
+- libsPath = settings.libs || '/bower_components/';
+- snapPath = settings.snap || '/';
+- getLib = function(path, quote) { path = libsPath + path; if (quote) { path = "'" + path + "'"; } return path; }
+- getSnap = function(path, quote) { path = snapPath + path; if (quote) { path = "'" + path + "'"; } return path; }
+
 doctype html
 html
   head
     meta(charset="utf-8")
-    meta(name="viewport", content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
-    link(href="/favicon.ico", rel="icon", type="image/x-icon")
-    link(href="/bower_components/normalize-css/normalize.css", rel="stylesheet")
-    each path in settings.bwr.resources.js
-      script(src='/bower_components/' + path)
-    script(src='/config.js')
-    script(src='/dist/js/snap.js')
+    meta(http-equiv="Content-Security-Policy",content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'")
+    meta(name='viewport',content='width=1920, user-scalable=no')
+    if isCordova
+      script(src='cordova.js')
+    else
+      script(src='/node_modules/cordova-js/pkg/cordova.browser.js')
+    script(src=getLib('dependencies.js'))
+    script(src=getSnap('dist/js/snap.js'))
+    script(src='application.js')
     block head
   body
     block body

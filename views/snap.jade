@@ -1,0 +1,24 @@
+extends _galaxies
+
+block body
+  #body(ng-controller='MainSnapCtrl',ng-click='touch()')
+    #area-container
+      #area-background(ng-controller='BackgroundCtrl',ng-include=getSnap('assets/galaxies/partials/background.html', true))
+      #area-content
+        #area-navigation(ng-controller='GalaxiesNavigationCtrl',ng-include=getSnap('assets/galaxies/partials/navigation.html', true),ng-show='visible')
+        #area-advertisement(ng-controller='GalaxiesAdvertisementCtrl',ng-include=getSnap('assets/galaxies/partials/advertisement.html', true),ng-show='visible')
+        #area-modal(ng-controller='ModalCtrl',ng-include=getSnap('assets/galaxies/partials/modal.html', true),ng-show='visible')
+        .area-view(ng-view,ng-class='{ wide: wide }')
+        #area-home.area-view(ng-controller='GalaxiesHomeCtrl',ng-include=getSnap('assets/galaxies/partials/home.html', true),ng-show='visible')
+        #area-menu.area-view(ng-controller='GalaxiesMenuCtrl',ng-include=getSnap('assets/galaxies/partials/menu.html', true),ng-show='visible')
+        #area-category.area-view(ng-controller='GalaxiesCategoryCtrl',ng-include=getSnap('assets/galaxies/partials/category.html', true),ng-show='visible')
+        #area-item.area-view(ng-controller='GalaxiesItemCtrl',ng-include=getSnap('assets/galaxies/partials/item.html', true),ng-show='visible')
+        #area-web.area-view(ng-controller='WebCtrl',ng-include=getSnap('assets/galaxies/partials/web.html', true),ng-show='visible')
+        #area-cart.area-view(ng-controller='GalaxiesCartCtrl',ng-include=getSnap('assets/galaxies/partials/cart.html', true),ng-show='visible')
+    #area-screensaver(ng-controller='ScreensaverCtrl',ng-include=getSnap('assets/galaxies/partials/screensaver.html', true),ng-show='visible')
+    #area-notifiation(ng-controller='NotificationCtrl',ng-include=getSnap('assets/galaxies/partials/notification.html', true),ng-show='visible')
+    #area-dialog(ng-controller='DialogCtrl',ng-include=getSnap('assets/galaxies/partials/dialog.html', true),ng-show='visible')
+  script(type='text/javascript').
+    (function() {
+      (new snap.SnapCordovaApplication()).initialize();
+    })();

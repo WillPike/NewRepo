@@ -1,9 +1,12 @@
 module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
+  var pkg = grunt.file.readJSON('package.json'),
+      bwr = grunt.file.readJSON('bower.json');
+
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-    bwr: grunt.file.readJSON('bower.json'),
+    pkg: pkg,
+    bwr: bwr,
     dist: 'dist',
     concurrent: {
       dev: {
@@ -78,6 +81,13 @@ module.exports = function(grunt) {
         files: {
           'temp/main_classic.less': 'src/less/classic/main/*.less',
           'temp/main_galaxies.less': 'src/less/galaxies/main/*.less'
+        }
+      },
+      web: {
+        files: {
+          'bower_components/dependencies.js': bwr.resources.js.map(function(file) {
+            return 'bower_components/' + file;
+          })
         }
       }
     },
@@ -154,7 +164,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', []);
   grunt.registerTask('validate', ['jshint']);
   grunt.registerTask('build', ['clean', 'buildcss', 'buildjs', 'buildassets', 'clean:temp']);
-  grunt.registerTask('buildassets', []);
+  grunt.registerTask('buildassets', ['concat:web']);
   grunt.registerTask('buildcss', ['concat:css', 'less', 'cssmin']);
   grunt.registerTask('buildjs', ['concat:js', 'babel:client', 'uglify']);
   grunt.registerTask('run', ['concurrent:dev']);
