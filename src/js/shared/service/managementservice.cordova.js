@@ -17,12 +17,16 @@ window.app.CordovaManagementService = class CordovaManagementService {
     options = options || {};
 
     return new Promise(resolve => {
-      var target = options.system ? '_system' : '_blank',
+      var target = options.system ? '_blank' : '_blank',
           settings = {
-
+            location: options.system ? 'no' : 'yes',
+            clearcache: 'yes',
+            clearsessioncache: 'yes',
+            zoom: 'no',
+            hardwareback: 'no'
           };
 
-      browserRef = window.open(url, target, 'location=yes,clearcache=yes,clearsessioncache=yes,zoom=no,hardwareback=no');
+      browserRef = window.open(url, target, Object.keys(settings).map(x => `${x}=${settings[x]}`).join(','));
       resolve(new app.CordovaWebBrowserReference(browserRef));
     });
   }

@@ -16,9 +16,6 @@ window.snap.CordovaApplication = class CordovaApplication {
       throw new Error('No application provided.');
     }
 
-    application.environment.main_application.client_id = '23ca0b4620124258b8055f929b2ab9b8';
-    application.environment.main_application.callback_url = 'https://api2.managesnap.com/callback/snap';
-
     this._application = application;
   }
 
