@@ -170,6 +170,6 @@ module.exports = function(grunt) {
   grunt.registerTask('run', ['concurrent:dev']);
   grunt.registerTask('dev', ['build', 'concurrent:dev']);
   grunt.registerTask('debug', ['build', 'concurrent:debug']);
-  grunt.registerTask('publish', []);
-  grunt.registerTask('release', ['validate', 'build', 'bump', 'publish']);
+  grunt.registerTask('publish', ['bump']);
+  grunt.registerTask('release', ['validate', 'build', 'publish']);
 };
