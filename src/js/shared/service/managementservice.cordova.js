@@ -61,11 +61,27 @@ window.app.CordovaManagementService = class CordovaManagementService {
   }
 
   getSoundVolume() {
-    return Promise.resolve(100);
+    if (!window.volume) {
+      return Promise.resolve(100);
+    }
+
+    return new Promise((resolve, reject) => {
+      window.volume.getVolume(resolve, reject);
+    });
   }
 
   setSoundVolume(value) {
-    return Promise.resolve();
+    if (!(value >= 0 && value <= 100)) {
+      return Promise.reject(`Invalid value: ${value}`);
+    }
+
+    if (!window.volume) {
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+      window.volume.setVolume(value, resolve, reject);
+    });
   }
 
   getDisplayBrightness() {
@@ -76,7 +92,7 @@ window.app.CordovaManagementService = class CordovaManagementService {
     return new Promise((resolve, reject) => {
       window.brightness.getBrightness(value => {
         if (value < 0) {
-          return resolve(100);
+          return resolve(50);
         }
 
         value = parseInt(value * 100);
@@ -89,8 +105,8 @@ window.app.CordovaManagementService = class CordovaManagementService {
   }
 
   setDisplayBrightness(value) {
-    if (!value || value < 0 || value > 100) {
-      return Promise.reject();
+    if (!(value >= 0 && value <= 100)) {
+      return Promise.reject(`Invalid value: ${value}`);
     }
 
     if (!window.brightness) {
