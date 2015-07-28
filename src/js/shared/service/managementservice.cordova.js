@@ -7,10 +7,36 @@ window.app.CordovaManagementService = class CordovaManagementService {
     if (!window.cordova) {
       this._Logger.warn('Cordova is not available.');
     }
+
+    if (window.screen) {
+      this._orientation = window.screen.orientation;
+    }
   }
 
   rotateScreen() {
-    return Promise.resolve();
+    if (!window.screen || !this._orientation) {
+      return Promise.resolve();
+    }
+
+    var self = this;
+    return new Promise(resolve => {
+      var orientation;
+      switch (self._orientation.type) {
+        case 'landscape':
+        case 'landscape-primary':
+          orientation = 'landscape-secondary';
+          break;
+        case 'landscape-secondary':
+          orientation = 'landscape-primary';
+          break;
+        default:
+          orientation = 'landscape-primary';
+          break;
+      }
+
+      window.screen.lockOrientation(orientation);      
+      resolve();
+    });
   }
 
   openBrowser(url, browserRef, options) {
