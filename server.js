@@ -6,7 +6,7 @@ var express = require('express'),
     hostname = process.env.HOSTNAME || 'localhost',
     port = parseInt(process.env.PORT, 10) || 8080,
     publicDir = __dirname,
-    bwr = require('./bower.json');
+    bower = require('./bower.json');
 
 app.use(methodOverride());
 app.use(bodyParser.json());
@@ -23,7 +23,7 @@ app.set('views', './views');
 app.set('view engine', 'jade');
 
 app.locals.pretty = true;
-app.set('bwr', bwr);
+app.set('bower', bower);
 
 app.get('/', function(req, res) { res.redirect('/startup.html'); });
 app.get('/startup.html', function(req, res) { res.render('startup'); });

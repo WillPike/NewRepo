@@ -52,7 +52,8 @@
   "resources": {
     "libs": [
       "lato",
-      "roboto-fontface"
+      "roboto-fontface",
+      "normalize-css"
     ],
     "css": [
       "normalize-css/normalize.css"
