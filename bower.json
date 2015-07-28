@@ -1,6 +1,6 @@
 {
   "name": "dts-snap-web",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "main": "dist/js/snap.js",
   "ignore": [
     "**/.*",
