@@ -1,11 +1,11 @@
 angular.module('SNAP.controllers')
 .controller('NavigationCtrl',
-  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataProvider', 'DialogManager', 'NavigationManager', 'OrderManager', 'CommandCloseTable', 'CommandFlipScreen', 'WebBrowser', 'SNAPEnvironment',
-  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataProvider, DialogManager, NavigationManager, OrderManager, CommandCloseTable, CommandFlipScreen, WebBrowser, SNAPEnvironment) => {
+  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataModel', 'DialogManager', 'NavigationManager', 'OrderManager', 'CommandCloseTable', 'CommandFlipScreen', 'WebBrowser', 'SNAPEnvironment',
+  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataModel, DialogManager, NavigationManager, OrderManager, CommandCloseTable, CommandFlipScreen, WebBrowser, SNAPEnvironment) => {
 
   $scope.menus = [];
 
-  DataProvider.home().then(response => {
+  DataModel.home().then(response => {
     if (!response) {
       return;
     }
@@ -129,7 +129,7 @@ angular.module('SNAP.controllers')
       token: ad.token
     };
   };
-  DataProvider.advertisements().then(response => {
+  DataModel.advertisements().then(response => {
     $timeout(() => {
       $scope.advertisementsTop = response.top.map(mapAdvertisement);
       $scope.advertisementsBottom = response.bottom.map(mapAdvertisement);

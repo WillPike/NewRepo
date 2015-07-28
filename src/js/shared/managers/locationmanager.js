@@ -1,11 +1,10 @@
 window.app.LocationManager = class LocationManager extends app.AbstractManager {
-  constructor(DataProvider, DtsApi, LocationModel, Logger) {
-    super();
-    
-    this._DataProvider = DataProvider;
+  constructor(DataModel, DtsApi, LocationModel, Logger) {
+    super(Logger);
+
+    this._DataModel = DataModel;
     this._DtsApi = DtsApi;
     this._LocationModel = LocationModel;
-    this._Logger = Logger;
   }
 
   loadConfig() {

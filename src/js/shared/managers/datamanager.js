@@ -1,11 +1,10 @@
 window.app.DataManager = class DataManager extends app.AbstractManager {
   /* global signals */
 
-  constructor(DataProvider, Logger, SNAPEnvironment) {
-    super();
-    
-    this._DataProvider = DataProvider;
-    this._Logger = Logger;
+  constructor(DataModel, Logger, SNAPEnvironment) {
+    super(Logger);
+
+    this._DataModel = DataModel;
     this._SNAPEnvironment = SNAPEnvironment;
 
     this.homeChanged = new signals.Signal();
@@ -14,12 +13,12 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     this.itemChanged = new signals.Signal();
 
     this._CACHEABLE_MEDIA_KINDS = [
-      41, 51, 58, 61
+      11, 41, 51, 58, 61
     ];
   }
 
-  get provider() {
-    return this._DataProvider;
+  get model() {
+    return this._DataModel;
   }
 
   initialize() {
@@ -33,39 +32,41 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
       media: {}
     };
 
-    this._Logger.debug('Initializing data manager.');
-
-    return this.provider.digest().then(digest => {
-      var menuSets = digest.menu_sets.map(menu => {
+    return this.model.digest().then(digest => {
+      var menuSets = (digest.menu_sets || []).map(menu => {
         return new Promise((resolve, reject) => {
-          self.provider.menu(menu.token)
+          self.model.menu(menu.token)
             .then(data => self._cache.menu[menu.token] = self._filterMenu(data))
             .then(resolve, resolve);
         });
       });
 
-      var menuCategories = digest.menu_categories.map(category => {
+      var menuCategories = (digest.menu_categories || []).map(category => {
         return new Promise((resolve, reject) => {
-          self.provider.category(category.token)
+          self.model.category(category.token)
             .then(data => self._cache.category[category.token] = self._filterCategory(data))
             .then(resolve, resolve);
         });
       });
 
-      var menuItems = digest.menu_items.map(item => {
+      var menuItems = (digest.menu_items || []).map(item => {
         return new Promise((resolve, reject) => {
-          self.provider.item(item.token)
+          self.model.item(item.token)
             .then(data => self._cache.item[item.token] = data)
             .then(resolve, resolve);
         });
       });
 
-      var medias = digest.media
+      var medias = (digest.media || [])
         .filter(media => self._CACHEABLE_MEDIA_KINDS.indexOf(media.kind) !== -1)
         .map(media => {
           var width, height;
 
           switch (media.kind) {
+            case 11:
+              width = 1920;
+              height = 1080;
+              break;
             case 41:
             case 51:
               width = 370;
@@ -88,7 +89,7 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
         })
         .map(media => {
           return new Promise((resolve, reject) => {
-            self.provider.media(media)
+            self.model.media(media)
               .then(img => self._cache.media[media.token] = img)
               .then(resolve, resolve);
           });
@@ -110,6 +111,12 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     });
   }
 
+  reset() {
+    super.reset();
+
+    return this.model.clear();
+  }
+
   get home() { return this._home; }
   set home(value) {
     if (this._home === value) {
@@ -119,7 +126,7 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     if (value) {
       var self = this;
       this._home = value;
-      this.provider.home().then(home => {
+      this.model.home().then(home => {
         if (self._home) {
           home = self._filterHome(home);
           self.homeChanged.dispatch(home);
@@ -148,7 +155,7 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
         return this.menuChanged.dispatch(data);
       }
 
-      this.provider.menu(value).then(menu => {
+      this.model.menu(value).then(menu => {
         if (self._menu) {
           menu = self._filterMenu(menu);
           self.menuChanged.dispatch(menu);
@@ -177,7 +184,7 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
         return this.categoryChanged.dispatch(data);
       }
 
-      this.provider.category(value).then(category => {
+      this.model.category(value).then(category => {
         if (self._category) {
           category = self._filterCategory(category);
           self.categoryChanged.dispatch(category);
@@ -206,7 +213,7 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
         return this.itemChanged.dispatch(data);
       }
 
-      this.provider.item(value).then(item => {
+      this.model.item(value).then(item => {
         if (self._item) {
           self.itemChanged.dispatch(item);
         }

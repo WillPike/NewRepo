@@ -1,11 +1,11 @@
 angular.module('SNAP.controllers')
 .controller('GalaxiesNavigationCtrl',
-  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataProvider', 'DialogManager', 'LocationModel', 'ManagementService', 'NavigationManager', 'OrderManager', 'CommandCloseTable', 'CommandSubmitOrder', 'CommandFlipScreen', 'WebBrowser', 'SNAPEnvironment',
-  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataProvider, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, WebBrowser, SNAPEnvironment) => {
+  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataModel', 'DialogManager', 'LocationModel', 'ManagementService', 'NavigationManager', 'OrderManager', 'CommandCloseTable', 'CommandSubmitOrder', 'CommandFlipScreen', 'WebBrowser', 'SNAPEnvironment',
+  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataModel, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, WebBrowser, SNAPEnvironment) => {
 
   $scope.menus = [];
 
-  DataProvider.home().then(response => {
+  DataModel.home().then(response => {
     if (!response) {
       return;
     }
@@ -52,7 +52,7 @@ angular.module('SNAP.controllers')
 
   $scope.advertisements = [];
 
-  DataProvider.advertisements().then(data => {
+  DataModel.advertisements().then(data => {
     $timeout(() => {
       $scope.advertisements = data.misc
         .map(ad => {

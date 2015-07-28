@@ -1,8 +1,9 @@
-window.app.DataProvider = class DataProvider {
-  constructor(config, service) {
+window.app.DataModel = class DataModel {
+  constructor(config, service, storageProvider) {
     this._config = config;
     this._service = service;
     this._cache = {};
+    this._storageProvider = storageProvider;
   }
 
   clear() {
@@ -14,7 +15,7 @@ window.app.DataProvider = class DataProvider {
   }
 
   digest() {
-    return this._getSnapData('digest', 'getDigest');
+    return this._service.snap.getDigest(this._config.location);
   }
 
   home() {
@@ -55,7 +56,7 @@ window.app.DataProvider = class DataProvider {
       data = data || [];
       self._store(data, 'seats');
       return data;
-    }, this._onError);
+    });
   }
 
   media(media) {
@@ -77,21 +78,32 @@ window.app.DataProvider = class DataProvider {
       else {
         reject('Missing image dimensions');
       }
-    }, this._onError);
+    });
   }
 
   _getSnapData(name, method, id) {
-    var self = this;
-    return this._cached(name, id) || this._service.snap[method](this._config.location, id).then(data => {
-      data = data || [];
-      self._store(data, name, id);
-      return data;
-    }, this._onError);
-  }
+    var cached = this._cached(name, id);
 
-  _onError(e) {
-    console.error(e.message);
-    return e;
+    if (cached) {
+      return Promise.resolve(cached);
+    }
+
+    if (navigator.onLine === false) {
+      var stored = this._stored(name, id);
+
+      if (stored) {
+        return Promise.resolve(stored);
+      }
+      else {
+        return Promise.reject(`Data is not available: /${name}/${id}`);
+      }
+    }
+
+    return this._service.snap[method](this._config.location, id).then(data => {
+      data = data || [];
+      this._store(data, name, id);
+      return data;
+    });
   }
 
   _cached(group, id) {
@@ -105,6 +117,12 @@ window.app.DataProvider = class DataProvider {
     return null;
   }
 
+  _stored(group, id) {
+    let storage = this._getStorage(group, id);
+
+    return storage.readSync();
+  }
+
   _store(data, group, id) {
     if (id) {
       if (!this._cache[group]) {
@@ -116,6 +134,19 @@ window.app.DataProvider = class DataProvider {
     else {
       this._cache[group] = data;
     }
+
+    if (group !== 'media') {
+      let storage = this._getStorage(group, id);
+      storage.write(data);
+    }
+  }
+
+  _getStorage(group, id) {
+    if (id) {
+      return this._storageProvider(`snap_cache_${group}_${id}`);
+    }
+
+    return this._storageProvider(`snap_cache_${group}`);
   }
 
   _getMediaUrl() {

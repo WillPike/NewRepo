@@ -2,13 +2,12 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
   /* global moment, signals */
 
   constructor(BackendApi, SessionModel, SNAPEnvironment, WebBrowser, Logger) {
-    super();
-    
+    super(Logger);
+
     this._BackendApi = BackendApi;
     this._SessionModel = SessionModel;
     this._SNAPEnvironment = SNAPEnvironment;
     this._WebBrowser = WebBrowser;
-    this._Logger = Logger;
   }
 
   validate() {

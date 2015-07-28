@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('ScreensaverCtrl',
-  ['$scope', '$timeout', 'ShellManager', 'ActivityMonitor', 'DataProvider',
-  ($scope, $timeout, ShellManager, ActivityMonitor, DataProvider) => {
+  ['$scope', '$timeout', 'ShellManager', 'ActivityMonitor', 'DataModel',
+  ($scope, $timeout, ShellManager, ActivityMonitor, DataModel) => {
     
   $scope.visible = false;
 

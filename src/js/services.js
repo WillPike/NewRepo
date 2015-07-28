@@ -50,8 +50,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('CustomerModel', ['SNAPLocation', 'StorageProvider', (SNAPLocation, StorageProvider) => {
     return new app.CustomerModel(SNAPLocation, StorageProvider);
   }])
-  .factory('DataProvider', ['SNAPLocation', 'DtsApi', (SNAPLocation, DtsApi) => {
-    return new app.DataProvider(SNAPLocation, DtsApi);
+  .factory('DataModel', ['SNAPLocation', 'DtsApi', 'StorageProvider', (SNAPLocation, DtsApi, StorageProvider) => {
+    return new app.DataModel(SNAPLocation, DtsApi, StorageProvider);
   }])
   .factory('HeatMap', () => {
     return new app.HeatMap(document.body);
@@ -90,23 +90,23 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('AuthenticationManager', ['DtsApi', 'SessionModel', 'SNAPEnvironment', 'WebBrowser', 'Logger', (DtsApi, SessionModel, SNAPEnvironment, WebBrowser, Logger) => {
     return new app.AuthenticationManager(DtsApi, SessionModel, SNAPEnvironment, WebBrowser, Logger);
   }])
-  .factory('CustomerManager', ['SNAPLocation', 'SNAPEnvironment', 'DtsApi', 'CustomerModel', 'SessionModel', (SNAPLocation, SNAPEnvironment, DtsApi, CustomerModel, SessionModel) => {
-    return new app.CustomerManager(SNAPLocation, SNAPEnvironment, DtsApi, CustomerModel, SessionModel);
+  .factory('CustomerManager', ['SNAPLocation', 'SNAPEnvironment', 'DtsApi', 'CustomerModel', 'SessionModel', 'Logger', (SNAPLocation, SNAPEnvironment, DtsApi, CustomerModel, SessionModel, Logger) => {
+    return new app.CustomerManager(SNAPLocation, SNAPEnvironment, DtsApi, CustomerModel, SessionModel, Logger);
   }])
-  .factory('ChatManager', ['AnalyticsModel', 'ChatModel', 'CustomerModel', 'LocationModel', 'SocketClient', (AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient) => {
-    return new app.ChatManager(AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient);
+  .factory('ChatManager', ['AnalyticsModel', 'ChatModel', 'CustomerModel', 'LocationModel', 'SocketClient', 'Logger', (AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient, Logger) => {
+    return new app.ChatManager(AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient, Logger);
   }])
-  .factory('DataManager', ['DataProvider', 'Logger', 'SNAPEnvironment', (DataProvider, Logger, SNAPEnvironment) => {
-    return new app.DataManager(DataProvider, Logger, SNAPEnvironment);
+  .factory('DataManager', ['DataModel', 'Logger', 'SNAPEnvironment', (DataModel, Logger, SNAPEnvironment) => {
+    return new app.DataManager(DataModel, Logger, SNAPEnvironment);
   }])
-  .factory('DialogManager', () => {
-    return new app.DialogManager();
-  })
-  .factory('LocationManager', ['DataProvider', 'DtsApi', 'LocationModel', 'Logger', (DataProvider, DtsApi, LocationModel, Logger) => {
-    return new app.LocationManager(DataProvider, DtsApi, LocationModel, Logger);
+  .factory('DialogManager', ['Logger', (Logger) => {
+    return new app.DialogManager(Logger);
   }])
-  .factory('NavigationManager', ['$rootScope', '$location', '$window', 'AnalyticsModel', ($rootScope, $location, $window, AnalyticsModel) => {
-    return new app.NavigationManager($rootScope, $location, $window, AnalyticsModel);
+  .factory('LocationManager', ['DataModel', 'DtsApi', 'LocationModel', 'Logger', (DataModel, DtsApi, LocationModel, Logger) => {
+    return new app.LocationManager(DataModel, DtsApi, LocationModel, Logger);
+  }])
+  .factory('NavigationManager', ['$rootScope', '$location', '$window', 'AnalyticsModel', 'Logger', ($rootScope, $location, $window, AnalyticsModel, Logger) => {
+    return new app.NavigationManager($rootScope, $location, $window, AnalyticsModel, Logger);
   }])
   .factory('OrderManager', ['ChatModel', 'CustomerModel', 'DtsApi', 'OrderModel', 'Logger', (ChatModel, CustomerModel, DtsApi, OrderModel, Logger) => {
     return new app.OrderManager(ChatModel, CustomerModel, DtsApi, OrderModel, Logger);
@@ -114,9 +114,9 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('SessionManager', ['SNAPEnvironment', 'AnalyticsModel', 'CustomerModel', 'LocationModel', 'OrderModel', 'SurveyModel', 'StorageProvider', 'Logger', (SNAPEnvironment, AnalyticsModel, CustomerModel, LocationModel, OrderModel, SurveyModel, StorageProvider, Logger) => {
     return new app.SessionManager(SNAPEnvironment, AnalyticsModel, CustomerModel, LocationModel, OrderModel, SurveyModel, StorageProvider, Logger);
   }])
-  .factory('ShellManager', ['$sce', 'DataProvider', 'ShellModel', 'SNAPLocation', 'SNAPEnvironment', 'SNAPHosts', ($sce, DataProvider, ShellModel, SNAPLocation, SNAPEnvironment, SNAPHosts) => {
-    let manager = new app.ShellManager($sce, DataProvider, ShellModel, SNAPLocation, SNAPEnvironment, SNAPHosts);
-    DataProvider._getMediaUrl = (media, width, height, extension) => manager.getMediaUrl(media, width, height, extension); //ToDo: refactor
+  .factory('ShellManager', ['$sce', 'DataModel', 'ShellModel', 'SNAPLocation', 'SNAPEnvironment', 'SNAPHosts', 'Logger', ($sce, DataModel, ShellModel, SNAPLocation, SNAPEnvironment, SNAPHosts, Logger) => {
+    let manager = new app.ShellManager($sce, DataModel, ShellModel, SNAPLocation, SNAPEnvironment, SNAPHosts, Logger);
+    DataModel._getMediaUrl = (media, width, height, extension) => manager.getMediaUrl(media, width, height, extension); //ToDo: refactor
     return manager;
   }])
   .factory('SocialManager', ['SNAPEnvironment', 'DtsApi', 'WebBrowser', 'Logger', (SNAPEnvironment, DtsApi, WebBrowser, Logger) => {
@@ -125,6 +125,6 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('SoftwareManager', ['SNAPEnvironment', (SNAPEnvironment) => {
     return new app.SoftwareManager(SNAPEnvironment);
   }])
-  .factory('SurveyManager', ['DataProvider', 'SurveyModel', (DataProvider, SurveyModel) => {
-    return new app.SurveyManager(DataProvider, SurveyModel);
+  .factory('SurveyManager', ['DataModel', 'SurveyModel', 'Logger', (DataModel, SurveyModel, Logger) => {
+    return new app.SurveyManager(DataModel, SurveyModel, Logger);
   }]);

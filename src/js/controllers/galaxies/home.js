@@ -76,15 +76,21 @@ angular.module('SNAP.controllers')
       };
     });
 
-    React.render(
-      React.createElement(HomeMenu, { tiles: tiles, home: home }),
-      document.getElementById('page-home-menu')
-    );
+    var element = document.getElementById('page-home-menu');
+
+    if (element) {
+      React.render(
+        React.createElement(HomeMenu, { tiles: tiles, home: home }),
+        element
+      );
+    }
   });
 
   NavigationManager.locationChanging.add(location => {
-    DataManager.home = location.type === 'home';
-    $scope.visible = Boolean(DataManager.home);
-    $timeout(() => $scope.$apply());
+    $scope.visible = Boolean(location.type === 'home');
+    $timeout(() => {
+      $scope.$apply();
+      DataManager.home = $scope.visible;
+    });
   });
 }]);

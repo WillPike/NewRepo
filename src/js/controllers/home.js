@@ -4,8 +4,8 @@ angular.module('SNAP.controllers')
 
 angular.module('SNAP.controllers')
 .controller('HomeCtrl',
-  ['$scope', '$timeout', 'ChatManager', 'DataProvider', 'ShellManager', 'CustomerManager', 'OrderManager', 'DialogManager', 'NavigationManager', 'LocationModel', 'SurveyManager', 'SNAPLocation', 'SNAPEnvironment', 'CommandCloseTable',
-  ($scope, $timeout, ChatManager, DataProvider, ShellManager, CustomerManager, OrderManager, DialogManager, NavigationManager, LocationModel, SurveyManager, SNAPLocation, SNAPEnvironment, CommandCloseTable) => {
+  ['$scope', '$timeout', 'ChatManager', 'DataModel', 'ShellManager', 'CustomerManager', 'OrderManager', 'DialogManager', 'NavigationManager', 'LocationModel', 'SurveyManager', 'SNAPLocation', 'SNAPEnvironment', 'CommandCloseTable',
+  ($scope, $timeout, ChatManager, DataModel, ShellManager, CustomerManager, OrderManager, DialogManager, NavigationManager, LocationModel, SurveyManager, SNAPLocation, SNAPEnvironment, CommandCloseTable) => {
 
   var HomeMenu = React.createClass({
     render: function() {
@@ -36,7 +36,7 @@ angular.module('SNAP.controllers')
     }
   });
 
-  DataProvider.home().then(response => {
+  DataModel.home().then(response => {
     if (!response) {
       return;
     }

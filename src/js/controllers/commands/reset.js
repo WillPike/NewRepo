@@ -14,7 +14,7 @@ angular.module('SNAP.controllers')
             AnalyticsManager.submit(),
             OrderManager.reset(),
             SurveyManager.reset(),
-            CustomerManager.logout(),
+            CustomerManager.reset(),
             ChatManager.reset()
           ]).spread(() => {
             Logger.debug('Reset completed successfully.');

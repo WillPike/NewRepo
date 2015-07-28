@@ -1,9 +1,9 @@
 window.app.CustomerManager = class CustomerManager extends app.AbstractManager {
   /* global moment */
 
-  constructor(Config, Environment, DtsApi, CustomerModel, SessionModel) {
-    super();
-    
+  constructor(Config, Environment, DtsApi, CustomerModel, SessionModel, Logger) {
+    super(Logger);
+
     this._api = DtsApi;
     this._CustomerModel = CustomerModel;
     this._SessionModel = SessionModel;
@@ -30,6 +30,12 @@ window.app.CustomerManager = class CustomerManager extends app.AbstractManager {
     }
 
     return 'Guest';
+  }
+
+  reset() {
+    super.reset();
+
+    return this.logout();
   }
 
   logout() {

@@ -1,6 +1,6 @@
 window.app.SessionManager = class SessionManager extends app.AbstractManager {
   constructor(SNAPEnvironment, AnalyticsModel, CustomerModel, LocationModel, OrderModel, SurveyModel, storageProvider, Logger) {
-    super();
+    super(Logger);
 
     var self = this;
 
@@ -13,7 +13,6 @@ window.app.SessionManager = class SessionManager extends app.AbstractManager {
     this._LocationModel = LocationModel;
     this._OrderModel = OrderModel;
     this._SurveyModel = SurveyModel;
-    this._Logger = Logger;
 
     this._store = storageProvider('snap_seat_session');
 
@@ -62,6 +61,12 @@ window.app.SessionManager = class SessionManager extends app.AbstractManager {
     });
   }
 
+  reset() {
+    super.reset();
+
+    return this._store.clear();
+  }
+
   get session() {
     return this._session;
   }
@@ -71,7 +76,6 @@ window.app.SessionManager = class SessionManager extends app.AbstractManager {
     return new Promise((resolve, reject) => {
       self._store.read().then(s => {
         self._session = null;
-        ;
 
         if (s) {
           self._Logger.debug(`Seat session ${s.id} ended.`);

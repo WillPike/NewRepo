@@ -1,9 +1,9 @@
 window.app.NavigationManager = class NavigationManager extends app.AbstractManager {
   /* global signals */
 
-  constructor($rootScope, $location, $window, AnalyticsModel) {
-    super();
-    
+  constructor($rootScope, $location, $window, AnalyticsModel, Logger) {
+    super(Logger);
+
     this.$$location = $location;
     this.$$window = $window;
     this._AnalyticsModel = AnalyticsModel;

@@ -1,23 +1,20 @@
 window.app.OrderManager = class OrderManager extends app.AbstractManager {
   constructor(ChatModel, CustomerModel, DtsApi, OrderModel, Logger) {
-    super();
-    
-    var self = this;
+    super(Logger);
 
     this._DtsApi = DtsApi;
     this._ChatModel = ChatModel;
     this._CustomerModel = CustomerModel;
     this._OrderModel = OrderModel;
-    this._Logger = Logger;
 
     this._ChatModel.giftSeatChanged.add(giftSeat => {
-      if (self.model.orderCartStash.length === 0) {
-        self.model.orderCartStash = self.model.orderCart;
-        self.model.orderCart = [];
+      if (this.model.orderCartStash.length === 0) {
+        this.model.orderCartStash = this.model.orderCart;
+        this.model.orderCart = [];
       }
 
       if (!giftSeat) {
-        self.model.orderCart = self.model.orderCartStash;
+        this.model.orderCart = this.model.orderCartStash;
       }
     });
   }
@@ -27,18 +24,16 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
   }
 
   reset() {
-    var self = this;
+    super.reset();
 
     return new Promise((resolve) => {
-      self.model.clearWatcher(self.model.REQUEST_KIND_ORDER);
-      self.model.clearWatcher(self.model.REQUEST_KIND_ASSISTANCE);
-      self.model.clearWatcher(self.model.REQUEST_KIND_CLOSEOUT);
+      this.model.clearWatcher(self.model.REQUEST_KIND_ORDER);
+      this.model.clearWatcher(self.model.REQUEST_KIND_ASSISTANCE);
+      this.model.clearWatcher(self.model.REQUEST_KIND_CLOSEOUT);
 
-      self.clearCart();
-      self.clearCheck();
-      self.model.orderTicket = {};
-
-      self._Logger.debug('Order manager reset completed.');
+      this.clearCart();
+      this.clearCheck();
+      this.model.orderTicket = {};
 
       resolve();
     });

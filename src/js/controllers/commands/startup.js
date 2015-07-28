@@ -5,12 +5,7 @@ angular.module('SNAP.controllers')
 
   return function() {
     return new Promise((result, reject) => {
-
-      function fail(e) {
-        Logger.warn(`Unable to startup properly: ${e.message}`);
-      }
-
-      function cacheComplete(updated) {
+      /*function cacheComplete(updated) {
         if (updated) {
           window.location.reload(true);
         }
@@ -27,24 +22,29 @@ angular.module('SNAP.controllers')
         cacheComplete(false);
       }
 
-      AppCache.complete.add(cacheComplete);
-
-      ShellManager.initialize();
-
-      if (CustomerManager.model.isEnabled) {
-        if (!CustomerManager.model.isAuthenticated) {
-          NavigationManager.location = { type: 'signin' };
-        }
-      }
-      else {
-        CustomerManager.guestLogin();
-      }
+      AppCache.complete.add(cacheComplete);*/
 
       Q.allSettled([
         AnalyticsManager.initialize(),
-        SessionManager.initialize()
+        ChatManager.initialize(),
+        CustomerManager.initialize(),
+        NavigationManager.initialize(),
+        ShellManager.initialize(),
+        SessionManager.initialize(),
+        SurveyManager.initialize()
       ])
-      .then(result, reject);
+      .then(() => {
+        if (CustomerManager.model.isEnabled) {
+          if (!CustomerManager.model.isAuthenticated) {
+            NavigationManager.location = { type: 'signin' };
+          }
+        }
+        else {
+          CustomerManager.guestLogin();
+        }
+
+        DataManager.initialize();
+      }, reject);
     });
   };
 }]);

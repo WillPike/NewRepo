@@ -1,9 +1,9 @@
 window.app.ShellManager = class ShellManager extends app.AbstractManager {
-  constructor($sce, DataProvider, ShellModel, Config, Environment, Hosts) {
-    super();
-    
+  constructor($sce, DataModel, ShellModel, Config, Environment, Hosts, Logger) {
+    super(Logger);
+
     this.$$sce = $sce;
-    this._DataProvider = DataProvider;
+    this._DataModel = DataModel;
     this._ShellModel = ShellModel;
     this._Config = Config;
     this._Environment = Environment;
@@ -53,7 +53,7 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
 
     var self = this;
 
-    var taskBackgrounds = this._DataProvider.backgrounds().then(function(response) {
+    var taskBackgrounds = this._DataModel.backgrounds().then(function(response) {
       self._ShellModel.backgrounds = response.main.map(function(item){
         return {
           media: item.src
@@ -74,7 +74,7 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
       });
     });
 
-    var taskElements = this._DataProvider.elements().then(function(response) {
+    var taskElements = this._DataModel.elements().then(function(response) {
       var layout = self._Config.theme.layout;
 
       var elements = {};

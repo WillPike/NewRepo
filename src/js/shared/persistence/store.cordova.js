@@ -28,6 +28,16 @@ window.app.CordovaLocalStorageStore = class CordovaLocalStorageStore {
     }
   }
 
+  readSync() {
+    try {
+      var value = JSON.parse(localStorage.getItem(this._id));
+      return value;
+    } catch (e) {
+      this._Logger.warn(`Unable to read from store #${this._id}: ${e.message}`);
+      return undefined;
+    }
+  }
+
   write(value) {
     try {
       localStorage.setItem(this._id, JSON.stringify(value));

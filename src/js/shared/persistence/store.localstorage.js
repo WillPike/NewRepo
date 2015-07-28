@@ -25,6 +25,14 @@ window.app.LocalStorageStore = class LocalStorageStore {
     }
   }
 
+  readSync() {
+    try {
+      return store.get(this._id);
+    } catch (e) {
+      return undefined;
+    }
+  }
+
   write(value) {
     try {
       store.set(this._id, value);

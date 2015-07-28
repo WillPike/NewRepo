@@ -12,6 +12,10 @@ window.app.InMemoryStore = class InMemoryStore {
     return Promise.resolve(this._storage);
   }
 
+  readSync() {
+    return this._storage;
+  }
+
   write(value) {
     this._storage = value;
     return Promise.resolve();

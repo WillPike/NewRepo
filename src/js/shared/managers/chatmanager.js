@@ -1,9 +1,9 @@
 window.app.ChatManager = class ChatManager extends app.AbstractManager {
   /* global moment, signals */
 
-  constructor(AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient) {
-    super();
-    
+  constructor(AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient, Logger) {
+    super(Logger);
+
     var self = this;
 
     this.MESSAGE_TYPES = {
@@ -77,6 +77,8 @@ window.app.ChatManager = class ChatManager extends app.AbstractManager {
   }
 
   reset() {
+    super.reset();
+
     this.model.reset();
 
     return Promise.resolve();

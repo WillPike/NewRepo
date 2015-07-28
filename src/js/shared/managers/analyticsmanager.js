@@ -1,15 +1,20 @@
 window.app.AnalyticsManager = class AnalyticsManager extends app.AbstractManager {
   constructor(TelemetryService, AnalyticsModel, Logger) {
-    super();
+    super(Logger);
     this._TelemetryService = TelemetryService;
     this._AnalyticsModel = AnalyticsModel;
-    this._Logger = Logger;
   }
 
   initialize() {
     super.initialize();
 
     return this.model.initialize();
+  }
+
+  reset() {
+    super.reset();
+
+    return this.model.reset();
   }
 
   get model() {
@@ -27,7 +32,7 @@ window.app.AnalyticsManager = class AnalyticsManager extends app.AbstractManager
       `${this.model.advertisements.length} advertisements and ` +
       `${this.model.urls.length} URLs.`);
 
-    return this.model.reset();
+    return this.reset();
 
     var self = this;
     return new Promise((resolve, reject) => {

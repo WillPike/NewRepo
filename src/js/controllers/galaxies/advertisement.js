@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('GalaxiesAdvertisementCtrl',
-  ['$scope', '$timeout', 'ActivityMonitor', 'AnalyticsModel', 'ShellManager', 'DataManager', 'DataProvider', 'DialogManager', 'NavigationManager', 'CommandFlipScreen', 'ShellManager', 'WebBrowser', 'SNAPEnvironment',
-  ($scope, $timeout, ActivityMonitor, AnalyticsModel, hellManager, DataManager, DataProvider, DialogManager, NavigationManager, CommandFlipScreen, ShellManager, WebBrowser, SNAPEnvironment) => {
+  ['$scope', '$timeout', 'ActivityMonitor', 'AnalyticsModel', 'ShellManager', 'DataManager', 'DataModel', 'DialogManager', 'NavigationManager', 'CommandFlipScreen', 'ShellManager', 'WebBrowser', 'SNAPEnvironment',
+  ($scope, $timeout, ActivityMonitor, AnalyticsModel, hellManager, DataManager, DataModel, DialogManager, NavigationManager, CommandFlipScreen, ShellManager, WebBrowser, SNAPEnvironment) => {
 
   $scope.visible = false;
 
@@ -32,7 +32,7 @@ angular.module('SNAP.controllers')
 
   $scope.advertisements = [];
 
-  DataProvider.advertisements().then(data => {
+  DataModel.advertisements().then(data => {
     $timeout(() => {
       $scope.advertisements = data.main
         .map(ad => {

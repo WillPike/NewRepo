@@ -1,7 +1,7 @@
 window.app.DialogManager = class DialogManager extends app.AbstractManager {
-  constructor() {
-    super();
-    
+  constructor(Logger) {
+    super(Logger);
+
     this.alertRequested = new signals.Signal();
     this.notificationRequested = new signals.Signal();
     this.confirmRequested = new signals.Signal();
