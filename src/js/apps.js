@@ -29,6 +29,8 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
   //-----------------------------------------------
 
   configure() {
+    FastClick.attach(document.body);
+    
     var self = this;
     return new Promise((resolve, reject) => {
       var store = new app.CordovaLocalStorageStore('snap_location');

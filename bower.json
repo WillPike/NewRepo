@@ -72,6 +72,7 @@
       "rateit/src/jquery.rateit.js",
       "swfobject/swfobject/swfobject.js",
       "URIjs/src/URI.js",
+      "fastclick/lib/fastclick.js",
       "angular/angular.js",
       "angular-animate/angular-animate.js",
       "angular-route/angular-route.js",
