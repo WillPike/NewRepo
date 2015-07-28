@@ -211,33 +211,39 @@ angular.module('SNAP.controllers')
     soundVolume: 100
   };
 
-  $scope.$watch('settings.soundVolume', (value, old) => {
-    if (!value || value === old) {
-      return;
-    }
-
-    value = parseInt(value);
-
-    ActivityMonitor.activityDetected();
-    ManagementService.setSoundVolume(value);
-  });
   ManagementService.getSoundVolume().then(
-    value => $timeout(() => $scope.settings.soundVolume = value),
+    value => $timeout(() => {
+      $scope.settings.soundVolume = value;
+
+      $scope.$watch('settings.soundVolume', (value, old) => {
+        if (!value || value === old) {
+          return;
+        }
+
+        value = parseInt(value);
+
+        ActivityMonitor.activityDetected();
+        ManagementService.setSoundVolume(value);
+      });
+    }),
     e => { }
   );
 
-  $scope.$watch('settings.displayBrightness', (value, old) => {
-    if (!value || value === old) {
-      return;
-    }
-
-    value = parseInt(value);
-
-    ActivityMonitor.activityDetected();
-    ManagementService.setDisplayBrightness(value);
-  });
   ManagementService.getDisplayBrightness().then(
-    value => $timeout(() => $scope.settings.displayBrightness = value),
+    value => $timeout(() => {
+      $scope.settings.displayBrightness = value;
+
+      $scope.$watch('settings.displayBrightness', (value, old) => {
+        if (!value || value === old) {
+          return;
+        }
+
+        value = parseInt(value);
+
+        ActivityMonitor.activityDetected();
+        ManagementService.setDisplayBrightness(value);
+      });
+    }),
     e => { }
   );
 
