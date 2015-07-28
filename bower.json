@@ -55,9 +55,6 @@
       "roboto-fontface",
       "normalize-css"
     ],
-    "css": [
-      "normalize-css/normalize.css"
-    ],
     "js": [
       "jquery/dist/jquery.js",
       "jquery.kinetic/jquery.kinetic.js",
