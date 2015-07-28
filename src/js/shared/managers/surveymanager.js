@@ -1,5 +1,7 @@
-window.app.SurveyManager = class SurveyManager {
+window.app.SurveyManager = class SurveyManager extends app.AbstractManager {
   constructor(DataProvider, SurveyModel) {
+    super();
+    
     var self = this;
 
     this._DataProvider = DataProvider;

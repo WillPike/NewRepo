@@ -1,5 +1,7 @@
-window.app.LocationManager = class LocationManager {
+window.app.LocationManager = class LocationManager extends app.AbstractManager {
   constructor(DataProvider, DtsApi, LocationModel, Logger) {
+    super();
+    
     this._DataProvider = DataProvider;
     this._DtsApi = DtsApi;
     this._LocationModel = LocationModel;

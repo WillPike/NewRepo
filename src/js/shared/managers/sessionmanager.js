@@ -1,5 +1,7 @@
-window.app.SessionManager = class SessionManager {
+window.app.SessionManager = class SessionManager extends app.AbstractManager {
   constructor(SNAPEnvironment, AnalyticsModel, CustomerModel, LocationModel, OrderModel, SurveyModel, storageProvider, Logger) {
+    super();
+
     var self = this;
 
     this.sessionStarted = new signals.Signal();
@@ -14,13 +16,6 @@ window.app.SessionManager = class SessionManager {
     this._Logger = Logger;
 
     this._store = storageProvider('snap_seat_session');
-    this._store.read().then(data => {
-      self._session = data;
-
-      if (!data) {
-        self._startSession();
-      }
-    });
 
     this._CustomerModel.profileChanged.add(customer => {
       if (!self._session || !customer) {
@@ -50,26 +45,45 @@ window.app.SessionManager = class SessionManager {
     });
   }
 
+  initialize() {
+    super.initialize();
+
+    var self = this;
+    return new Promise((resolve, reject) => {
+      self._store.read().then(data => {
+        self._session = data;
+
+        if (!data) {
+          self._startSession();
+        }
+
+        resolve();
+      }, reject);
+    });
+  }
+
   get session() {
     return this._session;
   }
 
   endSession() {
-    if (!this._session) {
-      return;
-    }
+    var self = this;
+    return new Promise((resolve, reject) => {
+      self._store.read().then(s => {
+        self._session = null;
+        ;
 
-    this._Logger.debug(`Seat session ${this._session.id} ended.`);
+        if (s) {
+          self._Logger.debug(`Seat session ${s.id} ended.`);
 
-    var s = this._session;
-    s.ended = new Date();
+          s.ended = new Date();
+          self._AnalyticsModel.logSession(s);
+          self.sessionEnded.dispatch(s);
+        }
 
-    this._session = null;
-    this._store.clear();
-
-    this._AnalyticsModel.logSession(s);
-
-    this.sessionEnded.dispatch(s);
+        self._store.clear().then(resolve, reject);
+      }, reject);
+    });
   }
 
   get guestCount() {

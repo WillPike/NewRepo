@@ -1,7 +1,9 @@
-window.app.DataManager = class DataManager {
+window.app.DataManager = class DataManager extends app.AbstractManager {
   /* global signals */
 
   constructor(DataProvider, Logger, SNAPEnvironment) {
+    super();
+    
     this._DataProvider = DataProvider;
     this._Logger = Logger;
     this._SNAPEnvironment = SNAPEnvironment;
@@ -21,6 +23,8 @@ window.app.DataManager = class DataManager {
   }
 
   initialize() {
+    super.initialize();
+
     var self = this;
     this._cache = {
       menu: {},
@@ -31,7 +35,7 @@ window.app.DataManager = class DataManager {
 
     this._Logger.debug('Initializing data manager.');
 
-    this.provider.digest().then(digest => {
+    return this.provider.digest().then(digest => {
       var menuSets = digest.menu_sets.map(menu => {
         return new Promise((resolve, reject) => {
           self.provider.menu(menu.token)

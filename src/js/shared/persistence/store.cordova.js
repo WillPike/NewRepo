@@ -1,6 +1,7 @@
 window.app.CordovaLocalStorageStore = class CordovaLocalStorageStore {
-  constructor(id) {
+  constructor(id, Logger) {
     this._id = id;
+    this._Logger = Logger;
 
     if (!localStorage) {
       throw Error('Cordova not found.');
@@ -12,6 +13,7 @@ window.app.CordovaLocalStorageStore = class CordovaLocalStorageStore {
       localStorage.removeItem(this._id);
       return Promise.resolve();
     } catch (e) {
+      this._Logger.warn(`Unable to clear store #${this._id}: ${e.message}`);
       return Promise.reject(e);
     }
   }
@@ -21,6 +23,7 @@ window.app.CordovaLocalStorageStore = class CordovaLocalStorageStore {
       var value = JSON.parse(localStorage.getItem(this._id));
       return Promise.resolve(value);
     } catch (e) {
+      this._Logger.warn(`Unable to read from store #${this._id}: ${e.message}`);
       return Promise.reject(e);
     }
   }
@@ -30,6 +33,7 @@ window.app.CordovaLocalStorageStore = class CordovaLocalStorageStore {
       localStorage.setItem(this._id, JSON.stringify(value));
       return Promise.resolve();
     } catch (e) {
+      this._Logger.warn(`Unable to write to store #${this._id}: ${e.message}`);
       return Promise.reject(e);
     }
   }

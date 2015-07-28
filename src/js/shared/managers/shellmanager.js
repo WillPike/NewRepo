@@ -1,5 +1,7 @@
-window.app.ShellManager = class ShellManager {
+window.app.ShellManager = class ShellManager extends app.AbstractManager {
   constructor($sce, DataProvider, ShellModel, Config, Environment, Hosts) {
+    super();
+    
     this.$$sce = $sce;
     this._DataProvider = DataProvider;
     this._ShellModel = ShellModel;
@@ -47,9 +49,11 @@ window.app.ShellManager = class ShellManager {
   }
 
   initialize() {
+    super.initialize();
+
     var self = this;
 
-    this._DataProvider.backgrounds().then(function(response) {
+    var taskBackgrounds = this._DataProvider.backgrounds().then(function(response) {
       self._ShellModel.backgrounds = response.main.map(function(item){
         return {
           media: item.src
@@ -70,7 +74,7 @@ window.app.ShellManager = class ShellManager {
       });
     });
 
-    this._DataProvider.elements().then(function(response) {
+    var taskElements = this._DataProvider.elements().then(function(response) {
       var layout = self._Config.theme.layout;
 
       var elements = {};
@@ -105,6 +109,11 @@ window.app.ShellManager = class ShellManager {
 
       self._ShellModel.elements = elements;
     });
+
+    return Promise.all([
+      taskBackgrounds,
+      taskElements
+    ]);
   }
 
   formatPrice(price) {

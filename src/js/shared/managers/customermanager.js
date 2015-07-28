@@ -1,7 +1,9 @@
-window.app.CustomerManager = class CustomerManager {
+window.app.CustomerManager = class CustomerManager extends app.AbstractManager {
   /* global moment */
 
   constructor(Config, Environment, DtsApi, CustomerModel, SessionModel) {
+    super();
+    
     this._api = DtsApi;
     this._CustomerModel = CustomerModel;
     this._SessionModel = SessionModel;

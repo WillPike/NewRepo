@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .factory('CommandStartup',
-  ['Logger', 'AppCache', 'ChatManager', 'ShellManager', 'CustomerManager', 'DataManager', 'NavigationManager', 'SurveyManager', 'SNAPLocation',
-  (Logger, AppCache, ChatManager, ShellManager, CustomerManager, DataManager, NavigationManager, SurveyManager, SNAPLocation) => {
+  ['Logger', 'AnalyticsManager', 'AppCache', 'ChatManager', 'ShellManager', 'CustomerManager', 'DataManager', 'NavigationManager', 'SessionManager', 'SurveyManager', 'SNAPLocation',
+  (Logger, AnalyticsManager, AppCache, ChatManager, ShellManager, CustomerManager, DataManager, NavigationManager, SessionManager, SurveyManager, SNAPLocation) => {
 
   return function() {
     return new Promise((result, reject) => {
@@ -40,7 +40,11 @@ angular.module('SNAP.controllers')
         CustomerManager.guestLogin();
       }
 
-      return result();    
+      Q.allSettled([
+        AnalyticsManager.initialize(),
+        SessionManager.initialize()
+      ])
+      .then(result, reject);
     });
   };
 }]);

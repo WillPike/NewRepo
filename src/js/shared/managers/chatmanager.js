@@ -1,7 +1,9 @@
-window.app.ChatManager = class ChatManager {
+window.app.ChatManager = class ChatManager extends app.AbstractManager {
   /* global moment, signals */
 
   constructor(AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient) {
+    super();
+    
     var self = this;
 
     this.MESSAGE_TYPES = {

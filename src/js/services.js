@@ -38,8 +38,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('AppCache', ['Logger', (Logger) => {
     return new app.AppCache(Logger);
   }])
-  .factory('AnalyticsModel', ['StorageProvider', 'HeatMap', (StorageProvider, HeatMap) => {
-    return new app.AnalyticsModel(StorageProvider, HeatMap);
+  .factory('AnalyticsModel', ['StorageProvider', 'HeatMap', 'Logger', (StorageProvider, HeatMap, Logger) => {
+    return new app.AnalyticsModel(StorageProvider, HeatMap, Logger);
   }])
   .factory('CartModel', () => {
     return new app.CartModel();
@@ -71,11 +71,11 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('SessionModel', ['StorageProvider', (StorageProvider) => {
     return new app.SessionModel(StorageProvider);
   }])
-  .factory('StorageProvider', () =>  {
+  .factory('StorageProvider', ['Logger', (Logger) =>  {
     return (id) => {
-      return new app.CordovaLocalStorageStore(id);
+      return new app.CordovaLocalStorageStore(id, Logger);
     };
-  })
+  }])
 
   //Managers
 
@@ -108,8 +108,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('NavigationManager', ['$rootScope', '$location', '$window', 'AnalyticsModel', ($rootScope, $location, $window, AnalyticsModel) => {
     return new app.NavigationManager($rootScope, $location, $window, AnalyticsModel);
   }])
-  .factory('OrderManager', ['ChatModel', 'CustomerModel', 'DtsApi', 'OrderModel', (ChatModel, CustomerModel, DtsApi, OrderModel) => {
-    return new app.OrderManager(ChatModel, CustomerModel, DtsApi, OrderModel);
+  .factory('OrderManager', ['ChatModel', 'CustomerModel', 'DtsApi', 'OrderModel', 'Logger', (ChatModel, CustomerModel, DtsApi, OrderModel, Logger) => {
+    return new app.OrderManager(ChatModel, CustomerModel, DtsApi, OrderModel, Logger);
   }])
   .factory('SessionManager', ['SNAPEnvironment', 'AnalyticsModel', 'CustomerModel', 'LocationModel', 'OrderModel', 'SurveyModel', 'StorageProvider', 'Logger', (SNAPEnvironment, AnalyticsModel, CustomerModel, LocationModel, OrderModel, SurveyModel, StorageProvider, Logger) => {
     return new app.SessionManager(SNAPEnvironment, AnalyticsModel, CustomerModel, LocationModel, OrderModel, SurveyModel, StorageProvider, Logger);

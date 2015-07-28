@@ -1,11 +1,14 @@
-window.app.OrderManager = class OrderManager {
-  constructor(ChatModel, CustomerModel, DtsApi, OrderModel) {
+window.app.OrderManager = class OrderManager extends app.AbstractManager {
+  constructor(ChatModel, CustomerModel, DtsApi, OrderModel, Logger) {
+    super();
+    
     var self = this;
 
     this._DtsApi = DtsApi;
     this._ChatModel = ChatModel;
     this._CustomerModel = CustomerModel;
     this._OrderModel = OrderModel;
+    this._Logger = Logger;
 
     this._ChatModel.giftSeatChanged.add(giftSeat => {
       if (self.model.orderCartStash.length === 0) {
@@ -34,6 +37,8 @@ window.app.OrderManager = class OrderManager {
       self.clearCart();
       self.clearCheck();
       self.model.orderTicket = {};
+
+      self._Logger.debug('Order manager reset completed.');
 
       resolve();
     });

@@ -47,6 +47,7 @@
     "fontawesome": "~4.3.0",
     "bxslider-4": "~4.2.5",
     "socketcluster-client": "~2.3.0",
+    "q": "1.0.1",
     "dts-api-client": "~2.0.28"
   },
   "resources": {
@@ -56,6 +57,7 @@
       "normalize-css"
     ],
     "js": [
+      "q/q.js",
       "jquery/dist/jquery.js",
       "jquery.kinetic/jquery.kinetic.js",
       "hammerjs/hammer.js",

@@ -1,5 +1,5 @@
 window.app.AnalyticsModel = class AnalyticsModel {
-  constructor(storageProvider, heatmap) {
+  constructor(storageProvider, heatmap, Logger) {
     var self = this;
     this._data = [
       new app.AnalyticsData('sessions', storageProvider),
@@ -18,6 +18,12 @@ window.app.AnalyticsModel = class AnalyticsModel {
     heatmap.clicked.add(click => {
       self._logClick(click);
     });
+
+    this._Logger = Logger;
+  }
+
+  initialize() {
+    return Q.allSettled(this._datas.map(d => d.initialize()));
   }
 
   logSession(session) {
@@ -102,10 +108,12 @@ window.app.AnalyticsModel = class AnalyticsModel {
     return this._data.clicks;
   }
 
-  clear() {
-    for (var k in this._data) {
-      this._data[k].reset();
-    }
+  get _datas() {
+    return Object.keys(this._data).map(x => this._data[x]);
+  }
+
+  reset() {
+    return Q.allSettled(this._datas.map(d => d.reset()));
   }
 
   _logClick(click) {

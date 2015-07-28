@@ -4,7 +4,11 @@ window.app.AnalyticsData = class AnalyticsData {
     this._name = name;
     this._data = this._defaultValue();
     this._store = storageProvider('snap_analytics_' + name);
-    this._store.read().then(data => self._data = data || self._data);
+  }
+
+  initialize() {
+    var self = this;
+    return this._store.read().then(data => self._data = data || self._data);
   }
 
   get name() {
@@ -17,7 +21,7 @@ window.app.AnalyticsData = class AnalyticsData {
 
   set data(value) {
     this._data = value;
-    store();
+    this.store();
   }
 
   get length() {
@@ -30,15 +34,15 @@ window.app.AnalyticsData = class AnalyticsData {
 
   push(item) {
     this._data.push(item);
-    store();
+    this.store();
   }
 
   reset() {
     this._data = this._defaultValue();
-    store();
+    return this.store();
   }
 
   store() {
-    this._store.write(this._data);
+    return this._store.write(this._data);
   }
 };
