@@ -225,9 +225,11 @@ angular.module('SNAP.controllers')
   );
 
   $scope.$watch('settings.displayBrightness', (value, old) => {
-    if (value === old) {
+    if (!value || value === old) {
       return;
     }
+
+    value = parseInt(value);
 
     ActivityMonitor.activityDetected();
     ManagementService.setDisplayBrightness(value);

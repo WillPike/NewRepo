@@ -69,10 +69,36 @@ window.app.CordovaManagementService = class CordovaManagementService {
   }
 
   getDisplayBrightness() {
-    return Promise.resolve(100);
+    if (!window.brightness) {
+      return Promise.resolve(100);
+    }
+
+    return new Promise((resolve, reject) => {
+      window.brightness.getBrightness(value => {
+        if (value < 0) {
+          return resolve(100);
+        }
+
+        value = parseInt(value * 100);
+        value = Math.min(100, value);
+        value = Math.max(0, value);
+
+        resolve(value);
+      }, reject);
+    });
   }
 
   setDisplayBrightness(value) {
-    return Promise.resolve();
+    if (!value || value < 0 || value > 100) {
+      return Promise.reject();
+    }
+
+    if (!window.brightness) {
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+      window.brightness.setBrightness(value / 100, () => resolve(), reject);
+    });
   }
 };
