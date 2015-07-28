@@ -1,23 +1,29 @@
 angular.module('SNAP.controllers')
-.factory('CommandReset', ['AnalyticsManager', 'ChatManager', 'CustomerManager', 'OrderManager', 'SessionManager', 'SurveyManager', 'ManagementService', 'Logger', function(AnalyticsManager, ChatManager, CustomerManager, OrderManager, SessionManager, SurveyManager, ManagementService, Logger) {
+.factory('CommandReset',
+  ['AnalyticsManager', 'ChatManager', 'CustomerManager', 'OrderManager', 'SessionManager', 'SurveyManager', 'ManagementService', 'Logger',
+  (AnalyticsManager, ChatManager, CustomerManager, OrderManager, SessionManager, SurveyManager, ManagementService, Logger) => {
+    
   return function() {
-    function fail(e) {
-      Logger.warn('Unable to reset properly: ' + e.message);
-      ManagementService.reset();
-    }
+    return new Promise((resolve, reject) => {
+      function fail(e) {
+        Logger.warn(`Unable to reset properly: ${e.message}`);
+        reject(e);
+      }
 
-    SessionManager.endSession();
+      SessionManager.endSession();
 
-    AnalyticsManager.submit().then(function() {
-      OrderManager.reset().then(function() {
-        SurveyManager.reset().then(function() {
-          CustomerManager.logout().then(function() {
-            ChatManager.reset().then(function() {
-              ManagementService.reset();
+      AnalyticsManager.submit().then(() => {
+        OrderManager.reset().then(() => {
+          SurveyManager.reset().then(() => {
+            CustomerManager.logout().then(() => {
+              ChatManager.reset().then(() => {
+                Logger.debug('Reset completed successfully.');
+                resolve();
+              }, fail);
             }, fail);
           }, fail);
         }, fail);
       }, fail);
-    }, fail);
+    });
   };
 }]);

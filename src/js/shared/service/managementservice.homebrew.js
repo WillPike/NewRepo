@@ -1,5 +1,5 @@
 window.app.HomebrewManagementService = class HomebrewManagementService {
-  constructor($resource, SNAPEnvironment) {
+  constructor($resource, SNAPLocation, SNAPEnvironment) {
     this._api = {
       'rotateScreen': $resource('/management/rotate-screen', {}, { query: { method: 'GET' } }),
       'openBrowser': $resource('/management/open-browser', {}, { query: { method: 'GET' } }),
@@ -12,6 +12,7 @@ window.app.HomebrewManagementService = class HomebrewManagementService {
       'getDisplayBrightness': $resource('/management/brightness', {}, { query: { method: 'GET' } }),
       'setDisplayBrightness': $resource('/management/brightness', {}, { query: { method: 'GET' } })
     };
+    this._SNAPLocation = SNAPLocation;
     this._SNAPEnvironment = SNAPEnvironment;
   }
 
@@ -49,19 +50,27 @@ window.app.HomebrewManagementService = class HomebrewManagementService {
     this._api.stopCardReader.query();
   }
 
-  reset() {
+  loadReset() {
     var self = this;
     return new Promise((resolve, reject) => {
       self._api.reset.query().$promise.then(resolve, function() {
-        window.location.assign('/snap/' + encodeURIComponent(self._SNAPEnvironment.platform));
+        self.loadStartup();
       });
+    });
+  }
+
+  loadStartup() {
+    var self = this;
+    return new Promise((resolve, reject) => {
+      window.location.assign(`/snap/${encodeURIComponent(self._SNAPEnvironment.platform)}/`);
     });
   }
 
   loadApplication() {
     var self = this;
     return new Promise((resolve, reject) => {
-      window.location.assign('/snap/' + encodeURIComponent(self._SNAPEnvironment.platform));
+      window.location.assign(`/snap/${encodeURIComponent(self._SNAPEnvironment.platform)}` +
+        `/location/${encodeURIComponent(self._SNAPLocation.token)}`);
     });
   }
 

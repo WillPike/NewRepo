@@ -63,6 +63,18 @@ window.snap.StartupCordovaApplication = class StartupCordovaApplication extends 
 
 //------------------------------------------------------------------------
 //
+//  ResetCordovaApplication
+//
+//------------------------------------------------------------------------
+
+window.snap.ResetCordovaApplication = class ResetCordovaApplication extends snap.CordovaApplication {
+  constructor() {
+    super(new app.ResetApplicationBootstraper());
+  }
+};
+
+//------------------------------------------------------------------------
+//
 //  SnapCordovaApplication
 //
 //------------------------------------------------------------------------

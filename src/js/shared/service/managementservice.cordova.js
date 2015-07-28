@@ -34,7 +34,7 @@ window.app.CordovaManagementService = class CordovaManagementService {
           break;
       }
 
-      window.screen.lockOrientation(orientation);      
+      window.screen.lockOrientation(orientation);
       resolve();
     });
   }
@@ -72,10 +72,17 @@ window.app.CordovaManagementService = class CordovaManagementService {
     return Promise.resolve();
   }
 
-  reset() {
+  loadReset() {
     var self = this;
     return new Promise((resolve, reject) => {
+      window.open(`reset.html`, '_self');
+    });
+  }
 
+  loadStartup() {
+    var self = this;
+    return new Promise((resolve, reject) => {
+      window.open(`startup.html`, '_self');
     });
   }
 

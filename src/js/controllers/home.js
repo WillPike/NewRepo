@@ -4,8 +4,8 @@ angular.module('SNAP.controllers')
 
 angular.module('SNAP.controllers')
 .controller('HomeCtrl',
-  ['$scope', '$timeout', 'ChatManager', 'DataProvider', 'ShellManager', 'CustomerManager', 'OrderManager', 'DialogManager', 'NavigationManager', 'LocationModel', 'SurveyManager', 'SNAPLocation', 'SNAPEnvironment', 'CommandReset',
-  ($scope, $timeout, ChatManager, DataProvider, ShellManager, CustomerManager, OrderManager, DialogManager, NavigationManager, LocationModel, SurveyManager, SNAPLocation, SNAPEnvironment, CommandReset) => {
+  ['$scope', '$timeout', 'ChatManager', 'DataProvider', 'ShellManager', 'CustomerManager', 'OrderManager', 'DialogManager', 'NavigationManager', 'LocationModel', 'SurveyManager', 'SNAPLocation', 'SNAPEnvironment', 'CommandCloseTable',
+  ($scope, $timeout, ChatManager, DataProvider, ShellManager, CustomerManager, OrderManager, DialogManager, NavigationManager, LocationModel, SurveyManager, SNAPLocation, SNAPEnvironment, CommandCloseTable) => {
 
   var HomeMenu = React.createClass({
     render: function() {
@@ -178,8 +178,8 @@ angular.module('SNAP.controllers')
 
   $scope.seatClicked = () => {
     DialogManager.confirm(ALERT_TABLE_RESET).then(() => {
-      DialogManager.startJob();
-      CommandReset();
+      var job = DialogManager.startJob();
+      CommandCloseTable().then(() => DialogManager.endJob(job));
     });
   };
 

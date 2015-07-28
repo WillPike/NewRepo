@@ -150,6 +150,33 @@ window.app.StartupApplicationBootstraper = class StartupApplicationBootstraper e
 
 //------------------------------------------------------------------------
 //
+//  ResetApplicationBootstraper
+//
+//------------------------------------------------------------------------
+
+window.app.ResetApplicationBootstraper = class ResetApplicationBootstraper extends app.ApplicationBootstraper {
+  configure() {
+    return super.configure().then(() => {
+      angular.module('SNAPReset', [
+        'ngRoute',
+        'SNAP.configs',
+        'SNAP.controllers',
+        'SNAP.directives',
+        'SNAP.filters',
+        'SNAP.services'
+      ]).
+      config(() => {});
+    });
+  }
+
+  run() {
+    angular.bootstrap(document, ['SNAPReset']);
+  }
+};
+
+
+//------------------------------------------------------------------------
+//
 //  SnapAuxiliaresApplicationBootstraper
 //
 //------------------------------------------------------------------------

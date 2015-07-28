@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('NavigationCtrl',
-  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataProvider', 'DialogManager', 'NavigationManager', 'OrderManager', 'CommandReset', 'CommandFlipScreen', 'WebBrowser', 'SNAPEnvironment',
-  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataProvider, DialogManager, NavigationManager, OrderManager, CommandReset, CommandFlipScreen, WebBrowser, SNAPEnvironment) => {
+  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataProvider', 'DialogManager', 'NavigationManager', 'OrderManager', 'CommandCloseTable', 'CommandFlipScreen', 'WebBrowser', 'SNAPEnvironment',
+  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataProvider, DialogManager, NavigationManager, OrderManager, CommandCloseTable, CommandFlipScreen, WebBrowser, SNAPEnvironment) => {
 
   $scope.menus = [];
 
@@ -36,8 +36,8 @@ angular.module('SNAP.controllers')
 
     if (CustomerManager.model.isEnabled && !CustomerManager.model.isAuthenticated) {
       DialogManager.confirm(ALERT_TABLE_RESET).then(() => {
-        DialogManager.startJob();
-        CommandReset();
+        var job = DialogManager.startJob();
+        CommandCloseTable().then(() => DialogManager.endJob(job));
       });
       return;
     }
@@ -77,8 +77,8 @@ angular.module('SNAP.controllers')
 
   $scope.openSettings = () => {
     DialogManager.confirm(ALERT_TABLE_RESET).then(() => {
-      DialogManager.startJob();
-      CommandReset();
+      var job = DialogManager.startJob();
+      CommandCloseTable().then(() => DialogManager.endJob(job));
     });
   };
 

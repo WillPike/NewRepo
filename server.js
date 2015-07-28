@@ -26,6 +26,7 @@ app.locals.pretty = true;
 app.set('bower', bower);
 
 app.get('/', function(req, res) { res.redirect('/startup.html'); });
+app.get('/reset.html', function(req, res) { res.render('reset'); });
 app.get('/startup.html', function(req, res) { res.render('startup'); });
 app.get('/snap.html', function(req, res) { res.render('snap'); });
 
