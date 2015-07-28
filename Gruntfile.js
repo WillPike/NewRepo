@@ -156,9 +156,10 @@ module.exports = function(grunt) {
         updateConfigs: ['pkg', 'bwr'],
         commitFiles: ['-a'],
         commitMessage: 'Build #%VERSION%',
+        tagName: '%VERSION%',
         commit: true,
         push: true,
-        tagName: '%VERSION%'
+        pushTo: 'origin'        
       }
     }
   });
