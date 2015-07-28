@@ -154,10 +154,10 @@ module.exports = function(grunt) {
       options: {
         files: ['package.json','bower.json'],
         updateConfigs: ['pkg', 'bwr'],
-        commitFiles: ['-a'],        
+        commitFiles: ['-a'],
         commitMessage: 'Build #%VERSION%',
         commit: true,
-        push: false,
+        push: true,
         tagName: '%VERSION%'
       }
     }
