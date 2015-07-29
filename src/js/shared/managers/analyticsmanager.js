@@ -34,7 +34,7 @@ window.app.AnalyticsManager = class AnalyticsManager extends app.AbstractManager
 
     return this.reset();
 
-    var self = this;
+    /*var self = this;
     return new Promise((resolve, reject) => {
       self._TelemetryService.submitTelemetry({
         sessions: self.model.sessions.data,
@@ -52,6 +52,6 @@ window.app.AnalyticsManager = class AnalyticsManager extends app.AbstractManager
         self._Logger.warn(`Unable to submit analytics data: ${e.message}`);
         reject(e);
       });
-    });
+    });*/
   }
 };
