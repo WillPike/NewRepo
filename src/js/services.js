@@ -79,9 +79,14 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
 
   //Managers
 
-  .factory('ActivityMonitor', ['$rootScope', '$timeout', ($rootScope, $timeout) => {
+  .factory('ActivityMonitor', ['$rootScope', '$timeout', 'SNAPEnvironment', ($rootScope, $timeout, SNAPEnvironment) => {
     var monitor = new app.ActivityMonitor($rootScope, $timeout);
     monitor.timeout = 30000;
+
+    if (SNAPEnvironment.debug) {
+      monitor.timeout *= 9000;
+    }
+
     return monitor;
   }])
   .factory('AnalyticsManager', ['TelemetryService', 'AnalyticsModel', 'Logger', (TelemetryService, AnalyticsModel, Logger) => {

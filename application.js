@@ -16,6 +16,8 @@ window.snap.CordovaApplication = class CordovaApplication {
       throw new Error('No application provided.');
     }
 
+    application.environment.debug = true;
+
     this._application = application;
   }
 

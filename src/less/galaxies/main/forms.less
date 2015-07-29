@@ -83,7 +83,6 @@
 
 .form h1 {
   font-size:3em;
-  color:#fff;
   font-weight:normal;
   line-height:1.5em;
   text-align:center;
@@ -92,7 +91,6 @@
 
 .form h2 {
   font-size:2.6em;
-  color:#fff;
   font-weight:normal;
   line-height:1.5em;
   text-align:center;
@@ -101,7 +99,6 @@
 
 .form h3 {
   font-size:2.6em;
-  color:#fff;
   font-weight:normal;
   line-height:1.5em;
   text-align:center;
@@ -114,9 +111,29 @@
   padding:0 1em 1em;
 }
 
+.form {
+  h1, h2, h3 {
+    color:#fff;
+  }
+}
+
 .form h3 span {
   color:#8d8d8d;
   font-size:0.7em;
+}
+
+.screen .form {
+  h1, h2, h3 {
+    color:@form-title-color;
+
+    span {
+      display:block;
+      width:80%;
+      margin-left:auto;
+      margin-right:auto;
+      border-bottom-color: @form-border-color;
+    }
+  }
 }
 
 .form p {

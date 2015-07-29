@@ -142,6 +142,11 @@ angular.module('SNAP.controllers')
     $scope.options.seat = seat ? seat.name : 'Table';
   });
 
+  $scope.customerName = CustomerManager.customerName;
+  CustomerManager.model.profileChanged.add(() => {
+    $timeout(() => $scope.customerName = CustomerManager.customerName);
+  });
+
   //------------------------------------------------------------------------
   //
   //  Private methods

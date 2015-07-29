@@ -1,0 +1,51 @@
+@checkout-total-width: 58em;
+@checkout-main-left: @checkout-total-width + @navigation-controls-spacing + @navigation-spacing;
+
+.checkout-body-total {
+  left:0;
+  width: @checkout-total-width;
+}
+
+.checkout-body-main {
+  right:0;
+  left:@checkout-main-left;
+}
+
+.checkout-tip-table {
+  width:100%;
+  border-spacing: 2em;
+  border-collapse: separate;
+
+  td {
+    width:33%;
+    padding:0;
+
+    .button {
+      width:100%;
+    }
+  }
+
+  tr:first-child .button {
+    height:10em;
+    padding-left:0;
+    padding-right:0;
+  }
+
+  .button {
+    b {
+      display:block;
+      font-size:2.0em;
+    }
+
+    span {
+      display:block;
+      font-size:0.75em;
+      font-weight:@font-weight-normal;
+    }
+  }
+}
+
+#checkout-block-tip, #checkout-block-customtip {
+  width:65em;
+  margin:4em auto 0;
+}
