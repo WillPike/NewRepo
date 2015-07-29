@@ -8,9 +8,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:digitaltouch/dts-snap-web.git"
+    "url": "git://bitbucket.org/digitaltouch/dts-snap-web.git"
   },
-  "dependencies": {    
+  "dependencies": {
   },
   "devDependencies": {
     "body-parser": "^1.1.2",
