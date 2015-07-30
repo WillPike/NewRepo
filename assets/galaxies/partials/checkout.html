@@ -13,7 +13,27 @@
   <div class="screen-body border">
     <div class="screen-body-part checkout-body-total" ng-show="options.step !== STEP_CHECK_SPLIT">
       <form class="form">
-        <h1><span>Total</span></h1>
+        <table class="checkout-subtotal">
+          <tr>
+            <td>Subtotal</td>
+            <td>{{formatPrice(current.subtotal)}}</td>
+          </tr>
+          <tr>
+            <td>Tax</td>
+            <td>{{formatPrice(current.tax)}}</td>
+          </tr>
+          <tr ng-if="current.tip > 0">
+            <td>Tip</td>
+            <td>{{formatPrice(current.tip)}}</td>
+          </tr>
+        </table>
+
+        <table class="checkout-total">
+          <tr>
+            <td>Total</td>
+            <td>{{formatPrice(current.tip + current.subtotal + current.tax)}} <i class="currency" ng-show="currency"> {{currency}}</i></td>
+          </tr>
+        </table>
       </form>
     </div>
   </div>

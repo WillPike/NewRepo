@@ -147,6 +147,9 @@ angular.module('SNAP.controllers')
     $timeout(() => $scope.customerName = CustomerManager.customerName);
   });
 
+  $scope.currency = ShellManager.model.currency;
+  ShellManager.model.currencyChanged.add(currency => $timeout(() => $scope.currency = currency));
+
   //------------------------------------------------------------------------
   //
   //  Private methods
