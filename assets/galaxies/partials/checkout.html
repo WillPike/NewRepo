@@ -4,7 +4,7 @@
     <ol>
       <li ng-class="{ disabled: options.step !== STEP_CHECK_SPLIT }">Split</li>
       <li ng-class="{ disabled: options.step !== STEP_TIPPING }">Tip</li>
-      <li ng-class="{ disabled: options.step !== STEP_PAYMENT_METHOD }">Pay</li>
+      <li ng-class="{ disabled: options.step !== STEP_PAYMENT }">Pay</li>
       <li ng-class="{ disabled: options.step !== STEP_SIGNATURE }">E-Sign</li>
       <li ng-class="{ disabled: options.step !== STEP_RECEIPT }">Receipt</li>
     </ol>
@@ -45,5 +45,13 @@
     ng-show="options.step === STEP_TIPPING"
     ng-controller="CheckoutTipCtrl"
     ng-include src="getPartialUrl('checkout-tip')"/>
+
+  <!-- Step: payment -->
+
+  <div
+    class="screen-body"
+    ng-show="options.step === STEP_PAYMENT"
+    ng-controller="CheckoutPaymentCtrl"
+    ng-include src="getPartialUrl('checkout-payment')"/>
 
 </div>

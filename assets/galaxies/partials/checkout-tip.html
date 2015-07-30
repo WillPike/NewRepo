@@ -1,5 +1,5 @@
 <div class="screen-body-part checkout-body-main">
-  <form id="checkout-block-tip" class="form" ng-show="!tipEditorOpen">
+  <form id="checkout-block-tip" class="form checkout-right-block" ng-show="!tipEditorOpen">
     <h2><span>Tip amount</span></h2>
     <table class="checkout-tip-table">
       <tr>
@@ -16,7 +16,7 @@
     </table>
   </form>
 
-  <form id="checkout-block-customtip" class="form" ng-show="tipEditorOpen" ng-submit="applyTip()">
+  <form id="checkout-block-customtip" class="form checkout-right-block" ng-show="tipEditorOpen" ng-submit="applyTip()">
     <h2><span>Custom tip amount</span></h2>
     <ul>
       <li><output id="checkout-tip-output" class="output" for="checkout-tip-input">{{formatPrice(current.tip)}}</output></li>

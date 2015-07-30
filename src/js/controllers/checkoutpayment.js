@@ -1,5 +1,5 @@
 angular.module('SNAP.controllers')
-.controller('CheckoutMethodCtrl',
+.controller('CheckoutPaymentCtrl',
   ['$scope', '$timeout', 'CustomerModel', 'CardReader', 'DialogManager', 'OrderManager', 'Logger',
   ($scope, $timeout, CustomerModel, CardReader, DialogManager, OrderManager, Logger) => {
 

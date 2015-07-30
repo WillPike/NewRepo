@@ -45,7 +45,7 @@
   }
 }
 
-#checkout-block-tip, #checkout-block-customtip {
+.checkout-right-block {
   width:65em;
   margin:4em auto 0;
 }
@@ -83,10 +83,32 @@
   }
 }
 
+.checkout-subtotal {
+  margin-top:2em;
+}
+
 .checkout-total td {
   font-size:3.3em;
 }
 
 .checkout-total td:first-child {
   color: @highlight-text-color;
+}
+
+.checkout-cardreader {
+  width:100%;
+  height:36em;
+  position:relative;
+  background: url('@{images}/image-cardreader.png') no-repeat center top;
+}
+
+.checkout-cardreader span {
+  display:block;
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  text-align:center;
+  font-size:2.3em;
+  color: @hint-text-color;
 }

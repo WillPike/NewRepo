@@ -16,7 +16,7 @@ angular.module('SNAP.controllers')
 
   //Apply the selected tip amount and proceed further
   $scope.applyTip = function() {
-    $scope.options.step = $scope.STEP_PAYMENT_METHOD;
+    $scope.options.step = $scope.STEP_PAYMENT;
     $scope.tipEditorOpen = false;
   };
 

@@ -39,7 +39,7 @@ angular.module('SNAP.controllers')
   //-----------------------------------------------
 
   $scope.STEP_CHECK_SPLIT = 0;
-  $scope.STEP_PAYMENT_METHOD = 1;
+  $scope.STEP_PAYMENT = 1;
   $scope.STEP_TIPPING = 2;
   $scope.STEP_SIGNATURE = 3;
   $scope.STEP_RECEIPT = 4;

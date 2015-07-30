@@ -1,0 +1,17 @@
+<div class="screen-body-part checkout-body-main" ng-show="current.payment_method !== PAYMENT_METHOD_CARD">
+  <form class="form checkout-right-block">
+    <h2><span>Choose payment method</span></h2>
+    <ul class="vertical">
+      <li><button class="button" type="button" ng-click="payCard()">Card</button></li>
+      <li class="hr"><span>or</span></li>
+      <li><button class="button" type="button" ng-click="payCash()">Cash</button></li>
+    </ul>
+  </form>
+</div>
+
+<div class="screen-body-part checkout-body-main" ng-show="current.payment_method === PAYMENT_METHOD_CARD">
+  <form class="form checkout-right-block">
+    <h2><span>Swipe card when ready</span></h2>
+    <div class="checkout-cardreader"><span>Swiper can be found on side of table</span></div>
+  </form>
+</div>
