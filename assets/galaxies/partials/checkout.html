@@ -54,4 +54,12 @@
     ng-controller="CheckoutPaymentCtrl"
     ng-include src="getPartialUrl('checkout-payment')"/>
 
+  <!-- Step: signature -->
+
+  <div
+    class="screen-body"
+    ng-show="options.step === STEP_SIGNATURE"
+    ng-controller="CheckoutSignatureCtrl"
+    ng-include src="getPartialUrl('checkout-signature')"/>
+
 </div>
