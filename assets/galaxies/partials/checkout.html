@@ -11,7 +11,7 @@
   </div>
 
   <div class="screen-body border">
-    <div class="screen-body-part checkout-body-total" ng-show="options.step !== STEP_CHECK_SPLIT">
+    <div class="screen-body-part checkout-body-total" ng-show="options.step !== STEP_CHECK_SPLIT || options.check_split !== CHECK_SPLIT_BY_ITEMS">
       <form class="form">
         <table class="checkout-subtotal">
           <tr>
@@ -38,6 +38,14 @@
     </div>
   </div>
 
+  <!-- Step: check splitting -->
+
+  <div
+    class="screen-body"
+    ng-show="options.step === STEP_CHECK_SPLIT"
+    ng-controller="CheckoutSplitCtrl"
+    ng-include src="getPartialUrl('checkout-split')"/>
+
   <!-- Step: tipping -->
 
   <div
@@ -61,5 +69,13 @@
     ng-show="options.step === STEP_SIGNATURE"
     ng-controller="CheckoutSignatureCtrl"
     ng-include src="getPartialUrl('checkout-signature')"/>
+
+  <!-- Step: receipt -->
+
+  <div
+    class="screen-body"
+    ng-show="options.step === STEP_RECEIPT"
+    ng-controller="CheckoutReceiptCtrl"
+    ng-include src="getPartialUrl('checkout-receipt')"/>
 
 </div>

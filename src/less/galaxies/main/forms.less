@@ -1,4 +1,5 @@
 @form-font-size: 2.5em;
+@vertical-screen-form-margin: @vertical-form-margin * 3;
 
 .button {
   text-transform:uppercase;
@@ -64,6 +65,15 @@
   display: table-cell;
 }
 
+.form ul.vertical li {
+  text-align:center;
+  margin-bottom:@vertical-form-margin;
+}
+
+.screen .form .vertical li {
+  margin-bottom:@vertical-screen-form-margin;
+}
+
 .form .button {
   display: inline;
   width:12em;
@@ -74,11 +84,28 @@
   padding:0.75em 1.25em;
 }
 
-.form.vertical .button, .form.vertical input[type='range'] {
-  display:block;
-  clear:both;
-  width:100%;
-  margin:0 auto @vertical-form-margin;
+.vertical {
+  .button, input {
+    display:block;
+    clear:both;
+    margin:0 auto @vertical-form-margin;
+  }
+
+  input {
+    width:90% !important;
+  }
+}
+
+.screen .vertical {
+  .button, input {
+    margin-bottom:@vertical-screen-form-margin;
+  }
+}
+
+.form.vertical {
+  .button {
+    width:100%;
+  }
 }
 
 .form h1 {
@@ -114,6 +141,13 @@
 .form {
   h1, h2, h3 {
     color:#fff;
+  }
+
+  input[type='text'], input[type='password'], input[type='email'] {
+    width: 100%;
+    padding:0.33em 0;
+    margin:0;
+    font-size:3em;
   }
 }
 
@@ -231,7 +265,6 @@ button.clickable {
   color:@hint-text-color;
   font-weight:@font-weight-bold;
   text-align:center;
-  padding:1em 0;
 }
 
 .currency {

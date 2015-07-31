@@ -3,6 +3,16 @@ angular.module('SNAP.controllers')
   ['$scope', '$timeout', 'OrderManager',
   ($scope, $timeout, OrderManager) => {
 
+  //Open guest count editor
+  $scope.editGuestCount = function(type) {
+    $scope.guestEditorType = type;
+  };
+
+  //Close guest count editor
+  $scope.cancelEditGuestCount = function() {
+    $scope.guestEditorType = undefined;
+  };
+
   //Split the current order in the selected way
   $scope.splitCheck = function(type) {
     var i, data = [];
@@ -40,12 +50,13 @@ angular.module('SNAP.controllers')
 
     $scope.$parent.data = data;
     $scope.options.check_split = type;
+    $scope.guestEditorType = undefined;
   };
 
   //Move an item to the current check
   $scope.addToCheck = function(entry) {
     $scope.split_items = $scope.split_items
-    .map(function(item) {
+    .map(item => {
       if (item.request !== entry.request) {
         return item;
       }
@@ -57,12 +68,12 @@ angular.module('SNAP.controllers')
 
       return null;
     })
-    .filter(function(item) { return item != null; });
+    .filter(item => item != null);
 
     var exists = false;
 
     $scope.current.items = $scope.current.items
-    .map(function(item) {
+    .map(item => {
       if (item.request === entry.request) {
         exists = true;
         item.quantity++;
@@ -83,7 +94,7 @@ angular.module('SNAP.controllers')
   //Remove an item from the current check
   $scope.removeFromCheck = function(entry) {
     $scope.current.items = $scope.current.items
-    .map(function(item) {
+    .map(item => {
       if (item.request !== entry.request) {
         return item;
       }
@@ -95,12 +106,12 @@ angular.module('SNAP.controllers')
 
       return null;
     })
-    .filter(function(item) { return item != null; });
+    .filter(item => item != null);
 
     var exists = false;
 
     $scope.split_items = $scope.split_items
-    .map(function(item) {
+    .map(item => {
       if (item.request === entry.request) {
         exists = true;
         item.quantity++;
@@ -122,8 +133,8 @@ angular.module('SNAP.controllers')
   $scope.addAllToCheck = function() {
     $scope.split_items.forEach($scope.addToCheck);
 
-    $scope.split_items.forEach(function(item) {
-      $scope.current.items.forEach(function(newitem) {
+    $scope.split_items.forEach(item => {
+      $scope.current.items.forEach(newitem => {
         if (newitem.request === item.request) {
           newitem.quantity += item.quantity;
         }
@@ -137,8 +148,8 @@ angular.module('SNAP.controllers')
   $scope.removeAllFromCheck = function() {
     $scope.current.items.forEach($scope.removeFromCheck);
 
-    $scope.current.items.forEach(function(item) {
-      $scope.split_items.forEach(function(newitem) {
+    $scope.current.items.forEach(item => {
+      $scope.split_items.forEach(newitem => {
         if (newitem.request === item.request) {
           newitem.quantity += item.quantity;
         }
@@ -159,7 +170,7 @@ angular.module('SNAP.controllers')
       $scope.addAllToCheck();
     }
 
-    $timeout(function() {
+    $timeout(() => {
       $scope.$parent.data = $scope.$parent.data.filter(function(check) {
         return check.items.length > 0;
       });
@@ -176,7 +187,7 @@ angular.module('SNAP.controllers')
       return;
     }
 
-    $timeout(function() {
+    $timeout(() => {
       $scope.options.check_split = $scope.CHECK_SPLIT_NONE;
     });
   });

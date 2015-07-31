@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('CheckoutCtrl',
-  ['$scope', '$rootScope', '$timeout', 'CustomerManager', 'OrderManager', 'DialogManager', 'NavigationManager', 'SessionManager', 'ShellManager', 'LocationModel', 'SurveyManager',
-  ($scope, $rootScope, $timeout, CustomerManager, OrderManager, DialogManager, NavigationManager, SessionManager, ShellManager, LocationModel, SurveyManager) => {
+  ['$scope', '$timeout', 'CustomerManager', 'OrderManager', 'DialogManager', 'NavigationManager', 'SessionManager', 'ShellManager', 'LocationModel', 'SurveyManager',
+  ($scope, $timeout, CustomerManager, OrderManager, DialogManager, NavigationManager, SessionManager, ShellManager, LocationModel, SurveyManager) => {
 
   //------------------------------------------------------------------------
   //
@@ -64,7 +64,7 @@ angular.module('SNAP.controllers')
   var data = $scope.$watchAsProperty('data');
   data
   .changes()
-  .subscribe(function(value) {
+  .subscribe(value => {
     if (value.value) {
       var data = value.value();
       $scope.options.count = data.length;
@@ -74,10 +74,10 @@ angular.module('SNAP.controllers')
   });
 
   //Maximum number of guests
-  $scope.options.guest_count_max = Math.max(
+  $scope.options.guest_count_max = 9;/*Math.max(
     SessionManager.guestCount,
     OrderManager.model.orderCheck.reduce((i, item) => i + item.quantity, 0)
-  );
+  );*/
 
   //Number of guests
   $scope.options.guest_count = SessionManager.guestCount;
@@ -89,7 +89,7 @@ angular.module('SNAP.controllers')
   $scope.options.index = 0;
   var index = $scope.$watchAsProperty('options.index');
   Bacon.combineAsArray(index, data)
-  .subscribe(function() {
+  .subscribe(() => {
     $scope.current = $scope.data[$scope.options.index];
 
     if (CustomerManager.model.isAuthenticated && !CustomerManager.model.isGuest) {
@@ -120,7 +120,7 @@ angular.module('SNAP.controllers')
   var step = $scope.$watchAsProperty('options.step');
   step
     .skipDuplicates()
-    .subscribe(function(value) {
+    .subscribe(value => {
       if (!value.value) {
         return;
       }
@@ -168,7 +168,7 @@ angular.module('SNAP.controllers')
       return;
     }
 
-    $timeout(function() {
+    $timeout(() => {
       $scope.options.index++;
       $scope.options.step = $scope.STEP_TIPPING;
     });
