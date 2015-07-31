@@ -1,7 +1,9 @@
 angular.module('SNAP.controllers')
 .controller('CheckoutReceiptCtrl',
-  ['$scope', '$timeout', 'DialogManager', 'OrderManager', 
+  ['$scope', '$timeout', 'DialogManager', 'OrderManager',
   ($scope, $timeout, DialogManager, OrderManager) => {
+
+  $scope.emailEditorOpen = false;
 
   //Choose to have no receipt
   $scope.receiptNone = function() {
@@ -35,6 +37,11 @@ angular.module('SNAP.controllers')
     requestReceipt();
   };
 
+  //Open an e-mail editor
+  $scope.receiptEditEmail = function() {
+    $scope.emailEditorOpen = true;
+  };
+
   function requestReceipt() {
     var item = $scope.current;
 
@@ -55,10 +62,15 @@ angular.module('SNAP.controllers')
     OrderManager.requestReceipt(request).then(function() {
       DialogManager.endJob(job);
 
-      $timeout(function() {
+      $timeout(() => {
         $scope.options.step = $scope.STEP_COMPLETE;
+        $scope.emailEditorOpen = false;
       });
     }, function(e) {
+      $timeout(() => {
+        $scope.emailEditorOpen = false;
+      });
+
       DialogManager.endJob(job);
       DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
     });
