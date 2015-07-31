@@ -63,6 +63,8 @@
 
 .form ul.horizontal li {
   display: table-cell;
+  width:50%;
+  vertical-align: center;
 }
 
 .form ul.vertical li {
@@ -74,10 +76,12 @@
   margin-bottom:@vertical-screen-form-margin;
 }
 
-.form .button {
-  display: inline;
-  width:12em;
-  border-radius: 0.25em;
+.form {
+  .button {
+    display: inline;
+    width:12em;
+    border-radius: 0.25em;
+  }
 }
 
 .form.huge .button {
@@ -85,19 +89,23 @@
 }
 
 .vertical {
-  .button, input {
+  .button, .email, .range {
     display:block;
     clear:both;
     margin:0 auto @vertical-form-margin;
   }
 
-  input {
+  .range {
     width:90% !important;
+  }
+
+  .email {
+    width:70% !important;
   }
 }
 
 .screen .vertical {
-  .button, input {
+  .button, .range, .email {
     margin-bottom:@vertical-screen-form-margin;
   }
 }
@@ -141,13 +149,6 @@
 .form {
   h1, h2, h3 {
     color:#fff;
-  }
-
-  input[type='text'], input[type='password'], input[type='email'] {
-    width: 100%;
-    padding:0.33em 0;
-    margin:0;
-    font-size:3em;
   }
 }
 

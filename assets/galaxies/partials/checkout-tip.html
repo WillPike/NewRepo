@@ -20,7 +20,7 @@
     <h2><span>Custom tip amount</span></h2>
     <ul class="vertical">
       <li><output id="checkout-tip-output" class="output" for="checkout-tip-input">{{formatPrice(current.tip)}}</output></li>
-      <li><input id="checkout-tip-input" type="range" ng-model="data.tipAmount" min="0.0" max="0.5" step="0.05" /></li>
+      <li><input id="checkout-tip-input" class="range" type="range" ng-model="data.tipAmount" min="0.0" max="0.5" step="0.05" /></li>
     </ul>
     <ul class="horizontal">
       <li><button class="button secondary" type="button" ng-click="cancelEditTip()">Back</button></li>

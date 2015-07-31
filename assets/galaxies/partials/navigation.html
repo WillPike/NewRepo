@@ -43,10 +43,10 @@
   </form>
 
   <form id="page-navigation-settings" class="form vertical page-navigation-dropmenu" ng-show="settingsOpen">
-    <input id="page-navigation-brightness" type="range" min="10" max="100" step="10" ng-model="settings.displayBrightness" />
+    <input id="page-navigation-brightness" class="range" type="range" min="10" max="100" step="10" ng-model="settings.displayBrightness" />
     <label for="page-navigation-brightness">Brightness<span class="range-plus">+</span><span class="range-minus">-</span></label>
     <hr/>
-    <input id="page-navigation-volume" type="range" min="0" max="100" step="10" ng-model="settings.soundVolume" />
+    <input id="page-navigation-volume" class="range" type="range" min="0" max="100" step="10" ng-model="settings.soundVolume" />
     <label for="page-navigation-volume">Volume<span class="range-plus">+</span><span class="range-minus">-</span></label>
     <hr/>
     <h1 id="page-navigation-seat" ng-click="resetTable()">{{seatName}}</h1>
