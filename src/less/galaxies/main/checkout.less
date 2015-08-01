@@ -1,9 +1,12 @@
 @checkout-total-width: 58em;
 @checkout-main-left: @checkout-total-width + @navigation-controls-spacing + @navigation-spacing;
+@scheckout-checks-y: @screen-body-y + 4em;
 
 .screen-checkout-checks {
+  left:@screen-padding-left !important;
   right: auto !important;
   width: @checkout-total-width;
+  top:@scheckout-checks-y !important;
 }
 
 .checkout-body-total {
@@ -58,6 +61,10 @@
 .checkout-right-container {
   width:100%;
   margin:4em auto 0;
+
+  .horizontal {
+    width:60%;
+  }
 }
 
 #checkout-tip-output {

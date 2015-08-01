@@ -1,7 +1,32 @@
 angular.module('SNAP.controllers')
-.controller('CheckoutSplitCtrl',
-  ['$scope', '$timeout', 'OrderManager',
-  ($scope, $timeout, OrderManager) => {
+.controller('GalaxiesCheckoutSplitCtrl',
+  ['$scope', '$timeout', 'CustomerManager', 'OrderManager',
+  ($scope, $timeout, CustomerManager, OrderManager) => {
+
+  var originalData;
+
+  //Open guest count editor
+  $scope.editGuestCount = function(type) {
+    if (type === $scope.CHECK_SPLIT_EVENLY || type === $scope.CHECK_SPLIT_BY_ITEMS) {
+      originalData = $scope.$parent.data;
+      $scope.options.guest_count = $scope.options.guest_count_min;
+    }
+
+    $scope.guestEditorType = type;
+  };
+
+  //Close guest count editor
+  $scope.cancelEditGuestCount = function() {
+    $scope.guestEditorType = undefined;
+    originalData = undefined;
+  };
+
+  //Close item split page
+  $scope.cancelSplit = function() {
+    $scope.guestEditorType = $scope.options.check_split = undefined;
+    $scope.$parent.data = originalData;
+    originalData = undefined;
+  };
 
   //Split the current order in the selected way
   $scope.splitCheck = function(type) {
@@ -22,6 +47,7 @@ angular.module('SNAP.controllers')
 
       for (i = 0; i < $scope.options.guest_count; i++) {
         data.push({
+          name: `Check 0${i + 1}`,
           subtotal: Math.round((subtotal / $scope.options.guest_count) * 100) / 100,
           tax: Math.round((tax / $scope.options.guest_count) * 100) / 100
         });
@@ -32,15 +58,31 @@ angular.module('SNAP.controllers')
     else if (type === $scope.CHECK_SPLIT_BY_ITEMS) {
       for (i = 0; i < $scope.options.guest_count; i++) {
         data.push({
+          name: `Check 0${i + 1}`,
           items: []
         });
       }
 
       $scope.split_items = OrderManager.copyItems(OrderManager.model.orderCheck);
+      data[0].items = data[0].items.concat($scope.split_items);
+      data[0].items.forEach(item => item.check = data[0]);
     }
 
     $scope.$parent.data = data;
     $scope.options.check_split = type;
+    $scope.guestEditorType = undefined;
+  };
+
+  $scope.getModifiers = entry => {
+    if (!entry.modifiers) {
+      return [];
+    }
+
+    return entry.modifiers.reduce((result, category) => {
+      let modifiers = category.modifiers.filter(modifier => modifier.isSelected);
+      result = result.concat(modifiers);
+      return result;
+    }, []);
   };
 
   //Move an item to the current check

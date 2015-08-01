@@ -1,6 +1,6 @@
 <div id="screen-checkout" class="screen" ng-show="state === STATE_CART">
   <div class="screen-title">
-    <h1>{{customerName}} Bill</h1>
+    <h1>{{checkName}}</h1>
     <ol>
       <li ng-class="{ disabled: options.step !== STEP_CHECK_SPLIT }">Split</li>
       <li ng-class="{ disabled: options.step !== STEP_TIPPING }">Tip</li>
@@ -43,7 +43,7 @@
   <div
     class="screen-body"
     ng-show="options.step === STEP_CHECK_SPLIT"
-    ng-controller="CheckoutSplitCtrl"
+    ng-controller="GalaxiesCheckoutSplitCtrl"
     ng-include src="getPartialUrl('checkout-split')"/>
 
   <!-- Step: tipping -->
@@ -79,3 +79,22 @@
     ng-include src="getPartialUrl('checkout-receipt')"/>
 
 </div>
+
+<form class="form vertical screen-floater screen-checkout-checks" ng-show="options.step === STEP_CHECK_SPLIT && options.check_split === CHECK_SPLIT_BY_ITEMS">
+  <table class="table zebra">
+    <thead>
+      <tr>
+        <th class="name">Name</th>
+        <th class="amount">Items</th>
+        <th class="price">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="check in data">
+        <td class="name"><h3>{{check.name}}</h3></td>
+        <td class="amount"><h3>{{check.items.length}}</h3></td>
+        <td class="price"><h3>{{formatPrice(calculateTotalPrice(check.items))}}</h3></td>
+      </tr>
+    </tbody>
+  </table>
+</form>

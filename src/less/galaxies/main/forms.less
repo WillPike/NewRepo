@@ -43,7 +43,7 @@
   opacity:.50;
 }
 
-.form ul {
+.form ul, form ul.horizontal {
   text-align: center;
   list-style-type: none;
   display: table;
@@ -53,21 +53,28 @@
   padding:0;
 }
 
-.form ul li {
-  // display: table-row;
+.form ul.horizontal, form ul.horizontal {
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:@vertical-form-margin;
+}
+
+
+.screen .form ul.horizontal {
+  margin-bottom:@vertical-screen-form-margin;
 }
 
 .form ul.horizontal {
   text-align:center;
 }
 
-.form ul.horizontal li {
+.form ul.horizontal li, form ul.horizontal li {
   display: table-cell;
   width:50%;
   vertical-align: center;
 }
 
-.form ul.vertical li {
+.form ul.vertical li, form ul.vertical li {
   text-align:center;
   margin-bottom:@vertical-form-margin;
 }
@@ -76,7 +83,7 @@
   margin-bottom:@vertical-screen-form-margin;
 }
 
-.form {
+.form, form {
   .button {
     display: inline;
     width:12em;
@@ -116,7 +123,7 @@
   }
 }
 
-.form h1 {
+.form h1, form h1.title {
   font-size:3em;
   font-weight:normal;
   line-height:1.5em;
@@ -124,7 +131,7 @@
   margin-bottom:4em;
 }
 
-.form h2 {
+.form h2, form h2.title {
   font-size:2.6em;
   font-weight:normal;
   line-height:1.5em;
@@ -132,7 +139,7 @@
   margin-bottom:2em;
 }
 
-.form h3 {
+.form h3, form h3.title {
   font-size:2.6em;
   font-weight:normal;
   line-height:1.5em;

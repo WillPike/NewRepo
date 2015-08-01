@@ -171,6 +171,10 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
     });
   }
 
+  copyItems(items) {
+    return items.slice(0).map(item => item.clone());
+  }
+
   calculatePrice(entry) {
     var modifiers = entry.modifiers.reduce((total, category) => {
       return total + category.modifiers.reduce((total, modifier) => {

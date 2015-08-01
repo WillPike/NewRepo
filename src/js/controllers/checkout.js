@@ -73,6 +73,9 @@ angular.module('SNAP.controllers')
     $scope.options.index = 0;
   });
 
+  //Minimum number of guests
+  $scope.options.guest_count_min = 2;
+
   //Maximum number of guests
   $scope.options.guest_count_max = 9;/*Math.max(
     SessionManager.guestCount,
@@ -107,6 +110,10 @@ angular.module('SNAP.controllers')
     if (!$scope.current.tip) {
       $scope.current.tip = 0;
     }
+
+    $scope.checkName = $scope.current.name && $scope.options.step !== $scope.STEP_CHECK_SPLIT ?
+     $scope.current.name :
+     `${CustomerManager.customerName} Bill`;
   });
 
   //-----------------------------------------------
@@ -142,13 +149,10 @@ angular.module('SNAP.controllers')
     $scope.options.seat = seat ? seat.name : 'Table';
   });
 
-  $scope.customerName = CustomerManager.customerName;
-  CustomerManager.model.profileChanged.add(() => {
-    $timeout(() => $scope.customerName = CustomerManager.customerName);
-  });
-
   $scope.currency = ShellManager.model.currency;
   ShellManager.model.currencyChanged.add(currency => $timeout(() => $scope.currency = currency));
+
+  $scope.checkName = null;
 
   //------------------------------------------------------------------------
   //

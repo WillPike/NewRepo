@@ -1,23 +1,3 @@
-<form class="form vertical screen-floater screen-checkout-checks" ng-show="options.check_split === CHECK_SPLIT_BY_ITEMS && !guestEditorType">
-  <button class="button">Back</button>
-  <table class="table zebra">
-    <thead>
-      <tr>
-        <td></td>
-        <td class="amount"></td>
-        <td class="price"></td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td></td>
-        <td class="amount"></td>
-        <td class="price"></td>
-      </tr>
-    </tbody>
-  </table>
-</form>
-
 <div class="screen-body-part checkout-body-main">
   <form class="form checkout-right-block" ng-show="options.check_split !== CHECK_SPLIT_BY_ITEMS && !guestEditorType">
     <h2><span>How would you like to split bill?</span></h2>
@@ -32,7 +12,7 @@
     <h2><span>How many checks?</span></h2>
     <ul class="vertical">
       <li><output class="output" for="checkout-guests-items">{{options.guest_count}}</output></li>
-      <li><input id="checkout-guests-items" class="range" type="range" ng-model="options.guest_count" min="1" max="{{options.guest_count_max}}" step="1" /></li>
+      <li><input id="checkout-guests-items" class="range" type="range" ng-model="options.guest_count" min="{{options.guest_count_min}}" max="{{options.guest_count_max}}" step="1" /></li>
     </ul>
     <ul class="horizontal">
       <li><button class="button secondary" type="button" ng-click="cancelEditGuestCount()">Back</button></li>
@@ -40,13 +20,34 @@
     </ul>
   </form>
 
-  <form class="form checkout-right-container" ng-show="options.check_split === CHECK_SPLIT_BY_ITEMS && !guestEditorType">
-    <h2><span>Split accordingly</span></h2>
-    <p>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/></p>
-    <p>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/></p>
-    <p>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/></p>
-    <p>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/></p>
-    <p>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/></p>
-    <p>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/>111<br/></p>
+  <form class="checkout-right-container" ng-show="options.check_split === CHECK_SPLIT_BY_ITEMS && !guestEditorType">
+    <h2 class="title">Split accordingly</h2>
+    <table class="table">
+      <tbody>
+        <tr ng-repeat="item in split_items">
+          <td class="cart-column-description">
+            <h3>{{item.name || item.item.title}}</h3>
+            <ul class="cart-modifiers" ng-show="item.hasModifiers">
+              <li ng-repeat="modifier in getModifiers(item)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> +{{formatPrice(modifier.data.price)}}</i></li>
+            </ul>
+            <ul class="cart-checks">
+              <li ng-repeat="check in data">
+                <input
+                  id="{{'radio-' + $index + '-' + $parent.$index}}"
+                  type="radio"
+                  class="checkmark"
+                  ng-model="item.check"
+                  ng-value="check" />
+                <label for="{{'radio-' + $index + '-' + $parent.$index}}">{{check.name}}</label>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ul class="horizontal">
+      <li><button class="button secondary" type="button" ng-click="cancelSplit()">Back</button></li>
+      <li><button class="button" type="button" ng-click="splitCheck(CHECK_SPLIT_BY_ITEMS)">Next</button></li>
+    </ul>
   </form>
 </div>
