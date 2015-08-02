@@ -60,7 +60,9 @@ angular.module('SNAP.controllers')
         .copyItems(OrderManager.model.orderCheck)
         .reduce((result, item) => {
           while (item.quantity > 0) {
-            result.push(item.clone());
+            let subitem = item.clone();
+            subitem.quantity = 1;
+            result.push(subitem);
             item.quantity--;
           }
 

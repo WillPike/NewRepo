@@ -41,7 +41,9 @@ angular.module('SNAP.controllers')
   //Called when a card data is received
   function cardDataReceived(card) {
     $timeout(() => {
-      OrderManager.clearCheck($scope.current.items);
+      if ($scope.current.items) {
+        OrderManager.clearCheck($scope.current.items);
+      }
       $scope.current.card_data = card.data;
       $scope.options.step = $scope.STEP_SIGNATURE;
     });
@@ -65,6 +67,9 @@ angular.module('SNAP.controllers')
     if (OrderManager.model.closeoutRequest != null) {
       DialogManager.alert(ALERT_REQUEST_CLOSEOUT_SENT);
       $timeout(() => {
+        if ($scope.current.items) {
+          OrderManager.clearCheck($scope.current.items);
+        }
         $scope.options.step = $scope.STEP_COMPLETE;
       });
       return;
@@ -76,6 +81,9 @@ angular.module('SNAP.controllers')
       DialogManager.endJob(job);
       DialogManager.alert(ALERT_REQUEST_CLOSEOUT_SENT);
       $timeout(() => {
+        if ($scope.current.items) {
+          OrderManager.clearCheck($scope.current.items);
+        }
         $scope.options.step = $scope.STEP_COMPLETE;
       });
     }, e => {

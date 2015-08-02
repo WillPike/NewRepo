@@ -70,20 +70,18 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
     var result = [];
 
     if (items) {
-      for (var i = 0; i < this.model.orderCheck.length; i++) {
-        var found = false;
+      result = this.model.orderCheck;
 
-        for (var j = 0; j < items.length; j++) {
-          if (this.model.orderCheck[i] === items[j]) {
-            found = true;
+      items.forEach(item => {
+        for (var i = 0; i < result.length; i++) {
+          if (result[i].request === item.request) {
+            result[i].quantity -= item.quantity;
             break;
           }
         }
+      });
 
-        if (!found) {
-          result.push(this.model.orderCheck[i]);
-        }
-      }
+      result = result.filter(item => item.quantity > 0);
     }
 
     this.model.orderCheck = result;
