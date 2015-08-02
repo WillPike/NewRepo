@@ -36,6 +36,7 @@
                   id="{{'radio-' + $index + '-' + $parent.$index}}"
                   type="radio"
                   class="checkmark"
+                  ng-change="calculateChecks()"
                   ng-model="item.check"
                   ng-value="check" />
                 <label for="{{'radio-' + $index + '-' + $parent.$index}}">{{check.name}}</label>
@@ -46,8 +47,8 @@
       </tbody>
     </table>
     <ul class="horizontal">
-      <li><button class="button secondary" type="button" ng-click="cancelSplit()">Back</button></li>
-      <li><button class="button" type="button" ng-click="splitCheck(CHECK_SPLIT_BY_ITEMS)">Next</button></li>
+      <li><button class="button secondary" type="button" ng-click="cancelSplitting()">Back</button></li>
+      <li><button class="button" type="button" ng-click="doneSplitting()">Next</button></li>
     </ul>
   </form>
 </div>
