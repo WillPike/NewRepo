@@ -13,7 +13,7 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   //Services
 
   .factory('CardReader', ['ManagementService', (ManagementService) => {
-    window.SnapCardReader = new app.CardReader(ManagementService);
+    window.SnapCardReader = new app.CordovaCardReader();
     return window.SnapCardReader;
   }])
   .factory('DtsApi', ['SNAPHosts', 'SessionModel', (SNAPHosts, SessionModel) => {
