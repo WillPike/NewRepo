@@ -158,8 +158,8 @@ module.exports = function(grunt) {
         commitMessage: 'Build #%VERSION%',
         tagName: '%VERSION%',
         commit: true,
-        push: false,
-        createTag: false
+        push: true,
+        createTag: true
       }
     }
   });
