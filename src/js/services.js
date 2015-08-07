@@ -19,12 +19,14 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('DtsApi', ['SNAPHosts', 'SessionModel', (SNAPHosts, SessionModel) => {
     return new app.BackendApi(SNAPHosts, SessionModel);
   }])
-  .factory('ManagementService', ['$resource', 'Logger', 'SNAPLocation', 'SNAPEnvironment', ($resource, Logger, SNAPLocation, SNAPEnvironment) => {
+  .factory('ManagementService', ['SNAPEnvironment', (SNAPEnvironment) => {
     switch (SNAPEnvironment.platform) {
-      case 'android':
-        return new app.CordovaManagementService(Logger);
+      case 'desktop':
+        return new app.ElectronManagementService();
+      case 'mobile':
+        return new app.CordovaManagementService();
       default:
-        return new app.HomebrewManagementService($resource, SNAPLocation, SNAPEnvironment);
+        return new app.GenericManagementService();
     }
   }])
   .factory('SocketClient', ['SessionModel', 'SNAPHosts', 'Logger', (SessionModel, SNAPHosts, Logger) => {
@@ -79,7 +81,7 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('StorageProvider', ['Logger', 'SNAPEnvironment', (Logger, SNAPEnvironment) =>  {
     return (id) => {
       switch (SNAPEnvironment.platform) {
-        case 'android':
+        case 'mobile':
           return new app.CordovaLocalStorageStore(id, Logger);
         default:
           return new app.LocalStorageStore(id);
