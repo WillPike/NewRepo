@@ -1,4 +1,4 @@
-- isCordova = cordova;
+- platform = 'web';
 - libsPath = libs || '/bower_components/';
 - snapPath = snap || '/';
 - bower = bower || settings.bower;
@@ -13,10 +13,8 @@ html
     meta(name='viewport',content='width=1920, user-scalable=no')
     meta(name="format-detection", content="telephone=no")
     meta(name="msapplication-tap-highlight", content="no")
-    if isCordova
+    if platform == 'android'
       script(src='cordova.js')
-    else
-      script(src='/node_modules/cordova-js/pkg/cordova.browser.js')
     script(src=getLib('dependencies.js'))
     script(src=getSnap('dist/js/snap.js'))
     script(src='application.js')

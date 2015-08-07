@@ -5,18 +5,20 @@
 //------------------------------------------------------------------------
 
 window.app.ApplicationBootstraper = class ApplicationBootstraper {
+  constructor(options) {
+    this.options = options || {};
 
-  constructor() {
     this.hosts = {
       api: { 'host': 'api2.managesnap.com', 'secure': true },
       content: { 'host': 'content.managesnap.com', 'secure': false },
       media: { 'host': 'content.managesnap.com', 'secure': false },
-      static: { 'path': '/' },
+      static: { 'path': this.options.static_path || '/' },
       socket: { 'host': 'web-dev.managesnap.com', 'secure': true, 'port':8080, 'path': '/socket/' }
     };
 
     this.environment = {
-      debug: false,
+      debug: this.options.debug || false,
+      platform: this.options.platform || 'web',
       main_application: { 'client_id': 'd67610b1c91044d8abd55cbda6c619f0', 'callback_url': 'http://api2.managesnap.com/callback/api', 'scope': '' },
       customer_application: { 'client_id': '91381a86b3b444fd876df80b22d7fa6e' },
       facebook_application: { 'client_id': '349729518545313', 'redirect_url': 'https://web.managesnap.com/callback/facebook' },
@@ -34,9 +36,13 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
 
     var self = this;
     return new Promise((resolve, reject) => {
-      var store = new app.CordovaLocalStorageStore('snap_location');
+      if (self.options.access_token) {
+        self._getStore('snap_accesstoken').write(JSON.stringify(self.options.access_token));
+      }
 
-      store.read().then(config => {
+      var store = self._getStore('snap_location');
+
+      self._getStore('snap_location').read().then(config => {
         self.location = config || null;
 
         angular.module('SNAP.configs', [])
@@ -76,6 +82,15 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
 
     return `${path}assets/${this.location.theme.layout}/partials/${name}.html`;
   }
+
+  _getStore(id) {
+    switch (this.environment.platform) {
+      case 'android':
+        return new app.CordovaLocalStorageStore(id);
+      default:
+        return new app.LocalStorageStore(id);
+    }
+  }
 };
 
 //------------------------------------------------------------------------
@@ -85,6 +100,10 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
 //------------------------------------------------------------------------
 
 window.app.SnapApplicationBootstraper = class SnapApplicationBootstraper extends app.ApplicationBootstraper {
+  constructor(options) {
+    super(options);
+  }
+
   configure() {
     return super.configure().then(() => {
       angular.module('SNAPApplication', [
@@ -132,6 +151,10 @@ window.app.SnapApplicationBootstraper = class SnapApplicationBootstraper extends
 //------------------------------------------------------------------------
 
 window.app.StartupApplicationBootstraper = class StartupApplicationBootstraper extends app.ApplicationBootstraper {
+  constructor(options) {
+    super(options);
+  }
+
   configure() {
     return super.configure().then(() => {
       angular.module('SNAPStartup', [
@@ -158,6 +181,10 @@ window.app.StartupApplicationBootstraper = class StartupApplicationBootstraper e
 //------------------------------------------------------------------------
 
 window.app.ResetApplicationBootstraper = class ResetApplicationBootstraper extends app.ApplicationBootstraper {
+  constructor(options) {
+    super(options);
+  }
+
   configure() {
     return super.configure().then(() => {
       angular.module('SNAPReset', [
@@ -185,6 +212,10 @@ window.app.ResetApplicationBootstraper = class ResetApplicationBootstraper exten
 //------------------------------------------------------------------------
 
 window.app.SnapAuxiliaresApplicationBootstraper = class SnapAuxiliaresApplicationBootstraper extends app.ApplicationBootstraper {
+  constructor(options) {
+    super(options);
+  }
+
   configure() {
     return super.configure().then(() => {
       angular.module('SNAPAuxiliares', [

@@ -1,16 +1,18 @@
 "use strict";
 
-/* global app, cordova, console, snap, window */
+/* global app, console, snap, window */
 
-window.snap = {};
+window.snap = {
+  galaxies_access_token: {"access_token":"QAAAAMNRxkGC0mLR3Rlyxq3tTTWq-ts4NYVpZYbZPZ3oFHyqkqyZ-hOfEzH5WCFiWU0-RN7oQ7zokivQUO0Tmg1Z9x80AQAAQAAAADn0-7U82N61WnZAF4pzt8cftkvIGu1Ad6-CrcDbdSjkuJw_b-VQITIlV4hBgfvsmS7TF5ky0TjDOt7NWaQR5SMvj_DGcWK4RfvDFpZ7q9oWlFQUyRn-mHGrud7lAp2TkntWaRbbjwvqV1B3-MqX3C0_DwX0b6-W3lRpk4dYAHoh8GVyT8bYHsuk2oVQvBen5r7spX9PQPAPO5KCFcy_n1tQ0eEFScdW7BZqKJNHMJwZNLWpAFLCKVl3PWRBKImb0iEmxcWtaW8_5M6UOW2VqxuhdHyCe8pMfzY_ZoiVvfSZC6IhWlZnFxoHGnHnwrWTUzWGJoKf5-rqYwKbXdjDxaalP596psqHp4iNT-X8GmfHPLW1Iqf7IaUQ76OtLsN4mr392FmCDODIDwGR_RdJZJs"}
+};
 
 //------------------------------------------------------------------------
 //
-//  CordovaApplication
+//  Application
 //
 //------------------------------------------------------------------------
 
-window.snap.CordovaApplication = class CordovaApplication {
+window.snap.Application = class Application {
   constructor(application) {
     if (!application) {
       throw new Error('No application provided.');
@@ -53,37 +55,40 @@ window.snap.CordovaApplication = class CordovaApplication {
 
 //------------------------------------------------------------------------
 //
-//  StartupCordovaApplication
+//  StartupApplication
 //
 //------------------------------------------------------------------------
 
-window.snap.StartupCordovaApplication = class StartupCordovaApplication extends snap.CordovaApplication {
+window.snap.StartupApplication = class StartupApplication extends snap.Application {
   constructor() {
-    super(new app.StartupApplicationBootstraper());
+    super(new app.StartupApplicationBootstraper({ debug: true }));
   }
 };
 
 //------------------------------------------------------------------------
 //
-//  ResetCordovaApplication
+//  ResetApplication
 //
 //------------------------------------------------------------------------
 
-window.snap.ResetCordovaApplication = class ResetCordovaApplication extends snap.CordovaApplication {
+window.snap.ResetApplication = class ResetApplication extends snap.Application {
   constructor() {
-    super(new app.ResetApplicationBootstraper());
+    super(new app.ResetApplicationBootstraper({ debug: true }));
   }
 };
 
 //------------------------------------------------------------------------
 //
-//  SnapCordovaApplication
+//  SnapApplication
 //
 //------------------------------------------------------------------------
 
-window.snap.SnapCordovaApplication = class SnapCordovaApplication extends snap.CordovaApplication {
+window.snap.SnapApplication = class SnapApplication extends snap.Application {
   constructor() {
-    super(new app.SnapApplicationBootstraper());
+    super(new app.SnapApplicationBootstraper({
+      debug: true,
+      acess_token: window.snap.galaxies_access_token
+    }));
   }
 };
 
