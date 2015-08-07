@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('GalaxiesNavigationCtrl',
-  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataModel', 'DialogManager', 'LocationModel', 'ManagementService', 'NavigationManager', 'OrderManager', 'CommandCloseTable', 'CommandSubmitOrder', 'CommandFlipScreen', 'WebBrowser', 'SNAPEnvironment',
-  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataModel, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, WebBrowser, SNAPEnvironment) => {
+  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataModel', 'DialogManager', 'LocationModel', 'ManagementService', 'NavigationManager', 'OrderManager', 'CommandCloseTable', 'CommandSubmitOrder', 'CommandFlipScreen', 'SNAPEnvironment', 'WebBrowser',
+  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataModel, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, SNAPEnvironment, WebBrowser) => {
 
   $scope.menus = [];
   $scope.showVolume = $scope.showBrightness = SNAPEnvironment.platform !== 'web';
@@ -35,7 +35,7 @@ angular.module('SNAP.controllers')
 
   $scope.advertisementClick = item => {
     if (item.href) {
-      NavigationManager.location = { type: 'url', url: item.href.url };
+      WebBrowser.open(item.href.url);
     }
   };
 

@@ -7,14 +7,10 @@ window.app.DialogManager = class DialogManager extends app.AbstractManager {
     this.confirmRequested = new signals.Signal();
     this.jobStarted = new signals.Signal();
     this.jobEnded = new signals.Signal();
-    this.modalStarted = new signals.Signal();
-    this.modalEnded = new signals.Signal();
     this._jobs = 0;
-    this._modals = 0;
   }
 
   get jobs() { return this._jobs; }
-  get modals() { return this._modals; }
 
   alert(message, title) {
     var self = this;
@@ -49,24 +45,6 @@ window.app.DialogManager = class DialogManager extends app.AbstractManager {
 
     if (this._jobs === 0) {
       this.jobEnded.dispatch();
-    }
-  }
-
-  startModal() {
-    this._modals++;
-
-    if (this._modals === 1) {
-      this.modalStarted.dispatch();
-    }
-
-    return this._modals;
-  }
-
-  endModal(id) {
-    this._modals--;
-
-    if (this._modals === 0) {
-      this.modalEnded.dispatch();
     }
   }
 };

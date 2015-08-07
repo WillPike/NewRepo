@@ -24,7 +24,7 @@ angular.module('SNAP.controllers')
     }
     else if (type === 3 && item.flash) {
       let flashUrl = ShellManager.getMediaUrl(item.flash.media, 0, 0, 'swf'),
-          url = '/flash#url=' + encodeURIComponent(flashUrl) +
+          url = 'flash.html#url=' + encodeURIComponent(flashUrl) +
                 '&width=' + encodeURIComponent(item.flash.width) +
                 '&height=' + encodeURIComponent(item.flash.height);
 

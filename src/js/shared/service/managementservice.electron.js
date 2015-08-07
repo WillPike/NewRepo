@@ -11,12 +11,15 @@ window.app.ElectronManagementService = class ElectronManagementService {
     return new Promise(() => window.location.assign('snap.html'));
   }
 
-  openBrowser() {
-    return Promise.reject();
+  openBrowser(url) {
+    return Promise.resolve(new app.WebViewBrowserReference(url));
   }
 
-  closeBrowser() {
-    return Promise.reject();
+  closeBrowser(reference) {
+    return new Promise(resolve => {
+      reference.exit();
+      resolve();
+    });
   }
 
   rotateScreen() {

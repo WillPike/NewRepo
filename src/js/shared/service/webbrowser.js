@@ -9,20 +9,23 @@ window.app.WebBrowser = class WebBrowser {
     this._localHosts = Object.keys(SNAPHosts).map(p => SNAPHosts[p].host);
     this._localHosts.push('localhost');
 
-    this.onOpen = new signals.Signal();
-    this.onClose = new signals.Signal();
+    this.onOpened = new signals.Signal();
+    this.onClosed = new signals.Signal();
     this.onNavigated = new signals.Signal();
 
     this._browser = null;
   }
 
-  open(url, options) {
-    var self = this;
+  open(url) {
+    if (this._browser) {
+      this._browser.navigate(url);
+      return Promise.resolve(this._browser);
+    }
 
-    return this._ManagementService.openBrowser(url, this._browser, options).then(browser => {
+    var self = this;
+    return this._ManagementService.openBrowser(url).then(browser => {
       self._browser = browser;
-      self.onOpen.dispatch(url, self._browser);
-      self._browserOpened = true;
+      self.onOpened.dispatch(self._browser);
 
       self._browser.onNavigated.add(url => {
         self.onNavigated.dispatch(url);
@@ -33,9 +36,9 @@ window.app.WebBrowser = class WebBrowser {
           self._AnalyticsModel.logUrl(url);
         }
       });
+
       self._browser.onExit.addOnce(() => {
-        self.onClose.dispatch();
-        self._browserOpened = false;
+        self.onClosed.dispatch();
         self._browser = null;
       });
 
@@ -44,34 +47,14 @@ window.app.WebBrowser = class WebBrowser {
   }
 
   close() {
-    var self = this;
-
-    if (!this._browserOpened) {
+    if (!this._browser) {
       return Promise.resolve();
     }
 
+    var self = this;
     return this._ManagementService.closeBrowser(this._browser).then(() => {
       self._browser = null;
-      self.onClose.dispatch();
-      self._browserOpened = false;
+      self.onClosed.dispatch();
     });
-  }
-
-  //-----------------------------------------------
-  //    External methods
-  //-----------------------------------------------
-
-  navigated(url) {
-    if (this._browser) {
-      this._browser.onNavigated.dispatch(url);
-    }
-  }
-
-  callback(data) {
-    if (this._browser) {
-      this._browser.onCallback.dispatch(data);
-    }
-
-    this.close();
   }
 };

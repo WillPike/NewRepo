@@ -47,27 +47,26 @@ window.app.CordovaManagementService = class CordovaManagementService {
     });
   }
 
-  openBrowser(url, browserRef, options) {
-    options = options || {};
-
+  openBrowser(url) {
     return new Promise(resolve => {
-      var target = options.system ? '_blank' : '_blank',
-          settings = {
-            location: options.system ? 'no' : 'yes',
+      let settings = {
+            location: 'yes',
             clearcache: 'yes',
             clearsessioncache: 'yes',
             zoom: 'no',
             hardwareback: 'no'
           };
 
-      browserRef = window.open(url, target, Object.keys(settings).map(x => `${x}=${settings[x]}`).join(','));
-      resolve(new app.CordovaWebBrowserReference(browserRef));
+      let ref = new app.CordovaWebBrowserReference(url);
+      ref.attach(window.open(url, '_blank', Object.keys(settings).map(x => `${x}=${settings[x]}`).join(',')));
+
+      resolve(ref);
     });
   }
 
-  closeBrowser(browserRef) {
+  closeBrowser(reference) {
     return new Promise(resolve => {
-      browserRef.exit();
+      reference.exit();
       resolve();
     });
   }

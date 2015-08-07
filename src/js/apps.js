@@ -85,7 +85,7 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
 
   _getStore(id) {
     switch (this.environment.platform) {
-      case 'android':
+      case 'mobile':
         return new app.CordovaLocalStorageStore(id);
       default:
         return new app.LocalStorageStore(id);
@@ -127,7 +127,6 @@ window.app.SnapApplicationBootstraper = class SnapApplicationBootstraper extends
         $routeProvider.when('/menu/:token', { template: ' ', controller: 'MenuBaseCtrl' });
         $routeProvider.when('/category/:token', { template: ' ', controller: 'CategoryBaseCtrl' });
         $routeProvider.when('/item/:token', { template: ' ', controller: 'ItemBaseCtrl' });
-        $routeProvider.when('/url/:url', { template: ' ', controller: 'UrlCtrl' });
         $routeProvider.when('/checkout', { templateUrl: this._getPartialUrl('checkout'), controller: 'CheckoutCtrl' });
         $routeProvider.when('/signin', { templateUrl: this._getPartialUrl('signin'), controller: 'SignInCtrl' });
         $routeProvider.when('/account', { templateUrl: this._getPartialUrl('account'), controller: 'AccountCtrl' });
