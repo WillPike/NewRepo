@@ -1,5 +1,5 @@
-<div class="content-box cart" ng-show="state == 'cart'">
-  <div class="cart-left" ng-show="(currentOrder).length == 0">
+<div class="content-box cart" ng-show="state === 'cart'">
+  <div class="cart-left" ng-show="(currentOrder).length === 0">
     <h2 class="cart-title">Current Order:</h2>
     <p class="cart-empty">The cart is empty, add some items to your order!</p>
   </div>
@@ -67,7 +67,7 @@
   </div>
 </div>
 
-<div class="content-box cart" ng-show="state == 'history'">
+<div class="content-box cart" ng-show="state === 'history'">
   <div class="cart-left" ng-show="(totalOrder).length > 0">
     <table class="cart-column-table">
         <tr class="cart-column-head">

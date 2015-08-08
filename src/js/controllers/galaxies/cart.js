@@ -57,17 +57,17 @@ angular.module('SNAP.controllers')
       LocationModel.seatChanged.add(seat => $scope.seat_name = seat ? seat.name : 'Table');
 
       var refreshAssistanceRequest = () => {
-        $scope.requestAssistanceAvailable = OrderManager.model.assistanceRequest == null;
+        $scope.requestAssistanceAvailable = OrderManager.model.assistanceRequest === null;
       };
       var refreshCloseoutRequest = () => {
-        $scope.requestCloseoutAvailable = OrderManager.model.closeoutRequest == null;
+        $scope.requestCloseoutAvailable = OrderManager.model.closeoutRequest === null;
       };
 
       OrderManager.model.assistanceRequestChanged.add(refreshAssistanceRequest);
       OrderManager.model.closeoutRequestChanged.add(refreshCloseoutRequest);
 
-      $scope.requestAssistanceAvailable = OrderManager.model.assistanceRequest == null;
-      $scope.requestCloseoutAvailable = OrderManager.model.closeoutRequest == null;
+      $scope.requestAssistanceAvailable = OrderManager.model.assistanceRequest === null;
+      $scope.requestCloseoutAvailable = OrderManager.model.closeoutRequest === null;
 
       $scope.getModifiers = entry => {
         if (!entry.modifiers) {

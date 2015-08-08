@@ -58,7 +58,7 @@ angular.module('SNAP.controllers')
 
       return null;
     })
-    .filter(item => item != null);
+    .filter(item => item !== null);
 
     var exists = false;
 
@@ -96,7 +96,7 @@ angular.module('SNAP.controllers')
 
       return null;
     })
-    .filter(item => item != null);
+    .filter(item => item !== null);
 
     var exists = false;
 

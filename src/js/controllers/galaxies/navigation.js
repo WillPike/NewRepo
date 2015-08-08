@@ -39,7 +39,7 @@ angular.module('SNAP.controllers')
     }
   };
 
-  $scope.currentAdvertisement;
+  $scope.currentAdvertisement = null;
 
   $scope.advertisementImpression = item => {
     $scope.currentAdvertisement = item;

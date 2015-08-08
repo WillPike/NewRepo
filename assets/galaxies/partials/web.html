@@ -1,4 +1,4 @@
-<div class="page" ng-show="type == 'iframe'">
+<div class="page" ng-show="type === 'iframe'">
   <form class="page-web-controls">
     <div class="page-web-url">{{browserUrl}}</div>
     <button class="button" ng-click="close()">Close</button>
@@ -11,7 +11,7 @@
     class="web-browser" />
 </div>
 
-<div class="page" ng-show="type == 'webview'">
+<div class="page" ng-show="type === 'webview'">
   <form class="page-web-controls">
     <div class="page-web-url">{{browserUrl}}</div>
     <button class="button" ng-click="close()">Close</button>
@@ -26,6 +26,6 @@
     plugins />
 </div>
 
-<div class="page" ng-show="type == 'external'">
+<div class="page" ng-show="type === 'external'">
   <p>Loading {{browserUrl}}...</p>
 </div>

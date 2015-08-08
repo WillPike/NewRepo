@@ -72,16 +72,24 @@ angular.module('SNAP.directives')
       };
 
       scope.next = function() {
-        scope.currentIndex < scope.source.length-1 ?
-          scope.currentIndex++ :
+        if (scope.currentIndex < scope.source.length - 1) {
+          scope.currentIndex++;
+        }
+        else {
           scope.currentIndex = 0;
+        }
+
         changeImage();
       };
 
       scope.prev = function() {
-        scope.currentIndex > 0 ?
-          scope.currentIndex-- :
+        if (scope.currentIndex > 0) {
+          scope.currentIndex--;
+        }
+        else {
           scope.currentIndex = scope.source.length - 1;
+        }
+        
         changeImage();
       };
 

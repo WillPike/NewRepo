@@ -64,7 +64,7 @@ angular.module('SNAP.controllers')
   $scope.payCash = () => {
     $scope.current.payment_method = $scope.PAYMENT_METHOD_CASH;
 
-    if (OrderManager.model.closeoutRequest != null) {
+    if (OrderManager.model.closeoutRequest !== null) {
       DialogManager.alert(ALERT_REQUEST_CLOSEOUT_SENT);
       $timeout(() => {
         if ($scope.current.items) {

@@ -80,7 +80,7 @@
   AppCache.prototype._result = function(error, updated) {
     this._isComplete = true;
     this._isUpdated = updated;
-    this._hadErrors = (error != null);
+    this._hadErrors = (error !== null);
     this.complete.dispatch(updated);
   };
 

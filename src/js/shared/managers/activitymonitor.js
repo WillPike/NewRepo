@@ -37,7 +37,7 @@
   });
 
   Object.defineProperty(ActivityMonitor.prototype, 'active', {
-    get: function() { return this._timer != null; }
+    get: function() { return this._timer !== null; }
   });
 
   Object.defineProperty(ActivityMonitor.prototype, 'activeChanged', {

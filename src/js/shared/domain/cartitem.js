@@ -21,7 +21,7 @@ window.app.CartItem = class CartItem {
   }
 
   get hasModifiers() {
-    return this.item.modifiers != null && this.item.modifiers.length > 0;
+    return this.item.modifiers !== null && this.item.modifiers.length > 0;
   }
 
   get selectedModifiers() {

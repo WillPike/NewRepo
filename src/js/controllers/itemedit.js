@@ -33,7 +33,7 @@ angular.module('SNAP.controllers')
 
   var init = function(value) {
     $scope.entry = value;
-    $scope.visible = $scope.entry != null;
+    $scope.visible = $scope.entry !== null;
 
     currentIndex = 0;
 
