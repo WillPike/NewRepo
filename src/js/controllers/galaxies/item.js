@@ -29,13 +29,10 @@ angular.module('SNAP.controllers')
         .then(browser => browser.onExit.addOnce(onClose));
     }
     else if (type === 3 && item.flash) {
-      let flashUrl = ShellManager.getMediaUrl(item.flash.media, 0, 0, 'swf'),
-          url = 'flash.html#url=' + encodeURIComponent(flashUrl) +
-                '&width=' + encodeURIComponent(item.flash.width) +
-                '&height=' + encodeURIComponent(item.flash.height);
+      let url = WebBrowser.getFlashUrl(item.flash.media.token, item.flash.width, item.flash.height);
 
       WebBrowser
-        .open(ShellManager.getAppUrl(url))
+        .open(url)
         .then(browser => browser.onExit.addOnce(onClose));
     }
 

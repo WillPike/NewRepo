@@ -49,10 +49,8 @@ angular.module('SNAP.controllers')
       WebBrowser.open($scope.websiteUrl);
     }
     else if (type === 3 && response.flash) {
-      var url = '/flash#url=' + encodeURIComponent(getMediaUrl(response.flash.media, 0, 0, 'swf')) +
-        '&width=' + encodeURIComponent(response.flash.width) +
-        '&height=' + encodeURIComponent(response.flash.height);
-      $scope.flashUrl = ShellManager.getAppUrl(url);
+      let url = WebBrowser.getFlashUrl(response.flash.media.token, response.flash.width, response.flash.height);
+      $scope.flashUrl = url;
       WebBrowser.open($scope.flashUrl);
     }
     else if (type === 1) {

@@ -10,7 +10,7 @@ angular.module('SNAP.controllers')
     ActivityMonitor.enabled = false;
 
     $timeout(() => {
-      $scope.browserUrl = reference.url;
+      $scope.browserUrl = WebBrowser.isPrivateUrl(reference.url) ? '' : reference.url;
       $scope.type = reference.type;
       $scope.visible = true;
     });
@@ -24,7 +24,7 @@ angular.module('SNAP.controllers')
         break;
     }
 
-    reference.onNavigated.add(url => $timeout(() => $scope.browserUrl = url));
+    reference.onNavigated.add(url => $timeout(() => $scope.browserUrl = WebBrowser.isPrivateUrl(url) ? '' : url));
   });
 
   WebBrowser.onClosed.add(() => {

@@ -1,8 +1,7 @@
 window.app.ShellManager = class ShellManager extends app.AbstractManager {
-  constructor($sce, DataModel, ShellModel, Config, Environment, Hosts, Logger) {
+  constructor(DataModel, ShellModel, Config, Environment, Hosts, Logger) {
     super(Logger);
 
-    this.$$sce = $sce;
     this._DataModel = DataModel;
     this._ShellModel = ShellModel;
     this._Config = Config;
@@ -128,16 +127,10 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
     });
   }
 
-  getAppUrl(url) {
-    var host = window.location.protocol + '//' + window.location.hostname +
-      (window.location.port ? ':' + window.location.port: '');
-    return host + url;
-  }
-
   getAssetUrl(file) {
     var path = this._getPath(this._Hosts.static);
 
-    return this.$$sce.trustAsResourceUrl(`${path}assets/${this._Config.theme.layout}/${file}`);
+    return `${path}assets/${this._Config.theme.layout}/${file}`;
   }
 
   getPartialUrl(name) {
@@ -152,9 +145,9 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
     var path = this._getPath(this._Hosts.media);
 
     if (typeof media === 'string' || media instanceof String) {
-      if (media.substring(0, 4) !== 'http' && media.substring(0, 2) !== '//') {
+      if (media.substring(0, 4) !== 'http' && media.substring(0, 1) !== '/') {
         extension = extension || 'jpg';
-        return this.$$sce.trustAsResourceUrl(`${path}media/${media}_${width}_${height}.${extension}`);
+        return `${path}media/${media}_${width}_${height}.${extension}`;
       }
 
       return media;
@@ -199,7 +192,7 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
       }
     }
 
-    return this.$$sce.trustAsResourceUrl(url);
+    return url;
   }
 
   getMediaType(media) {

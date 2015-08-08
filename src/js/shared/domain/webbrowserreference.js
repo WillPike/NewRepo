@@ -60,7 +60,7 @@ window.app.IframeWebBrowserReference = class IframeWebBrowserReference extends a
     if (this._reference) {
       this._reference.removeEventListener('loadstart', this._onLoad);
 
-      this._reference.src = 'about:blank';
+      this._reference.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
     }
 
     this._reference = null;
@@ -94,7 +94,7 @@ window.app.WebViewBrowserReference = class WebViewBrowserReference extends app.W
     if (this._reference) {
       this._reference.removeEventListener('did-stop-loading', this._onLoad);
 
-      this._reference.src = 'about:blank';
+      this._reference.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
     }
 
     this._reference = null;

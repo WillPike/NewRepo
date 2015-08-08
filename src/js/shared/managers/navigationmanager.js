@@ -101,4 +101,10 @@ window.app.NavigationManager = class NavigationManager extends app.AbstractManag
       this.$$window.history.back();
     }
   }
+
+  getQueryParameter(name) {
+    var regex = new RegExp(name + "=([^&#]*)"),
+    results = regex.exec(window.location.hash);
+    return results === null ? undefined : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
 };

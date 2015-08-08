@@ -6,7 +6,9 @@ window.app.WebBrowser = class WebBrowser {
     this._ManagementService = ManagementService;
     this._SNAPEnvironment = SNAPEnvironment;
 
-    this._localHosts = Object.keys(SNAPHosts).map(p => SNAPHosts[p].host);
+    this._localHosts = Object.keys(SNAPHosts)
+      .map(p => SNAPHosts[p].host)
+      .filter(h => Boolean(h));
     this._localHosts.push('localhost');
 
     this.onOpened = new signals.Signal();
@@ -56,5 +58,15 @@ window.app.WebBrowser = class WebBrowser {
       this._browser = null;
       this.onClosed.dispatch();
     });
+  }
+
+  getFlashUrl(url, width, height) {
+    return `flash.html#media=${encodeURIComponent(url)}` +
+      `&width=${encodeURIComponent(width)}` +
+      `&height=${encodeURIComponent(height)}`;
+  }
+
+  isPrivateUrl(url) {
+    return !url.startsWith('http') || this._localHosts.indexOf(URI(url).hostname()) !== -1;
   }
 };
