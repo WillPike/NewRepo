@@ -3,10 +3,14 @@ angular.module('SNAP.controllers')
   ['$scope', '$timeout', 'ActivityMonitor', 'NavigationManager', 'WebBrowser',
   ($scope, $timeout, ActivityMonitor, NavigationManager, WebBrowser) => {
 
+  $scope.close = () => WebBrowser.close();
+  $scope.url = '';
+
   WebBrowser.onOpened.add(reference => {
     ActivityMonitor.enabled = false;
 
     $timeout(() => {
+      $scope.browserUrl = reference.url;
       $scope.type = reference.type;
       $scope.visible = true;
     });
@@ -19,15 +23,23 @@ angular.module('SNAP.controllers')
         reference.attach(document.getElementById('page-web-webview'));
         break;
     }
+
+    reference.onNavigated.add(url => $timeout(() => $scope.browserUrl = url));
   });
 
   WebBrowser.onClosed.add(() => {
     ActivityMonitor.enabled = true;
-    $timeout(() => $scope.visible = false);
+    $timeout(() => {
+      $scope.url = '';
+      $scope.visible = false;
+    });
   });
 
   NavigationManager.locationChanging.add(location => {
     WebBrowser.close();
-    $timeout(() => $scope.wide = location.type !== 'home');
+    $timeout(() => {
+      $scope.wide = location.type !== 'home' && location.type !== 'signin';
+      $scope.fullscreen = location.type === 'signin';
+    });
   });
 }]);

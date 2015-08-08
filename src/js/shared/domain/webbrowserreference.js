@@ -1,10 +1,12 @@
 window.app.WebBrowserReference = class WebBrowserReference {
   constructor(type, initialUrl) {
     this.type = type;
-    this._initialUrl = initialUrl;
+    this._initialUrl = this._url = initialUrl;
 
     this.onNavigated = new signals.Signal();
     this.onExit = new signals.Signal();
+
+    this.onNavigated.add(url => this._url = url);
   }
 
   attach(reference) {
@@ -13,6 +15,10 @@ window.app.WebBrowserReference = class WebBrowserReference {
     }
 
     this._reference = reference;
+  }
+
+  get url() {
+    return this._url;
   }
 
   navigate(url) {

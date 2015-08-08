@@ -71,7 +71,8 @@ angular.module('SNAP.controllers')
   $scope.navigateHome = () => {
     ActivityMonitor.activityDetected();
     $scope.settingsOpen = false;
-    NavigationManager.location = { type: 'home' };
+    //NavigationManager.location = { type: 'home' };
+    WebBrowser.open('http://digitaltouchsystems.com/snap/');
   };
 
   $scope.navigateBack = () => {
