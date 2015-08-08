@@ -145,7 +145,7 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
     var path = this._getPath(this._Hosts.media);
 
     if (typeof media === 'string' || media instanceof String) {
-      if (media.substring(0, 4) !== 'http' && media.substring(0, 1) !== '/') {
+      if (media.indexOf('/') === -1 && media.indexOf('.') === -1) {
         extension = extension || 'jpg';
         return `${path}media/${media}_${width}_${height}.${extension}`;
       }
