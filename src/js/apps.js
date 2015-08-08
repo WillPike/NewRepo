@@ -5,7 +5,8 @@
 //------------------------------------------------------------------------
 
 window.app.ApplicationBootstraper = class ApplicationBootstraper {
-  constructor(options) {
+  constructor(name, options) {
+    this.name = name;
     this.options = options || {};
 
     this.hosts = {
@@ -25,6 +26,18 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
       googleplus_application: { 'client_id': '678998250941-1dmebp4ksni9tsjth45tsht8l7cl1mrn.apps.googleusercontent.com', 'redirect_url': 'https://web.managesnap.com/callback/googleplus' },
       twitter_application: { 'consumer_key': 'yQ8XJ15PmaPOi4L5DJPikGCI0', 'redirect_url': 'https://web.managesnap.com/callback/twitter' }
     };
+
+    this.dependencies = [
+      'ngRoute',
+      'ngAnimate',
+      'ngTouch',
+      'ngSanitize',
+      'SNAP.configs',
+      'SNAP.controllers',
+      'SNAP.directives',
+      'SNAP.filters',
+      'SNAP.services'
+    ];
   }
 
   //-----------------------------------------------
@@ -34,33 +47,34 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
   configure() {
     FastClick.attach(document.body);
 
-    var self = this;
     return new Promise((resolve, reject) => {
-      if (self.options.access_token) {
-        self._getStore('snap_accesstoken').write(JSON.stringify(self.options.access_token));
+      if (this.options.access_token) {
+        this._getStore('snap_accesstoken').write(JSON.stringify(this.options.access_token));
       }
 
-      var store = self._getStore('snap_location');
+      var store = this._getStore('snap_location');
 
-      self._getStore('snap_location').read().then(config => {
-        self.location = config || null;
+      this._getStore('snap_location').read().then(config => {
+        this.location = config || null;
 
         angular.module('SNAP.configs', [])
-          .constant('SNAPLocation', self.location)
-          .constant('SNAPEnvironment', self.environment)
-          .constant('SNAPHosts', self.hosts);
+          .constant('SNAPLocation', this.location)
+          .constant('SNAPEnvironment', this.environment)
+          .constant('SNAPHosts', this.hosts);
 
-        if (self.hosts.static.host) {
-          $sceDelegateProvider.resourceUrlWhitelist([ 'self', new RegExp('.*' + self.hosts.static.host + '.*') ]);
+        if (this.hosts.static.host) {
+          $sceDelegateProvider.resourceUrlWhitelist([ 'self', new RegExp('.*' + this.hosts.static.host + '.*') ]);
         }
 
-        resolve();
+        let app = angular.module(this.name, this.dependencies);
+
+        resolve(app);
       }, reject);
     });
   }
 
   run() {
-    throw new Error('Not implemented.');
+    angular.bootstrap(document, [this.name]);
   }
 
   //-----------------------------------------------
@@ -101,45 +115,28 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
 
 window.app.SnapApplicationBootstraper = class SnapApplicationBootstraper extends app.ApplicationBootstraper {
   constructor(options) {
-    super(options);
+    super('SNAPApplication', options);
   }
 
   configure() {
-    return super.configure().then(() => {
-      angular.module('SNAPApplication', [
-        'ngRoute',
-        'ngAnimate',
-        'ngTouch',
-        'ngSanitize',
-        'SNAP.configs',
-        'SNAP.controllers',
-        'SNAP.directives',
-        'SNAP.filters',
-        'SNAP.services'
-      ]).
-      config(
-        ['$locationProvider', '$routeProvider', '$sceDelegateProvider',
-        ($locationProvider, $routeProvider, $sceDelegateProvider) => {
+    return super.configure().then(app => app.config(
+      ['$locationProvider', '$routeProvider', '$sceDelegateProvider',
+      ($locationProvider, $routeProvider, $sceDelegateProvider) => {
 
-        $locationProvider.html5Mode(false);
+      $locationProvider.html5Mode(false);
 
-        $routeProvider.when('/', { template: ' ', controller: 'HomeBaseCtrl' });
-        $routeProvider.when('/menu/:token', { template: ' ', controller: 'MenuBaseCtrl' });
-        $routeProvider.when('/category/:token', { template: ' ', controller: 'CategoryBaseCtrl' });
-        $routeProvider.when('/item/:token', { template: ' ', controller: 'ItemBaseCtrl' });
-        $routeProvider.when('/checkout', { templateUrl: this._getPartialUrl('checkout'), controller: 'CheckoutCtrl' });
-        $routeProvider.when('/signin', { templateUrl: this._getPartialUrl('signin'), controller: 'SignInCtrl' });
-        $routeProvider.when('/account', { templateUrl: this._getPartialUrl('account'), controller: 'AccountCtrl' });
-        $routeProvider.when('/chat', { templateUrl: this._getPartialUrl('chat'), controller: 'ChatCtrl' });
-        $routeProvider.when('/chatmap', { templateUrl: this._getPartialUrl('chatmap'), controller: 'ChatMapCtrl' });
-        $routeProvider.when('/survey', { templateUrl: this._getPartialUrl('survey'), controller: 'SurveyCtrl' });
-        $routeProvider.otherwise({ redirectTo: '/' });
-      }]);
-    });
-  }
-
-  run() {
-    angular.bootstrap(document, ['SNAPApplication']);
+      $routeProvider.when('/', { template: ' ', controller: 'HomeBaseCtrl' });
+      $routeProvider.when('/menu/:token', { template: ' ', controller: 'MenuBaseCtrl' });
+      $routeProvider.when('/category/:token', { template: ' ', controller: 'CategoryBaseCtrl' });
+      $routeProvider.when('/item/:token', { template: ' ', controller: 'ItemBaseCtrl' });
+      $routeProvider.when('/checkout', { templateUrl: this._getPartialUrl('checkout'), controller: 'CheckoutCtrl' });
+      $routeProvider.when('/signin', { templateUrl: this._getPartialUrl('signin'), controller: 'SignInCtrl' });
+      $routeProvider.when('/account', { templateUrl: this._getPartialUrl('account'), controller: 'AccountCtrl' });
+      $routeProvider.when('/chat', { templateUrl: this._getPartialUrl('chat'), controller: 'ChatCtrl' });
+      $routeProvider.when('/chatmap', { templateUrl: this._getPartialUrl('chatmap'), controller: 'ChatMapCtrl' });
+      $routeProvider.when('/survey', { templateUrl: this._getPartialUrl('survey'), controller: 'SurveyCtrl' });
+      $routeProvider.otherwise({ redirectTo: '/' });
+    }]));
   }
 };
 
@@ -151,25 +148,7 @@ window.app.SnapApplicationBootstraper = class SnapApplicationBootstraper extends
 
 window.app.StartupApplicationBootstraper = class StartupApplicationBootstraper extends app.ApplicationBootstraper {
   constructor(options) {
-    super(options);
-  }
-
-  configure() {
-    return super.configure().then(() => {
-      angular.module('SNAPStartup', [
-        'ngRoute',
-        'SNAP.configs',
-        'SNAP.controllers',
-        'SNAP.directives',
-        'SNAP.filters',
-        'SNAP.services'
-      ]).
-      config(() => {});
-    });
-  }
-
-  run() {
-    angular.bootstrap(document, ['SNAPStartup']);
+    super('SNAPStartup', options);
   }
 };
 
@@ -181,25 +160,19 @@ window.app.StartupApplicationBootstraper = class StartupApplicationBootstraper e
 
 window.app.ResetApplicationBootstraper = class ResetApplicationBootstraper extends app.ApplicationBootstraper {
   constructor(options) {
-    super(options);
+    super('SNAPReset', options);
   }
+};
 
-  configure() {
-    return super.configure().then(() => {
-      angular.module('SNAPReset', [
-        'ngRoute',
-        'SNAP.configs',
-        'SNAP.controllers',
-        'SNAP.directives',
-        'SNAP.filters',
-        'SNAP.services'
-      ]).
-      config(() => {});
-    });
-  }
+//------------------------------------------------------------------------
+//
+//  FlashApplicationBootstraper
+//
+//------------------------------------------------------------------------
 
-  run() {
-    angular.bootstrap(document, ['SNAPReset']);
+window.app.FlashApplicationBootstraper = class FlashApplicationBootstraper extends app.ApplicationBootstraper {
+  constructor(options) {
+    super('SNAPFlash', options);
   }
 };
 
@@ -212,35 +185,18 @@ window.app.ResetApplicationBootstraper = class ResetApplicationBootstraper exten
 
 window.app.SnapAuxiliaresApplicationBootstraper = class SnapAuxiliaresApplicationBootstraper extends app.ApplicationBootstraper {
   constructor(options) {
-    super(options);
+    super('SNAPAuxiliares', options);
   }
 
   configure() {
-    return super.configure().then(() => {
-      angular.module('SNAPAuxiliares', [
-        'ngRoute',
-        'ngAnimate',
-        'ngTouch',
-        'ngSanitize',
-        'SNAP.configs',
-        'SNAP.controllers',
-        'SNAP.directives',
-        'SNAP.filters',
-        'SNAP.services'
-      ]).
-      config(
-        ['$locationProvider', '$routeProvider',
-        ($locationProvider, $routeProvider) => {
+    return super.configure().then(app => app.config(
+      ['$locationProvider', '$routeProvider',
+      ($locationProvider, $routeProvider) => {
 
-        $locationProvider.html5Mode(false);
+      $locationProvider.html5Mode(false);
 
-        $routeProvider.when('/', { templateUrl: this._getPartialUrl('chatroom'), controller: 'ChatRoomCtrl' });
-        $routeProvider.otherwise({ redirectTo: '/' });
-      }]);
-    });
-  }
-
-  run() {
-    angular.bootstrap(document, ['SNAPAuxiliares']);
+      $routeProvider.when('/', { templateUrl: this._getPartialUrl('chatroom'), controller: 'ChatRoomCtrl' });
+      $routeProvider.otherwise({ redirectTo: '/' });
+    }]));
   }
 };

@@ -22,27 +22,28 @@ window.app.WebBrowser = class WebBrowser {
       return Promise.resolve(this._browser);
     }
 
-    var self = this;
-    return this._ManagementService.openBrowser(url).then(browser => {
-      self._browser = browser;
-      self.onOpened.dispatch(self._browser);
+    return new Promise((resolve, reject) => {
+      this._ManagementService.openBrowser(url).then(browser => {
+        this._browser = browser;
+        this.onOpened.dispatch(this._browser);
 
-      self._browser.onNavigated.add(url => {
-        self.onNavigated.dispatch(url);
+        this._browser.onNavigated.add(url => {
+          this.onNavigated.dispatch(url);
 
-        let host = URI(url).hostname();
+          let host = URI(url).hostname();
 
-        if (self._localHosts.indexOf(host) === -1) {
-          self._AnalyticsModel.logUrl(url);
-        }
-      });
+          if (this._localHosts.indexOf(host) === -1) {
+            this._AnalyticsModel.logUrl(url);
+          }
+        });
 
-      self._browser.onExit.addOnce(() => {
-        self.onClosed.dispatch();
-        self._browser = null;
-      });
+        this._browser.onExit.addOnce(() => {
+          this.onClosed.dispatch();
+          this._browser = null;
+        });
 
-      return browser;
+        resolve(browser);
+      }, reject);
     });
   }
 
@@ -51,10 +52,9 @@ window.app.WebBrowser = class WebBrowser {
       return Promise.resolve();
     }
 
-    var self = this;
     return this._ManagementService.closeBrowser(this._browser).then(() => {
-      self._browser = null;
-      self.onClosed.dispatch();
+      this._browser = null;
+      this.onClosed.dispatch();
     });
   }
 };

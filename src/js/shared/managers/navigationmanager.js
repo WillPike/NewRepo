@@ -11,23 +11,19 @@ window.app.NavigationManager = class NavigationManager extends app.AbstractManag
     this.locationChanging = new signals.Signal();
     this.locationChanged = new signals.Signal();
 
-    var self = this;
-
     $rootScope.$on('$locationChangeSuccess', () => {
-      var path = self.$$location.path();
+      var path = this.$$location.path();
 
-      if (path === self._path) {
-        self.locationChanged.dispatch(self._location);
-        return;
+      if (path !== this._path) {
+        this._path = path;
+        this._location = this.getLocation(path);
+        this.locationChanging.dispatch(this.location);
       }
 
-      self._path = path;
-      self._location = self.getLocation(path);
-      self.locationChanging.dispatch(self._location);
-      self.locationChanged.dispatch(self._location);
+      this.locationChanged.dispatch(this.location);
     });
 
-    this.locationChanged.add(location => self._AnalyticsModel.logNavigation(location));
+    this.locationChanged.add(location => this._AnalyticsModel.logNavigation(location));
   }
 
   get path() { return this._path; }
@@ -40,12 +36,18 @@ window.app.NavigationManager = class NavigationManager extends app.AbstractManag
 
   get location() { return this._location; }
   set location(value) {
+    if (this._location === value) {
+      return;
+    }
+    else if (this.location.type === value.type && this.location.token === value.token) {
+      return;
+    }
+
     this._location = value;
+    this.locationChanging.dispatch(this.location);
 
-    this.locationChanging.dispatch(this._location);
-
-    var path = this._path = this.getPath(this._location);
-    this.$$location.path(path);
+    this._path = this.getPath(this.location);
+    this.$$location.path(this._path);
   }
 
   getPath(location) {

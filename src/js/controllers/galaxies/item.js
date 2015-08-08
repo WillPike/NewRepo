@@ -5,10 +5,14 @@ angular.module('SNAP.controllers')
 
   $scope.goBack = () => NavigationManager.goBack();
 
+  function onClose() {
+    if (NavigationManager.location.type === 'item') {
+      $timeout(() => $scope.goBack());
+    }
+  }
+
   DataManager.itemChanged.add(item => {
     if (!item) {
-      WebBrowser.close();
-
       return $timeout(() => {
         $scope.entry = $scope.entries = null;
         $scope.type = 1;
@@ -20,7 +24,9 @@ angular.module('SNAP.controllers')
     var type = item.type;
 
     if (type === 2 && item.website) {
-      WebBrowser.open(item.website.url);
+      WebBrowser
+        .open(item.website.url)
+        .then(browser => browser.onExit.addOnce(onClose));
     }
     else if (type === 3 && item.flash) {
       let flashUrl = ShellManager.getMediaUrl(item.flash.media, 0, 0, 'swf'),
@@ -28,7 +34,9 @@ angular.module('SNAP.controllers')
                 '&width=' + encodeURIComponent(item.flash.width) +
                 '&height=' + encodeURIComponent(item.flash.height);
 
-      WebBrowser.open(ShellManager.getAppUrl(url));
+      WebBrowser
+        .open(ShellManager.getAppUrl(url))
+        .then(browser => browser.onExit.addOnce(onClose));
     }
 
     $timeout(() => {
