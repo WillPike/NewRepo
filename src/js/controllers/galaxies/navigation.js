@@ -1,9 +1,11 @@
 angular.module('SNAP.controllers')
 .controller('GalaxiesNavigationCtrl',
-  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataModel', 'DialogManager', 'LocationModel', 'ManagementService', 'NavigationManager', 'OrderManager', 'CommandCloseTable', 'CommandSubmitOrder', 'CommandFlipScreen', 'WebBrowser', 'SNAPEnvironment',
-  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataModel, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, WebBrowser, SNAPEnvironment) => {
+  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataModel', 'DialogManager', 'LocationModel', 'ManagementService', 'NavigationManager', 'OrderManager', 'CommandCloseTable', 'CommandSubmitOrder', 'CommandFlipScreen', 'SNAPEnvironment', 'WebBrowser',
+  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataModel, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, SNAPEnvironment, WebBrowser) => {
 
   $scope.menus = [];
+  $scope.showVolume = $scope.showBrightness = SNAPEnvironment.platform !== 'web';
+  $scope.showRotate = SNAPEnvironment.platform !== 'web';
 
   DataModel.home().then(response => {
     if (!response) {
@@ -33,7 +35,7 @@ angular.module('SNAP.controllers')
 
   $scope.advertisementClick = item => {
     if (item.href) {
-      NavigationManager.location = { type: 'url', url: item.href.url };
+      WebBrowser.open(item.href.url);
     }
   };
 
@@ -211,41 +213,45 @@ angular.module('SNAP.controllers')
     soundVolume: 100
   };
 
-  ManagementService.getSoundVolume().then(
-    value => $timeout(() => {
-      $scope.settings.soundVolume = value;
+  if ($scope.showVolume) {
+    ManagementService.getSoundVolume().then(
+      value => $timeout(() => {
+        $scope.settings.soundVolume = value;
 
-      $scope.$watch('settings.soundVolume', (value, old) => {
-        if (!value || value === old) {
-          return;
-        }
+        $scope.$watch('settings.soundVolume', (value, old) => {
+          if (!value || value === old) {
+            return;
+          }
 
-        value = parseInt(value);
+          value = parseInt(value);
 
-        ActivityMonitor.activityDetected();
-        ManagementService.setSoundVolume(value);
-      });
-    }),
-    e => { }
-  );
+          ActivityMonitor.activityDetected();
+          ManagementService.setSoundVolume(value);
+        });
+      }),
+      e => { }
+    );
+  }
 
-  ManagementService.getDisplayBrightness().then(
-    value => $timeout(() => {
-      $scope.settings.displayBrightness = value;
+  if ($scope.showBrightness) {
+    ManagementService.getDisplayBrightness().then(
+      value => $timeout(() => {
+        $scope.settings.displayBrightness = value;
 
-      $scope.$watch('settings.displayBrightness', (value, old) => {
-        if (!value || value === old) {
-          return;
-        }
+        $scope.$watch('settings.displayBrightness', (value, old) => {
+          if (!value || value === old) {
+            return;
+          }
 
-        value = parseInt(value);
+          value = parseInt(value);
 
-        ActivityMonitor.activityDetected();
-        ManagementService.setDisplayBrightness(value);
-      });
-    }),
-    e => { }
-  );
+          ActivityMonitor.activityDetected();
+          ManagementService.setDisplayBrightness(value);
+        });
+      }),
+      e => { }
+    );
+  }
 
   $scope.navigate = destination => NavigationManager.location = destination;
 

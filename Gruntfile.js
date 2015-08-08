@@ -159,6 +159,7 @@ module.exports = function(grunt) {
         tagName: '%VERSION%',
         commit: true,
         push: true,
+        pushTo: 'origin',
         createTag: true
       }
     }

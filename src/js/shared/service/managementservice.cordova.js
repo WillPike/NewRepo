@@ -1,16 +1,24 @@
 window.app.CordovaManagementService = class CordovaManagementService {
-  /* global signals */
-
-  constructor(Logger) {
-    this._Logger = Logger;
-
+  constructor() {
     if (!window.cordova) {
-      this._Logger.warn('Cordova is not available.');
+      throw new Error('Cordova is not available.');
     }
 
     if (window.screen) {
       this._orientation = window.screen.orientation;
     }
+  }
+
+  loadReset() {
+    return new Promise(() => window.open('reset.html', '_self'));
+  }
+
+  loadStartup() {
+    return new Promise(() => window.open('startup.html', '_self'));
+  }
+
+  loadApplication() {
+    return new Promise(() => window.open('snap.html', '_self'));
   }
 
   rotateScreen() {
@@ -39,57 +47,27 @@ window.app.CordovaManagementService = class CordovaManagementService {
     });
   }
 
-  openBrowser(url, browserRef, options) {
-    options = options || {};
-
+  openBrowser(url) {
     return new Promise(resolve => {
-      var target = options.system ? '_blank' : '_blank',
-          settings = {
-            location: options.system ? 'no' : 'yes',
+      let settings = {
+            location: 'yes',
             clearcache: 'yes',
             clearsessioncache: 'yes',
             zoom: 'no',
             hardwareback: 'no'
           };
 
-      browserRef = window.open(url, target, Object.keys(settings).map(x => `${x}=${settings[x]}`).join(','));
-      resolve(new app.CordovaWebBrowserReference(browserRef));
+      let ref = new app.CordovaWebBrowserReference(url);
+      ref.attach(window.open(url, '_blank', Object.keys(settings).map(x => `${x}=${settings[x]}`).join(',')));
+
+      resolve(ref);
     });
   }
 
-  closeBrowser(browserRef) {
+  closeBrowser(reference) {
     return new Promise(resolve => {
-      browserRef.exit();
+      reference.exit();
       resolve();
-    });
-  }
-
-  startCardReader() {
-    return Promise.resolve();
-  }
-
-  stopCardReader() {
-    return Promise.resolve();
-  }
-
-  loadReset() {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      window.open(`reset.html`, '_self');
-    });
-  }
-
-  loadStartup() {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      window.open(`startup.html`, '_self');
-    });
-  }
-
-  loadApplication() {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      window.open(`snap.html`, '_self');
     });
   }
 
@@ -148,6 +126,18 @@ window.app.CordovaManagementService = class CordovaManagementService {
 
     return new Promise((resolve, reject) => {
       window.brightness.setBrightness(value / 100, () => resolve(), reject);
+    });
+  }
+
+  startCardReader() {
+    return new Promise((resolve, reject) => {
+      IDTech.startCardReader(resolve, reject);
+    });
+  }
+
+  stopCardReader() {
+    return new Promise((resolve, reject) => {
+      IDTech.stopCardReader(resolve, reject);
     });
   }
 };

@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('SignInCtrl',
-  ['$scope', '$timeout', 'CommandCustomerLogin', 'CommandCustomerGuestLogin', 'CommandCustomerSocialLogin', 'CommandCustomerSignup', 'CustomerManager', 'DialogManager', 'NavigationManager', 'SessionManager', 'SNAPLocation', 'WebBrowser',
-  ($scope, $timeout, CommandCustomerLogin, CommandCustomerGuestLogin, CommandCustomerSocialLogin, CommandCustomerSignup, CustomerManager, DialogManager, NavigationManager, SessionManager, SNAPLocation, WebBrowser) => {
+  ['$scope', '$timeout', 'CommandCustomerLogin', 'CommandCustomerGuestLogin', 'CommandCustomerSocialLogin', 'CommandCustomerSignup', 'CustomerManager', 'DialogManager', 'NavigationManager', 'SessionManager', 'SNAPLocation',
+  ($scope, $timeout, CommandCustomerLogin, CommandCustomerGuestLogin, CommandCustomerSocialLogin, CommandCustomerSignup, CustomerManager, DialogManager, NavigationManager, SessionManager, SNAPLocation) => {
 
   var STEP_SPLASH = 1,
       STEP_LOGIN = 2,
@@ -229,11 +229,4 @@ angular.module('SNAP.controllers')
 
   $scope.initialized = true;
   $scope.step = STEP_SPLASH;
-
-  var modal = DialogManager.startModal();
-
-  $scope.$on('$destroy', () => {
-    WebBrowser.close();
-    DialogManager.endModal(modal);
-  });
 }]);

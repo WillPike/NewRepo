@@ -61,12 +61,15 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
         var application = self._SNAPEnvironment.main_application,
             authUrl = self._BackendApi.oauth2.getTokenAuthorizeUrl(application.client_id, application.callback_url, application.scope);
 
-        self._WebBrowser.open(authUrl, { system: true }).then(browser => {
+        self._WebBrowser.open(authUrl).then(browser => {
+          var complete = false;
+
           function handleCallback(url) {
             if (url.indexOf(application.callback_url) !== 0) {
               return;
             }
 
+            complete = true;
             browser.exit();
 
             var callbackResponse = url.split('#')[1],
@@ -94,8 +97,15 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
             reject('Problem authenticating: ' + url);
           }
 
-          browser.onCallback.add(url => handleCallback(url));
           browser.onNavigated.add(url => handleCallback(url));
+
+          browser.onExit.add(() => {
+            if (complete) {
+              return;
+            }
+
+            reject('Canceled');
+          });
         }, reject);
       }, reject);
     });

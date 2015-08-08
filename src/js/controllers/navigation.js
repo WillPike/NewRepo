@@ -100,7 +100,7 @@ angular.module('SNAP.controllers')
     });
 
     if (item.href) {
-      NavigationManager.location = { type: 'url', url: item.href.url };
+      WebBrowser.open(item.href.url);
     }
   };
 

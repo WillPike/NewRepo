@@ -16,7 +16,7 @@
       </td>
       <td id="page-navigation-controls">
         <a id="page-navigation-options" class="clickable" ng-class="{ active: settingsOpen }" ng-click="toggleSettings()"><img ng-src="{{elements.button_settings | thumbnail:100:100}}" /></a>
-        <a id="page-navigation-rotate" class="clickable" ng-click="rotateScreen()"><img ng-src="{{elements.button_rotate | thumbnail:100:100}}" /></a>
+        <a id="page-navigation-rotate" class="clickable" ng-click="rotateScreen()" ng-show="showRotate"><img ng-src="{{elements.button_rotate | thumbnail:100:100}}" /></a>
       </td>
       <td id="page-navigation-profile" ng-click="toggleMenu()">
         <table id="page-navigation-profile-name">
@@ -43,12 +43,16 @@
   </form>
 
   <form id="page-navigation-settings" class="form vertical page-navigation-dropmenu" ng-show="settingsOpen">
-    <input id="page-navigation-brightness" class="range" type="range" min="10" max="100" step="10" ng-model="settings.displayBrightness" />
-    <label for="page-navigation-brightness">Brightness<span class="range-plus">+</span><span class="range-minus">-</span></label>
-    <hr/>
-    <input id="page-navigation-volume" class="range" type="range" min="0" max="100" step="10" ng-model="settings.soundVolume" />
-    <label for="page-navigation-volume">Volume<span class="range-plus">+</span><span class="range-minus">-</span></label>
-    <hr/>
+    <div ng-show="showBrightness">
+      <input id="page-navigation-brightness" class="range" type="range" min="10" max="100" step="10" ng-model="settings.displayBrightness" />
+      <label for="page-navigation-brightness">Brightness<span class="range-plus">+</span><span class="range-minus">-</span></label>
+      <hr/>
+    </div>
+    <div ng-show="showVolume">
+      <input id="page-navigation-volume" class="range" type="range" min="0" max="100" step="10" ng-model="settings.soundVolume" />
+      <label for="page-navigation-volume">Volume<span class="range-plus">+</span><span class="range-minus">-</span></label>
+      <hr/>
+    </div>
     <h1 id="page-navigation-seat" ng-click="resetTable()">{{seatName}}</h1>
     <label>Table Number</label>
   </form>

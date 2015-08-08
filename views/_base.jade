@@ -1,4 +1,4 @@
-- platform = 'web';
+- platform = platform || 'web';
 - libsPath = libs || '/bower_components/';
 - snapPath = snap || '/';
 - bower = bower || settings.bower;
@@ -13,7 +13,7 @@ html
     meta(name='viewport',content='width=1920, user-scalable=no')
     meta(name="format-detection", content="telephone=no")
     meta(name="msapplication-tap-highlight", content="no")
-    if platform == 'android'
+    if platform == 'mobile'
       script(src='cordova.js')
     script(src=getLib('dependencies.js'))
     script(src=getSnap('dist/js/snap.js'))
