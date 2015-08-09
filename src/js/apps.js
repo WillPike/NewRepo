@@ -14,7 +14,8 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
       content: { 'host': 'content.managesnap.com', 'secure': false },
       media: { 'host': 'content.managesnap.com', 'secure': false },
       static: { 'path': this.options.static_path || '/' },
-      socket: { 'host': 'web-dev.managesnap.com', 'secure': true, 'port':8080, 'path': '/socket/' }
+      socket: { 'host': 'web-dev.managesnap.com', 'secure': true, 'port':8080, 'path': '/socket/' },
+      games: { 'host': 'static.managesnap.com' }
     };
 
     this.environment = {
