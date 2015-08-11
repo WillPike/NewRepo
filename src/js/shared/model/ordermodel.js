@@ -144,7 +144,7 @@ window.app.OrderModel = class OrderModel {
   //-----------------------------------------------
 
   getWatcher(kind) {
-    return this._requestWatchers[kind];
+    return this._requestWatchers[kind] || null;
   }
 
   addWatcher(kind, watcher) {
