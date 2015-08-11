@@ -27,9 +27,9 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
     super.reset();
 
     return new Promise((resolve) => {
-      this.model.clearWatcher(self.model.REQUEST_KIND_ORDER);
-      this.model.clearWatcher(self.model.REQUEST_KIND_ASSISTANCE);
-      this.model.clearWatcher(self.model.REQUEST_KIND_CLOSEOUT);
+      this.model.clearWatcher(this.model.REQUEST_KIND_ORDER);
+      this.model.clearWatcher(this.model.REQUEST_KIND_ASSISTANCE);
+      this.model.clearWatcher(this.model.REQUEST_KIND_CLOSEOUT);
 
       this.clearCart();
       this.clearCheck();
