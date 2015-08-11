@@ -58,10 +58,14 @@ angular.module('SNAP.controllers')
         };
       });
 
-    React.render(
-      React.createElement(MenuList, { tiles: tiles }),
-      document.getElementById('page-menu-content')
-    );
+    var element = document.getElementById('page-menu-content');
+
+    if (element) {
+      React.render(
+        React.createElement(MenuList, { tiles: tiles }),
+        element
+      );
+    }
 
     $scope.menu = menu;
     $timeout(() => $scope.$apply());
@@ -70,6 +74,11 @@ angular.module('SNAP.controllers')
   NavigationManager.locationChanging.add(location => {
     DataManager.menu = location.type === 'menu' ? location.token : undefined;
     $scope.visible = Boolean(DataManager.menu);
-    $timeout(() => $scope.$apply());
+    $timeout(() => {
+      var container = document.getElementById('page-menu-content-container');
+      container.scrollLeft = 0;
+
+      $scope.$apply();
+    });
   });
 }]);

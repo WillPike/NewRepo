@@ -253,7 +253,7 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
     }
 
     if (res.host) {
-      if (!res.protocol) {
+      if (!res.protocol && path === '') {
         path += '//';
       }
       path += res.host;

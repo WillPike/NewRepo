@@ -43,8 +43,8 @@ angular.module('SNAP.controllers')
       return $timeout(() => $scope.category = null);
     }
 
-    var items = category.items || [],
-        categories = category.categories || [];
+    var items = category && category.items ? category.items : [],
+        categories = category && category.categories ? category.categories : [];
 
     var tiles = categories.concat(items).map(item => {
       return {
@@ -55,10 +55,14 @@ angular.module('SNAP.controllers')
       };
     });
 
-    React.render(
-      React.createElement(CategoryList, { tiles: tiles }),
-      document.getElementById('page-category-content')
-    );
+    var element = document.getElementById('page-category-content');
+
+    if (element) {
+      React.render(
+        React.createElement(CategoryList, { tiles: tiles }),
+        element
+      );
+    }
 
     $scope.category = category;
     $timeout(() => $scope.$apply());
@@ -74,6 +78,11 @@ angular.module('SNAP.controllers')
 
     DataManager.category = location.type === 'category' ? location.token : undefined;
     $scope.visible = Boolean(DataManager.category);
-    $timeout(() => $scope.$apply());
+    $timeout(() => {
+      var container = document.getElementById('page-category-content-container');
+      container.scrollLeft = 0;
+
+      $scope.$apply();
+    });
   });
 }]);
