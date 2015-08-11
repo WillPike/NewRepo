@@ -203,9 +203,9 @@ angular.module('SNAP.controllers')
     CartModel.isCartOpen = true;
   };
 
-  $scope.customerName = CustomerManager.customerName;
+  $scope.customerName = CustomerManager.customerName || 'Guest';
   CustomerManager.model.profileChanged.add(() => {
-    $timeout(() => $scope.customerName = CustomerManager.customerName);
+    $timeout(() => $scope.customerName = CustomerManager.customerName || 'Guest');
   });
 
   $scope.settings = {

@@ -1,5 +1,5 @@
 window.app.AuthenticationManager = class AuthenticationManager extends app.AbstractManager {
-  /* global moment, signals */
+  /* global moment */
 
   constructor(BackendApi, SessionModel, SNAPEnvironment, WebBrowser, Logger) {
     super(Logger);
@@ -11,8 +11,7 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
   }
 
   validate() {
-    var self = this,
-        model = self._SessionModel;
+    var model = this._SessionModel;
 
     this._Logger.debug('Validating access token...');
 
@@ -20,33 +19,33 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
       model.initialize().then(() => {
         var token = model.apiToken;
 
-        if (!token || !self._validateToken(token)) {
-          self._Logger.debug('Authorization is not valid.');
+        if (!token || !this._validateToken(token)) {
+          this._Logger.debug('Authorization is not valid.');
           resolve(false);
         }
         else {
-          self._Logger.debug('Validating authorization session...');
+          this._Logger.debug('Validating authorization session...');
 
-          self._BackendApi.oauth2.getSession().then(session => {
+          this._BackendApi.oauth2.getSession().then(session => {
             session = URI('?' + session).query(true); //ToDo: remove this hack
 
             if (session && session.valid === 'true') {
-              self._Logger.debug('Authorization is valid.', session);
+              this._Logger.debug('Authorization is valid.', session);
               resolve(true);
             }
             else {
-              self._Logger.debug('Authorization is not valid or expired.', session);
+              this._Logger.debug('Authorization is not valid or expired.', session);
               resolve(false);
             }
           },
           e => {
-            self._Logger.debug('Unable to validate authorization.', e);
+            this._Logger.debug('Unable to validate authorization.', e);
             resolve(null);
           });
         }
       },
       e => {
-        self._Logger.debug('Error validating authorization.', e);
+        this._Logger.debug('Error validating authorization.', e);
         resolve(null);
       });
     });
@@ -57,11 +56,11 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
 
     var self = this;
     return new Promise((resolve, reject) => {
-      self._SessionModel.clear().then(() => {
-        var application = self._SNAPEnvironment.main_application,
-            authUrl = self._BackendApi.oauth2.getTokenAuthorizeUrl(application.client_id, application.callback_url, application.scope);
+      this._SessionModel.clear().then(() => {
+        var application = this._SNAPEnvironment.main_application,
+            authUrl = this._BackendApi.oauth2.getTokenAuthorizeUrl(application.client_id, application.callback_url, application.scope);
 
-        self._WebBrowser.open(authUrl).then(browser => {
+        this._WebBrowser.open(authUrl).then(browser => {
           var complete = false;
 
           function handleCallback(url) {
@@ -112,10 +111,9 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
   }
 
   customerLoginRegular(credentials) {
-    var self = this;
     return new Promise((resolve, reject) => {
-      var application = self._SNAPEnvironment.customer_application;
-      self._BackendApi.oauth2.getTokenWithCredentials(
+      var application = this._SNAPEnvironment.customer_application;
+      this._BackendApi.oauth2.getTokenWithCredentials(
         application.client_id,
         credentials.login,
         credentials.password
@@ -123,6 +121,8 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
         if (!result) {
           return reject();
         }
+
+        result = JSON.parse(result); //ToDo: fix
 
         if (result.error || !result.access_token) {
           return reject(result.error);
@@ -136,7 +136,7 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
           session.expires = moment().add(result.expires_in, 'seconds').unix();
         }
 
-        self._SessionModel.customerToken = session;
+        this._SessionModel.customerToken = session;
 
         resolve();
       }, reject);
@@ -144,7 +144,6 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
   }
 
   customerLoginSocial(token) {
-    var self = this;
     return new Promise((resolve, reject) => {
       var session = {
         access_token: token.access_token
@@ -154,7 +153,7 @@ window.app.AuthenticationManager = class AuthenticationManager extends app.Abstr
         session.expires = moment().add(token.expires_in, 'seconds').unix();
       }
 
-      self._SessionModel.customerToken = session;
+      this._SessionModel.customerToken = session;
 
       resolve();
     });
