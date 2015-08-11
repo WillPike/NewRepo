@@ -1,0 +1,7 @@
+{
+  "ext": "css js json jade ejs",
+  "execMap": {
+    "js": "iojs"
+  },
+  "ignore": [ ".git", "node_modules/**", "temp/**/*", "*.min.js", "src/**" ]
+}

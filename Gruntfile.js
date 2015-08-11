@@ -29,24 +29,15 @@ module.exports = function(grunt) {
     watch: {
       css: {
         files: 'src/less/**/*',
-        tasks: ['buildcss'],
-        options: {
-          interrupt: true,
-        }
+        tasks: ['buildcss']
       },
       js: {
-        files: ['src/js/**/*'],
-        tasks: ['buildjs'],
-        options: {
-          interrupt: true,
-        }
+        files: ['src/js/**/*', '!*.min.js'],
+        tasks: ['buildjs']
       },
       assets: {
         files: ['assets/**/*'],
-        tasks: ['buildassets'],
-        options: {
-          interrupt: true,
-        }
+        tasks: ['buildassets']
       }
     },
     cssmin: {
