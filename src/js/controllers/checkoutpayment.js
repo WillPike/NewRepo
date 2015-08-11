@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('CheckoutPaymentCtrl',
-  ['$scope', '$timeout', 'CustomerModel', 'CardReader', 'DialogManager', 'OrderManager', 'Logger',
-  ($scope, $timeout, CustomerModel, CardReader, DialogManager, OrderManager, Logger) => {
+  ['$scope', '$timeout', 'CustomerModel', 'CardReader', 'DialogManager', 'OrderManager', 'Logger', 'SNAPEnvironment',
+  ($scope, $timeout, CustomerModel, CardReader, DialogManager, OrderManager, Logger, SNAPEnvironment) => {
 
   CardReader.onReceived.add(data => {
     Logger.debug(`Card reader result: ${JSON.stringify(data)}`);
@@ -48,6 +48,8 @@ angular.module('SNAP.controllers')
       $scope.options.step = $scope.STEP_SIGNATURE;
     });
   }
+
+  $scope.canPayCard = SNAPEnvironment.platform === 'mobile';
 
   //Choose to pay with a credit card
   $scope.payCard = () => {

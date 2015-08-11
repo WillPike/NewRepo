@@ -2,8 +2,8 @@
   <form class="form checkout-right-block">
     <h2><span>Choose payment method</span></h2>
     <ul class="vertical">
-      <li><button class="button" type="button" ng-click="payCard()">Card</button></li>
-      <li class="hr"><span>or</span></li>
+      <li ng-show="canPayCard"><button class="button" type="button" ng-click="payCard()">Card</button></li>
+      <li ng-show="canPayCard" class="hr"><span>or</span></li>
       <li><button class="button" type="button" ng-click="payCash()">Cash</button></li>
     </ul>
   </form>
