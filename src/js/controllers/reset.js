@@ -1,14 +1,13 @@
 angular.module('SNAP.controllers')
 .controller('ResetCtrl',
-  ['$scope', 'CommandReset', 'DialogManager', 'ManagementService',
-  ($scope, CommandReset, DialogManager, ManagementService) => {
+  ['$scope', 'CommandReset', 'DialogManager', 'ManagementService', 'SNAPEnvironment',
+  ($scope, CommandReset, DialogManager, ManagementService, SNAPEnvironment) => {
 
-  var job = DialogManager.startJob();
+  $scope.version = SNAPEnvironment.version;
 
   CommandReset().then(() => {
     ManagementService.loadStartup();
   }, () => {
-    DialogManager.endJob(job);
     ManagementService.loadStartup();
   });
 }]);

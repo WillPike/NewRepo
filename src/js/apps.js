@@ -21,6 +21,7 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
     this.environment = {
       debug: this.options.debug || false,
       platform: this.options.platform || 'web',
+      version: SNAP_VERSION || '0.0.0',
       main_application: { 'client_id': 'd67610b1c91044d8abd55cbda6c619f0', 'callback_url': 'http://api2.managesnap.com/callback/api', 'scope': '' },
       customer_application: { 'client_id': '91381a86b3b444fd876df80b22d7fa6e' },
       facebook_application: { 'client_id': '349729518545313', 'redirect_url': 'https://web.managesnap.com/callback/facebook' },

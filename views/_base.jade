@@ -1,3 +1,4 @@
+- version = version || '0.0.0';
 - platform = platform || 'web';
 - libsPath = libs || '/bower_components/';
 - snapPath = snap || '/';
@@ -13,6 +14,8 @@ html
     meta(name='viewport',content='width=1920, user-scalable=no')
     meta(name="format-detection", content="telephone=no")
     meta(name="msapplication-tap-highlight", content="no")
+    script(type='text/javascript').
+      var SNAP_VERSION = '!{version}';
     if platform === 'mobile'
       script(src='cordova.js')
     script(src=getLib('dependencies.js'))

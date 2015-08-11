@@ -1,7 +1,9 @@
 angular.module('SNAP.controllers')
 .controller('StartupCtrl',
-  ['$scope', '$timeout', 'CommandBoot', 'DialogManager', 'ManagementService',
-  ($scope, $timeout, CommandBoot, DialogManager, ManagementService) => {
+  ['$scope', '$timeout', 'CommandBoot', 'DialogManager', 'ManagementService', 'SNAPEnvironment',
+  ($scope, $timeout, CommandBoot, DialogManager, ManagementService, SNAPEnvironment) => {
+
+  $scope.version = SNAPEnvironment.version;
 
   function workflow() {
     CommandBoot().then(() => {
