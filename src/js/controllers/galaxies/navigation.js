@@ -4,8 +4,8 @@ angular.module('SNAP.controllers')
   ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataModel, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, SNAPEnvironment, WebBrowser) => {
 
   $scope.menus = [];
-  $scope.showVolume = $scope.showBrightness = SNAPEnvironment.platform !== 'web';
-  $scope.showRotate = SNAPEnvironment.platform !== 'web';
+  $scope.showVolume = $scope.showBrightness = SNAPEnvironment.platform === 'mobile';
+  $scope.showRotate = SNAPEnvironment.platform === 'mobile';
 
   DataModel.home().then(response => {
     if (!response) {
