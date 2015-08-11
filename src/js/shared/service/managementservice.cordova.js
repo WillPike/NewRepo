@@ -17,8 +17,8 @@ window.app.CordovaManagementService = class CordovaManagementService {
     return new Promise(() => window.open('startup.html', '_self'));
   }
 
-  loadApplication() {
-    return new Promise(() => window.open('snap.html', '_self'));
+  loadApplication(location) {
+    return new Promise(() => window.open(`snap_${location.theme.layout}.html`, '_self'));
   }
 
   rotateScreen() {

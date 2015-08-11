@@ -7,8 +7,8 @@ window.app.GenericManagementService = class GenericManagementService {
     return new Promise(() => window.location.assign('startup.html'));
   }
 
-  loadApplication() {
-    return new Promise(() => window.location.assign('snap.html'));
+  loadApplication(location) {
+    return new Promise(() => window.location.assign(`snap_${location.theme.layout}.html`));
   }
 
   openBrowser(url) {

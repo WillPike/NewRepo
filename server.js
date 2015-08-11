@@ -30,7 +30,8 @@ app.get('/empty.html', function(req, res) { res.render('empty'); });
 app.get('/flash.html', function(req, res) { res.render('flash'); });
 app.get('/reset.html', function(req, res) { res.render('reset'); });
 app.get('/startup.html', function(req, res) { res.render('startup'); });
-app.get('/snap.html', function(req, res) { res.render('snap'); });
+app.get('/snap_classic.html', function(req, res) { res.render('snap_classic'); });
+app.get('/snap_galaxies.html', function(req, res) { res.render('snap_galaxies'); });
 
 console.log("Server listening at http://%s:%s", hostname, port);
 app.listen(port, hostname);

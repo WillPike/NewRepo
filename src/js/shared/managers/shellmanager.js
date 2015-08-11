@@ -1,14 +1,18 @@
 window.app.ShellManager = class ShellManager extends app.AbstractManager {
-  constructor(DataModel, ShellModel, Config, Environment, Hosts, Logger) {
+  constructor(DataModel, LocationModel, ShellModel, SNAPLocation, Environment, Hosts, Logger) {
     super(Logger);
 
     this._DataModel = DataModel;
+    this._LocationModel = LocationModel;
     this._ShellModel = ShellModel;
-    this._Config = Config;
+    this._SNAPLocation = SNAPLocation;
     this._Environment = Environment;
     this._Hosts = Hosts;
 
-    this.locale = Config.locale;
+    this.locale = this._LocationModel.location.locale;
+    this._LocationModel.locationChanged.add(location => {
+      this.locale = location.locale;
+    });
   }
 
   get locale() {
@@ -74,7 +78,7 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
     });
 
     var taskElements = this._DataModel.elements().then(function(response) {
-      var layout = self._Config.theme.layout;
+      var layout = self._SNAPLocation.theme.layout;
 
       var elements = {};
 
@@ -130,7 +134,7 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
   getAssetUrl(file) {
     var path = this._getPath(this._Hosts.static);
 
-    return `${path}assets/${this._Config.theme.layout}/${file}`;
+    return `${path}assets/${this._SNAPLocation.theme.layout}/${file}`;
   }
 
   getPartialUrl(name) {
@@ -216,7 +220,7 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
   get tileStyle() {
     var style = 'tile';
 
-    switch (this._Config.theme.tiles_style) {
+    switch (this._SNAPLocation.theme.tiles_style) {
       case 'regular':
         style += ' tile-regular';
         break;

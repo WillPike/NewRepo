@@ -7,6 +7,10 @@ window.app.LocationManager = class LocationManager extends app.AbstractManager {
     this._LocationModel = LocationModel;
   }
 
+  get model() {
+    return this._LocationModel;
+  }
+
   loadConfig() {
     var self = this,
         model = self._LocationModel;
