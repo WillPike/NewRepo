@@ -15,7 +15,7 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
 
   //Services
 
-  .factory('CardReader', ['SNAPEnvironment', (SNAPEnvironment) => {
+  .factory('CardReader', ['ManagementService', 'SNAPEnvironment', (ManagementService, SNAPEnvironment) => {
     var reader;
 
     switch (SNAPEnvironment.platform) {
@@ -23,12 +23,12 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
         reader = new app.CordovaCardReader();
         break;
       default:
-        reader = new app.CardReader();
+        reader = new app.CardReader(ManagementService);
         break;
     }
 
     window.SnapCardReader = reader;
-    
+
     return reader;
   }])
   .factory('DtsApi', ['SNAPHosts', 'SessionModel', (SNAPHosts, SessionModel) => {

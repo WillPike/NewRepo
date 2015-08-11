@@ -12,6 +12,9 @@
 <div class="screen-body-part checkout-body-main" ng-show="current.payment_method === PAYMENT_METHOD_CARD">
   <form class="form checkout-right-block">
     <h2><span>Swipe card when ready</span></h2>
-    <div class="checkout-cardreader"><span>Swiper can be found on side of table</span></div>
+    <ul class="vertical">
+      <li><div class="checkout-cardreader"><span>Swiper can be found on side of table</span></div></li>
+      <li><button class="button secondary" type="button" ng-click="payCardCancel()">Cancel</button></li>
+    </ul>
   </form>
 </div>

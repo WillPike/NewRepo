@@ -18,7 +18,9 @@ angular.module('SNAP.controllers')
 
   CardReader.onError.add(e => {
     Logger.debug(`Card reader error: ${JSON.stringify(e)}`);
-    DialogManager.alert(ALERT_CARDREADER_ERROR);
+    DialogManager.alert(ALERT_CARDREADER_ERROR).then(() => {
+      $timeout(() => $scope.payCardCancel());
+    });
   });
 
   $scope.$on('$locationChangeStart', () => {
