@@ -47,7 +47,7 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
   //-----------------------------------------------
 
   configure() {
-    FastClick.attach(document.body);
+    //FastClick.attach(document.body);
 
     return new Promise((resolve, reject) => {console.log(this.options.access_token);
       if (this.options.access_token) {
