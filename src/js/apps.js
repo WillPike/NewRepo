@@ -22,7 +22,7 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
       debug: this.options.debug || false,
       platform: this.options.platform || 'web',
       version: SNAP_VERSION || '0.0.0',
-      main_application: { 'client_id': 'd67610b1c91044d8abd55cbda6c619f0', 'callback_url': 'http://api2.managesnap.com/callback/api', 'scope': '' },
+      main_application: { 'client_id': 'd67610b1c91044d8abd55cbda6c619f0', 'callback_url': 'https://api2.managesnap.com/callback/api', 'scope': '' },
       customer_application: { 'client_id': '91381a86b3b444fd876df80b22d7fa6e' },
       facebook_application: { 'client_id': '349729518545313', 'redirect_url': 'https://web.managesnap.com/callback/facebook' },
       googleplus_application: { 'client_id': '678998250941-1dmebp4ksni9tsjth45tsht8l7cl1mrn.apps.googleusercontent.com', 'redirect_url': 'https://web.managesnap.com/callback/googleplus' },
@@ -49,7 +49,7 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
   configure() {
     FastClick.attach(document.body);
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {console.log(this.options.access_token);
       if (this.options.access_token) {
         this._getStore('snap_accesstoken').write(JSON.stringify(this.options.access_token));
       }
