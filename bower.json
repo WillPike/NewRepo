@@ -5,10 +5,10 @@
   "ignore": [
     "**/.*",
     "application.js",
-    "config.js",
+    "credentials.json",
     "Gruntfile.js",
     "bower_components",
-    "node_modules",
+    "node_modules",    
     "package.json",
     "server.js",
     "test",

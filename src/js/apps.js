@@ -49,15 +49,19 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
   configure() {
     //FastClick.attach(document.body);
 
-    return new Promise((resolve, reject) => {console.log(this.options.access_token);
+    return new Promise((resolve, reject) => {
       if (this.options.access_token) {
-        this._getStore('snap_accesstoken').write(JSON.stringify(this.options.access_token));
+        this._getStore('snap_accesstoken').write(this.options.access_token);
       }
 
       var store = this._getStore('snap_location');
 
       this._getStore('snap_location').read().then(config => {
         this.location = config || null;
+
+        if (!this.location && this.options.location) {
+          this._getStore('snap_location').write(this.options.location);
+        }
 
         angular.module('SNAP.configs', [])
           .constant('SNAPLocation', this.location)

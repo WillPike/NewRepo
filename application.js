@@ -1,6 +1,6 @@
 "use strict";
 
-/* global app, console, snap, window */
+/* global app, console, snap, window, SNAP_DEV_CREDENTIALS */
 
 window.snap = {};
 
@@ -18,9 +18,13 @@ window.snap.Application = class Application {
 
     this.options = {
       debug: true,
-      platform: 'web',
-      access_token: window.snap.classic_access_token
+      platform: 'web'
     };
+
+    if (typeof SNAP_DEV_CREDENTIALS !== 'undefined') {
+      this.options.access_token = SNAP_DEV_CREDENTIALS.access_token;
+      this.options.location = SNAP_DEV_CREDENTIALS.location;
+    }
 
     this._application = new App(this.options);
   }
@@ -30,9 +34,8 @@ window.snap.Application = class Application {
 
     console.log('Bootstrapping the application...');
 
-    var self = this;
     this._application.configure().then(() => {
-      self._application.run();
+      this._application.run();
     }, e => {
       console.error('Unable to bootstrap the application.', e);
     });
@@ -101,18 +104,4 @@ window.snap.SnapApplication = class SnapApplication extends snap.Application {
   constructor() {
     super(app.SnapApplicationBootstraper);
   }
-};
-
-//------------------------------------------------------------------------
-//
-//  Misc
-//
-//------------------------------------------------------------------------
-
-window.snap.galaxies_access_token = {
-  "access_token": "QAAAAMNRxkGC0mLR3Rlyxq3tTTWq-ts4NYVpZYbZPZ3oFHyqkqyZ-hOfEzH5WCFiWU0-RN7oQ7zokivQUO0Tmg1Z9x80AQAAQAAAADn0-7U82N61WnZAF4pzt8cftkvIGu1Ad6-CrcDbdSjkuJw_b-VQITIlV4hBgfvsmS7TF5ky0TjDOt7NWaQR5SMvj_DGcWK4RfvDFpZ7q9oWlFQUyRn-mHGrud7lAp2TkntWaRbbjwvqV1B3-MqX3C0_DwX0b6-W3lRpk4dYAHoh8GVyT8bYHsuk2oVQvBen5r7spX9PQPAPO5KCFcy_n1tQ0eEFScdW7BZqKJNHMJwZNLWpAFLCKVl3PWRBKImb0iEmxcWtaW8_5M6UOW2VqxuhdHyCe8pMfzY_ZoiVvfSZC6IhWlZnFxoHGnHnwrWTUzWGJoKf5-rqYwKbXdjDxaalP596psqHp4iNT-X8GmfHPLW1Iqf7IaUQ76OtLsN4mr392FmCDODIDwGR_RdJZJs"
-};
-
-window.snap.classic_access_token = {
-  "access_token": "QAAAAK2glV_Yn_yIsFqD-wLIFI3ZM2s4zMZCgqQ-xILrFMknoPYIvagWLLXMXxo6ftaTyzGseOaOC70nFvTfVEcqq_g0AQAAQAAAAI3Pi-DlFhzEfLM3nVTczMEzGBBfGTgQNsSb0dC1y6oSUEw2VQxjgykIRRIdZ1Q0WT6KrONf_tICDXxu8v2msm31mrLY25eYyFwY8nEchR8pXoZYXNV-H8Y6ZOpWusnjDLRFi8zkWET2RRF8skYDiYRr2epbNXrx8wYNq3SNhMr2l3W7aYT3F6fE17oQ4Y7bhAnV9iNGKC_zep7Ov5n717v2E_VjTLiUPhCVlsfuPBdTAnizP9djS31ghmNYYcA_uhihSyTeZfJ9MYLQfLuPzrBwOBR_0POhW0y-rnj6a3xa2qagNiLxJV8GkeNmsy7h-iAKh_NP3ww1fVaUYBz9Jvdk94O0uGTd8wCrxRTf7i3WHNcdSMHutE8Ii57DaNpM4Phh1W0bU3hCMusEeJpgGaM"
 };

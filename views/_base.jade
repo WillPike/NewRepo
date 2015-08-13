@@ -16,6 +16,9 @@ html
     meta(name="msapplication-tap-highlight", content="no")
     script(type='text/javascript').
       var SNAP_VERSION = '!{version}';
+    if devCredentials
+      script(type='text/javascript').
+        var SNAP_DEV_CREDENTIALS = JSON.parse('!{JSON.stringify(devCredentials)}');
     if platform === 'mobile'
       script(src='cordova.js')
     script(src=getLib('dependencies.js'))
