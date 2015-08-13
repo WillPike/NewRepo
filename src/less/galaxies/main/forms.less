@@ -1,4 +1,6 @@
+
 @form-font-size: 2.5em;
+@form-font-size-small: 1.5em;
 @vertical-screen-form-margin: @vertical-form-margin * 3;
 
 .button {
@@ -179,8 +181,7 @@
 }
 
 .form p {
-  text-align:right;
-  color:#fff;
+  color:#8d8d8d;
   font-size:@form-font-size;
   padding:0 2em;
 }
@@ -190,6 +191,23 @@
   width:100%;
   padding:0.35em 0.25em;
   margin-bottom:1em;
+}
+
+.form .textarea {
+  font-size:@form-font-size;
+  width:100%;
+  padding:0.35em 0.25em;
+  margin-bottom:1em;
+  border-color:#eee;
+  background:#fff;
+}
+
+.form .line {
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:1em;
+  text-align:center;
 }
 
 .form .output {

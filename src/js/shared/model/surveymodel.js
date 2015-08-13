@@ -4,7 +4,7 @@ window.app.SurveyModel = class SurveyModel {
   constructor(SNAPLocation, storageProvider) {
     var self = this;
 
-    this._isEnabled = Boolean(SNAPLocation.surveys) && SNAPLocation.theme.layout !== 'galaxies'; //ToDo: remove
+    this._isEnabled = Boolean(SNAPLocation.surveys);
     this._surveys = {};
 
     this._store = storageProvider('snap_survey');
