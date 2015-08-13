@@ -51,7 +51,7 @@ angular.module('SNAP.controllers')
     });
   }
 
-  $scope.canPayCard = SNAPEnvironment.platform === 'mobile';
+  $scope.canPayCard = SNAPEnvironment.platform !== 'web';
 
   //Choose to pay with a credit card
   $scope.payCard = () => {

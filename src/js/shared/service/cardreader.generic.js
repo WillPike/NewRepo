@@ -24,7 +24,11 @@
 
   CardReader.prototype.start = function() {
     if (!this._active) {
-      this._ManagementService.startCardReader();
+      this._ManagementService.startCardReader().then(data => {
+        this.received(data);
+      }, e => {
+        this.error(e);
+      });
       this._active = true;
     }
   };
