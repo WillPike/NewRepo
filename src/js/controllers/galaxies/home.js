@@ -90,7 +90,9 @@ angular.module('SNAP.controllers')
     $scope.visible = Boolean(location.type === 'home');
     $timeout(() => {
       var container = document.getElementById('page-home-menu-container');
-      container.scrollLeft = 0;
+      if (container) {
+        container.scrollLeft = 0;
+      }
 
       $scope.$apply();
       DataManager.home = $scope.visible;

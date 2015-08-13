@@ -1,0 +1,34 @@
+@survey-controls-width: @navigation-dropdown-width * @navigation-controls-width;
+@survey-body-right: @survey-controls-width + @navigation-controls-spacing + @navigation-spacing;
+
+#screen-survey {
+  .survey-question-1 {
+    .survey-question-1-a h3 {
+      text-align:left;
+      padding-right:2em;
+    }
+
+    width:100%;
+    margin-bottom:@vertical-screen-form-margin;
+  }
+
+  .survey-body-main {
+    left:0;
+    right:@survey-body-right;
+  }
+
+  .survey-body-small {
+    left:0;
+    right:auto;
+    width:60%;
+
+    .line {
+      width:60%;
+    }
+  }
+}
+
+#screen-survey-controls {
+  left: auto !important;
+  width: @survey-controls-width;
+}

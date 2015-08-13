@@ -80,7 +80,9 @@ angular.module('SNAP.controllers')
     $scope.visible = Boolean(DataManager.category);
     $timeout(() => {
       var container = document.getElementById('page-category-content-container');
-      container.scrollLeft = 0;
+      if (container) {
+        container.scrollLeft = 0;
+      }
 
       $scope.$apply();
     });
