@@ -1,29 +1,10 @@
 angular.module('SNAP.controllers')
 .factory('CommandStartup',
-  ['Logger', 'AnalyticsManager', 'AppCache', 'ChatManager', 'ShellManager', 'CustomerManager', 'DataManager', 'NavigationManager', 'SessionManager', 'SurveyManager', 'SNAPLocation',
-  (Logger, AnalyticsManager, AppCache, ChatManager, ShellManager, CustomerManager, DataManager, NavigationManager, SessionManager, SurveyManager, SNAPLocation) => {
+  ['Logger', 'AnalyticsManager', 'ChatManager', 'ShellManager', 'CustomerManager', 'DataManager', 'NavigationManager', 'SessionManager', 'SurveyManager', 'SNAPLocation',
+  (Logger, AnalyticsManager, ChatManager, ShellManager, CustomerManager, DataManager, NavigationManager, SessionManager, SurveyManager, SNAPLocation) => {
 
   return function() {
     return new Promise((result, reject) => {
-      /*function cacheComplete(updated) {
-        if (updated) {
-          window.location.reload(true);
-        }
-        else {
-          DataManager.initialize();
-        }
-      }
-
-      if (AppCache.isUpdated) {
-        cacheComplete(true);
-        return result();
-      }
-      else if (AppCache.isComplete) {
-        cacheComplete(false);
-      }
-
-      AppCache.complete.add(cacheComplete);*/
-
       Q.allSettled([
         AnalyticsManager.initialize(),
         ChatManager.initialize(),

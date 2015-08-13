@@ -57,9 +57,6 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
 
   //Models
 
-  .factory('AppCache', ['Logger', (Logger) => {
-    return new app.AppCache(Logger);
-  }])
   .factory('AnalyticsModel', ['StorageProvider', 'HeatMap', 'Logger', (StorageProvider, HeatMap, Logger) => {
     return new app.AnalyticsModel(StorageProvider, HeatMap, Logger);
   }])
