@@ -1,0 +1,66 @@
+@input-decorated-height: 6.5em;
+@input-decorated-border-radius: 0.5em;
+
+.decorated-element() {
+  display:block;
+  overflow:hidden;
+  position:absolute;
+  top:0;
+  bottom:0;
+  margin:0;
+  padding:0;
+}
+
+.decorated {
+  height:@input-decorated-height;
+  position:relative;
+
+
+  label {
+    .decorated-element();
+    left:0;
+    width:@input-decorated-height;
+    text-indent: -100em;
+    border-top-left-radius: @input-decorated-border-radius;
+    border-bottom-left-radius: @input-decorated-border-radius;
+  }
+
+  div {
+    .decorated-element();
+    background:#fff;
+    padding:0 2em;
+    left:@input-decorated-height;
+    right:@input-decorated-height;
+  }
+
+  input {
+    width:100%;
+    height:100%;
+    border:0;
+    background:#fff;
+    font-size:2.3em;
+  }
+
+  button {
+    .decorated-element();
+    right:0;
+    width:@input-decorated-height;
+    text-indent: -100em;
+    border:0;
+    border-top-right-radius: @input-decorated-border-radius;
+    border-bottom-right-radius: @input-decorated-border-radius;
+    background: url('@{images}/icon-submit.png') no-repeat center center @highlight-text-color;
+  }
+}
+
+.decorated.email {
+  label {
+    background: url('@{images}/icon-mail.png') no-repeat center center #dedede;
+  }
+}
+
+.decorated.password {
+  label {
+    background: url('@{images}/icon-password.png') no-repeat center center #dedede;
+  }
+}
