@@ -56,7 +56,6 @@ window.app.WebBrowser = class WebBrowser {
 
     return this._ManagementService.closeBrowser(this._browser).then(() => {
       this._browser = null;
-      this.onClosed.dispatch();
     });
   }
 

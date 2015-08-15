@@ -1,14 +1,15 @@
 angular.module('SNAP.controllers')
 .controller('SignInCtrl',
-  ['$scope', '$timeout', 'CommandCustomerLogin', 'CommandCustomerGuestLogin', 'CommandCustomerSocialLogin', 'CommandCustomerSignup', 'CustomerManager', 'DialogManager', 'NavigationManager', 'SessionManager', 'SNAPLocation',
-  ($scope, $timeout, CommandCustomerLogin, CommandCustomerGuestLogin, CommandCustomerSocialLogin, CommandCustomerSignup, CustomerManager, DialogManager, NavigationManager, SessionManager, SNAPLocation) => {
+  ['$scope', '$timeout', 'CommandCustomerLogin', 'CommandCustomerGuestLogin', 'CommandCustomerSocialLogin', 'CommandCustomerSignup', 'CustomerManager', 'DialogManager', 'NavigationManager', 'SessionManager', 'SNAPLocation', 'WebBrowser',
+  ($scope, $timeout, CommandCustomerLogin, CommandCustomerGuestLogin, CommandCustomerSocialLogin, CommandCustomerSignup, CustomerManager, DialogManager, NavigationManager, SessionManager, SNAPLocation, WebBrowser) => {
 
   var STEP_SPLASH = 1,
       STEP_LOGIN = 2,
       STEP_REGISTRATION = 3,
       STEP_GUESTS = 4,
       STEP_EVENT = 5,
-      STEP_RESET = 6;
+      STEP_RESET = 6,
+      STEP_SOCIAL = 7;
 
   $scope.STEP_SPLASH = STEP_SPLASH;
   $scope.STEP_LOGIN = STEP_LOGIN;
@@ -16,6 +17,7 @@ angular.module('SNAP.controllers')
   $scope.STEP_GUESTS = STEP_GUESTS;
   $scope.STEP_EVENT = STEP_EVENT;
   $scope.STEP_RESET = STEP_RESET;
+  $scope.STEP_SOCIAL = STEP_SOCIAL;
 
   $scope.locationName = SNAPLocation.location_name;
 
@@ -77,6 +79,10 @@ angular.module('SNAP.controllers')
   $scope.loginGoogle = () => {
     socialBusy();
     CommandCustomerSocialLogin.googleplus().then(socialLogin, socialError);
+  };
+
+  $scope.loginSocialCancel = () => {
+    socialBusyEnd();
   };
 
   //-----------------------------------------------
@@ -167,29 +173,28 @@ angular.module('SNAP.controllers')
     $timeout(() => $scope.step = STEP_GUESTS);
   }
 
-  function socialError() {
+  function socialError(e) {
     socialBusyEnd();
-    DialogManager.alert(ALERT_GENERIC_ERROR);
+
+    if (e) {
+      console.error(e);
+      DialogManager.alert(ALERT_GENERIC_ERROR);
+    }
   }
 
-  var socialJob, socialTimer;
+  var socialStep;
 
   function socialBusy() {
-    socialBusyEnd();
-
-    socialJob = DialogManager.startJob();
-    socialTimer = $timeout(socialBusyEnd, 120 * 1000);
+    socialStep = $scope.step;
+    $scope.step = STEP_SOCIAL;
   }
 
   function socialBusyEnd() {
-    if (socialJob) {
-      DialogManager.endJob(socialJob);
-      socialJob = null;
-    }
+    if (socialStep) {
+      $scope.step = socialStep;
+      socialStep = undefined;
 
-    if (socialTimer) {
-      $timeout.cancel(socialTimer);
-      socialTimer = null;
+      WebBrowser.close();
     }
   }
 

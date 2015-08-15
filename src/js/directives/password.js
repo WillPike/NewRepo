@@ -1,5 +1,5 @@
 angular.module('SNAP.directives')
-.directive('email',
+.directive('password',
   ['$timeout', 'ShellManager',
   ($timeout, ShellManager) => {
 
@@ -9,10 +9,9 @@ angular.module('SNAP.directives')
     transclude: true,
     scope: {
       disabled: '=?',
-      nosubmit: '@',
       ngModel: '=',
       placeholder: '@'
     },
-    templateUrl: ShellManager.getPartialUrl('input-email')
+    templateUrl: ShellManager.getPartialUrl('input-password')
   };
 }]);

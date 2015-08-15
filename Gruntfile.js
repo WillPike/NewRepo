@@ -63,8 +63,10 @@ module.exports = function(grunt) {
       js: {
         files: {
           'temp/snap.js': [
+            'src/js/_base.js',
             'src/js/shared/**/*.js',
-            'src/js/**/*.js'
+            'src/js/**/*.js',
+            'src/js/*.js'
           ]
         }
       },
