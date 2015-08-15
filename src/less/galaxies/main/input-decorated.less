@@ -1,6 +1,3 @@
-@input-decorated-height: 6.5em;
-@input-decorated-border-radius: 0.5em;
-
 .decorated-element() {
   display:block;
   overflow:hidden;
@@ -12,25 +9,24 @@
 }
 
 .decorated {
-  height:@input-decorated-height;
+  height:@form-item-height;
   position:relative;
-
 
   label {
     .decorated-element();
     left:0;
-    width:@input-decorated-height;
+    width:@form-item-height;
     text-indent: -100em;
-    border-top-left-radius: @input-decorated-border-radius;
-    border-bottom-left-radius: @input-decorated-border-radius;
+    border-top-left-radius: @form-border-radius;
+    border-bottom-left-radius: @form-border-radius;
   }
 
   div {
     .decorated-element();
     background:#fff;
     padding:0 2em;
-    left:@input-decorated-height;
-    right:@input-decorated-height;
+    left:@form-item-height;
+    right:@form-item-height;
   }
 
   input {
@@ -44,12 +40,24 @@
   button {
     .decorated-element();
     right:0;
-    width:@input-decorated-height;
+    width:@form-item-height;
     text-indent: -100em;
     border:0;
-    border-top-right-radius: @input-decorated-border-radius;
-    border-bottom-right-radius: @input-decorated-border-radius;
+    border-top-right-radius: @form-border-radius;
+    border-bottom-right-radius: @form-border-radius;
     background: url('@{images}/icon-submit.png') no-repeat center center @highlight-text-color;
+  }
+}
+
+.decorated.nosubmit {
+  button {
+    display:none;
+  }
+
+  div {
+    right:0;
+    border-top-right-radius: @form-border-radius;
+    border-bottom-right-radius: @form-border-radius;
   }
 }
 

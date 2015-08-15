@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .factory('CommandStartup',
-  ['Logger', 'AnalyticsManager', 'ChatManager', 'ShellManager', 'CustomerManager', 'DataManager', 'NavigationManager', 'SessionManager', 'SurveyManager', 'SNAPLocation',
-  (Logger, AnalyticsManager, ChatManager, ShellManager, CustomerManager, DataManager, NavigationManager, SessionManager, SurveyManager, SNAPLocation) => {
+  ['Logger', 'AnalyticsManager', 'ChatManager', 'ShellManager', 'CustomerManager', 'DataManager', 'NavigationManager', 'SessionManager', 'SocialManager', 'SurveyManager', 'SNAPLocation',
+  (Logger, AnalyticsManager, ChatManager, ShellManager, CustomerManager, DataManager, NavigationManager, SessionManager, SocialManager, SurveyManager, SNAPLocation) => {
 
   return function() {
     return new Promise((result, reject) => {
@@ -12,6 +12,7 @@ angular.module('SNAP.controllers')
         NavigationManager.initialize(),
         ShellManager.initialize(),
         SessionManager.initialize(),
+        SocialManager.initialize(),
         SurveyManager.initialize()
       ])
       .then(() => {

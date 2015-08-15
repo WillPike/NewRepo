@@ -10,6 +10,10 @@ window.app.WebBrowserReference = class WebBrowserReference {
   }
 
   attach(reference) {
+    if (this._disposed) {
+      throw new Error('Web browser reference is already disposed.');
+    }
+
     if (this._reference) {
       throw new Error('Web browser reference is already attached.');
     }
@@ -22,10 +26,18 @@ window.app.WebBrowserReference = class WebBrowserReference {
   }
 
   navigate(url) {
-    this.onNavigated.dispatch(url);
+    if (this._disposed) {
+      throw new Error('Web browser reference is already disposed.');
+    }
   }
 
   exit() {
+    if (this._disposed) {
+      throw new Error('Web browser reference is already disposed.');
+    }
+
+    this._disposed = true;
+
     this.onExit.dispatch();
 
     this.onNavigated.dispose();
@@ -52,6 +64,11 @@ window.app.IframeWebBrowserReference = class IframeWebBrowserReference extends a
     this._reference.addEventListener('loadstart', this._onLoad);
 
     this._reference.src = this._initialUrl;
+  }
+
+  navigate(url) {
+    super.navigate(url);
+    this._reference.src = url;
   }
 
   exit() {
@@ -86,6 +103,11 @@ window.app.WebViewBrowserReference = class WebViewBrowserReference extends app.W
     this._reference.addEventListener('did-stop-loading', this._onLoad);
 
     this._reference.src = this._initialUrl;
+  }
+
+  navigate(url) {
+    super.navigate(url);
+    this._reference.src = url;
   }
 
   exit() {
@@ -126,6 +148,11 @@ window.app.CordovaWebBrowserReference = class CordovaWebBrowserReference extends
       this._reference.addEventListener('exit', this._onExit);
 
       this.onNavigated.dispatch(this._initialUrl);
+  }
+
+  navigate(url) {
+    super.navigate(url);
+    this._reference.src = url;
   }
 
   exit() {

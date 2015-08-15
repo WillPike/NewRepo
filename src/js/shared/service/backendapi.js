@@ -24,7 +24,7 @@ window.app.BackendApi = class BackendApi {
       let config = {
         host: {
           domain: Hosts.api.host,
-          secure: Hosts.api.secure === 'true'
+          secure: Hosts.api.secure === true
         }
       };
 

@@ -67,7 +67,7 @@
   var password2 = document.getElementById('registration-password2');
 
   var checkPasswordValidity = function() {
-      if (password2.value !== password2.value) {
+      if (password1.value !== password2.value) {
           password2.setCustomValidity('Passwords must match.');
       } else {
           password2.setCustomValidity('');
