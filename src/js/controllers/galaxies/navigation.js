@@ -6,6 +6,7 @@ angular.module('SNAP.controllers')
   $scope.menus = [];
   $scope.showVolume = $scope.showBrightness = SNAPEnvironment.platform !== 'web';
   $scope.showRotate = SNAPEnvironment.platform !== 'web';
+  $scope.applicationVersion = SNAPEnvironment.version;
 
   DataModel.home().then(response => {
     if (!response) {

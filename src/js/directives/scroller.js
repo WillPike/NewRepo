@@ -6,13 +6,13 @@ angular.module('SNAP.directives')
     link: function (scope, elem) {
       if (SNAPEnvironment.platform === 'desktop') {
         $(elem).kinetic({
-          y: false, 
-		  filterTarget: function(target, e){
+          y: false,
+    		  filterTarget: function(target, e){
             if (!/down|start|click/.test(e.type)){
               return !(/a|img/i.test(target.tagName));
             }
-		  },
-		  stopped: function () {
+    		  },
+    		  stopped: function () {
             ActivityMonitor.activityDetected();
           }
         });
