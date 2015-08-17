@@ -1,3 +1,10 @@
+.clickable() {
+  background:none;
+  border:0;
+  padding:0 !important;
+  margin:0 !important;
+}
+
 .button {
   text-transform:uppercase;
   border:0;
@@ -11,9 +18,7 @@
   cursor:pointer;
 
   &.clickable {
-    background:none !important;
-    padding:0 !important;
-    margin:0 !important;
+    .clickable();
   }
 
   &.icon {
@@ -65,6 +70,12 @@
   &.button-google {
     background-color:#db5342;
     background-image: url('@{images}/icon-googleplus.png');
+  }
+}
+
+button {
+  &.clickable {
+    .clickable();
   }
 }
 
