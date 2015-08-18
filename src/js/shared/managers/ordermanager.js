@@ -202,22 +202,22 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
   }
 
   generatePaymentToken() {
-    var self = this;
-
-    if (this._CustomerModel.isAuthenticated && !this._CustomerModel.isGuest) {
-      return this._DtsApi.customer.initializePayment().then(response => {
-        self._savePaymentToken(response);
-      });
-    }
-
-    return this._DtsApi.waiter.initializePayment().then(response => {
-      self._savePaymentToken(response);
+    return new Promise((resolve, reject) => {
+      if (this._CustomerModel.isAuthenticated && !this._CustomerModel.isGuest) {
+        this._DtsApi.customer.initializePayment().then(response => {
+          resolve(response.token);
+        }, reject);
+      }
+      else {
+        this._DtsApi.waiter.initializePayment().then(response => {
+          resolve(response.token);
+        }, reject);
+      }
     });
   }
 
   payOrder(request) {
     request.ticket_token = this.model.orderTicket.token;
-    request.payment_token = this.model.orderTicket.payment_token;
     return this._DtsApi.waiter.submitCheckoutPayment(request);
   }
 
@@ -228,15 +228,7 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
 
   _saveTicket(response) {
     this.model.orderTicket = {
-      token: response.ticket_token,
-      payment_token: this.model.orderTicket.payment_token
-    };
-  }
-
-  _savePaymentToken(response) {
-    this.model.orderTicket = {
-      token: this.model.orderTicket.token,
-      payment_token: response.token
+      token: response.ticket_token
     };
   }
 
