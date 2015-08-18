@@ -5,8 +5,14 @@ angular.module('SNAP.controllers')
 
 angular.module('SNAP.controllers')
 .controller('ItemCtrl',
-  ['$scope', '$timeout', 'AnalyticsModel', 'CustomerModel', 'DataManager', 'DialogManager', 'NavigationManager', 'OrderManager', 'CartModel', 'LocationModel', 'ShellManager', 'SNAPEnvironment', 'ChatManager',
-  ($scope, $timeout, AnalyticsModel, CustomerModel, DataManager, DialogManager, NavigationManager, OrderManager, CartModel, LocationModel, ShellManager, SNAPEnvironment, ChatManager) => {
+  ['$scope', '$timeout', 'AnalyticsModel', 'CustomerModel', 'DataManager', 'DialogManager', 'NavigationManager', 'OrderManager', 'CartModel', 'LocationModel', 'ShellManager', 'SNAPEnvironment', 'ChatManager', 'WebBrowser',
+  ($scope, $timeout, AnalyticsModel, CustomerModel, DataManager, DialogManager, NavigationManager, OrderManager, CartModel, LocationModel, ShellManager, SNAPEnvironment, ChatManager, WebBrowser) => {
+
+  function onClose() {
+    if (NavigationManager.location.type === 'item') {
+      NavigationManager.goBack();
+    }
+  }
 
   var ItemImage = React.createClass({
     render: function() {
@@ -16,54 +22,47 @@ angular.module('SNAP.controllers')
     }
   });
 
-  NavigationManager.locationChanging.add(location => {
-    DataManager.item = location.type === 'item' ? location.token : undefined;
-    $scope.visible = Boolean(DataManager.item);
-    $timeout(function() { $scope.$apply(); });
-  });
+  DataManager.itemChanged.add(item => {
+    if (!item) {
+      return $timeout(() => {
+        let photo = document.getElementById('item-photo');
 
-  DataManager.itemChanged.add(response => {
-    if (!response && ($scope.websiteUrl || $scope.flashUrl)) {
-      WebBrowser.close();
+        if (photo) {
+          photo.innerHTML = '';
+        }
+
+        $scope.entry = null;
+        $scope.type = 1;
+      });
     }
 
-    $scope.websiteUrl = null;
-    $scope.flashUrl = null;
+    var type = item.type;
 
-    if (!response) {
-      $scope.entry = null;
-
-      if ($scope.type === 1) {
-        document.getElementById('item-photo').innerHTML = '';
-      }
-
-      $scope.type = 1;
-      $timeout(() => $scope.$apply());
-      return;
-    }
-
-    let type = response.type;
-
-    if (type === 2 && response.website) {
-      $scope.websiteUrl = response.website.url;
-      WebBrowser.open($scope.websiteUrl);
+    if (type === 2 && item.website) {
+      WebBrowser
+        .open(item.website.url)
+        .then(browser => browser.onExit.addOnce(onClose));
     }
     else if (type === 3 && response.flash) {
-      let url = WebBrowser.getFlashUrl(response.flash.media.token, response.flash.width, response.flash.height);
-      $scope.flashUrl = url;
-      WebBrowser.open($scope.flashUrl);
-    }
-    else if (type === 1) {
-      $scope.entry = new app.CartItem(response, 1);
+      let url = WebBrowser.getFlashUrl(item.flash.media.token, item.flash.width, item.flash.height);
 
-      React.render(
-        React.createElement(ItemImage, { media: $scope.entry.item.image }),
-        document.getElementById('item-photo')
-      );
+      WebBrowser
+        .open(url)
+        .then(browser => browser.onExit.addOnce(onClose));
     }
 
-    $scope.type = type;
-    $timeout(function() { $scope.$apply(); });
+    $timeout(() => {
+      if (type === 1) {
+        $scope.entry = new app.CartItem(item, 1);
+
+        React.render(
+          React.createElement(ItemImage, { media: $scope.entry.item.image }),
+          document.getElementById('item-photo')
+        );
+      }
+
+      $scope.type = type;
+    });
   });
 
   $scope.getMediaUrl = (media, width, height, extension) => ShellManager.getMediaUrl(media, width, height, extension);
@@ -93,5 +92,11 @@ angular.module('SNAP.controllers')
   $scope.giftSeat = LocationModel.getSeat(ChatManager.model.giftSeat);
   ChatManager.model.giftSeatChanged.add(token => {
     $timeout(() => $scope.giftSeat = LocationModel.getSeat(token));
+  });
+
+  NavigationManager.locationChanging.add(location => {
+    DataManager.item = location.type === 'item' ? location.token : undefined;
+    $scope.visible = Boolean(DataManager.item);
+    $timeout(() => $scope.$apply());
   });
 }]);

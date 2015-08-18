@@ -441,11 +441,39 @@ label {
 .item-content .web-browser {
   left:0;
   right:0;
-  top:0;
+  top:5em;
   bottom:0;
   border:0;
   background:#fff;
   position:absolute;
+}
+
+.page-web-controls {
+  position:absolute;
+  background:#000;
+  left:0;
+  right:0;
+  top:0;
+  height:5em;
+
+  .button {
+    font-size:1.2em;
+    position:absolute;
+    right:1em;
+    top:1em;
+  }
+
+  .page-web-url {
+    color:#aaa;
+    font-size:1.2em;
+    position:absolute;
+    left:2em;
+    top:1.4em;
+    width:90%;
+    white-space: nowrap;
+    overflow:hidden;
+    display:none;
+  }
 }
 
 .content-box {
