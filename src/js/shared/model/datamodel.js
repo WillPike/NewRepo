@@ -7,69 +7,62 @@ window.app.DataModel = class DataModel {
   }
 
   clear() {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      self._cache = {};
+    return new Promise(resolve => {
+      this._cache = {};
       resolve();
     });
   }
 
-  digest() {
-    return this._service.snap.getDigest(this._config.location);
+  digest(fetch) {
+    return this._getSnapData('digest', 'getDigest', this._config.location, fetch);
   }
 
-  home() {
-    return this._getSnapData('home', 'getMenus');
+  home(fetch) {
+    return this._getSnapData('home', 'getMenus', undefined, fetch);
   }
 
-  advertisements() {
-    return this._getSnapData('advertisements', 'getAdvertisements');
+  advertisements(fetch) {
+    return this._getSnapData('advertisements', 'getAdvertisements', undefined, fetch);
   }
 
-  backgrounds() {
-    return this._getSnapData('backgrounds', 'getBackgrounds');
+  backgrounds(fetch) {
+    return this._getSnapData('backgrounds', 'getBackgrounds', undefined, fetch);
   }
 
-  elements() {
-    return this._getSnapData('elements', 'getElements');
+  elements(fetch) {
+    return this._getSnapData('elements', 'getElements', undefined, fetch);
   }
 
-  menu(id) {
-    return this._getSnapData('menu', 'getMenu', id);
+  menu(id, fetch) {
+    return this._getSnapData('menu', 'getMenu', id, fetch);
   }
 
-  category(id) {
-    return this._getSnapData('category', 'getMenuCategory', id);
+  category(id, fetch) {
+    return this._getSnapData('category', 'getMenuCategory', id, fetch);
   }
 
-  item(id) {
-    return this._getSnapData('item', 'getMenuItem', id);
+  item(id, fetch) {
+    return this._getSnapData('item', 'getMenuItem', id, fetch);
   }
 
-  surveys() {
-    return this._getSnapData('surveys', 'getSurveys');
-  }
-
-  seats() {
-    var self = this;
-    return this._cached('seats') || this._service.location.getSeats().then(data => {
-      data = data || [];
-      self._store(data, 'seats');
-      return data;
-    });
+  surveys(fetch) {
+    return this._getSnapData('surveys', 'getSurveys', undefined, fetch);
   }
 
   media(media) {
-    var self = this,
-        token = media.token + '_' + media.width + '_' + media.height;
+    var token = `${media.token}_${media.width}_${media.height}`;
     return this._cached('media', token) || new Promise((resolve, reject) => {
+      if (navigator.onLine === false) {
+        reject(`Application is offline, unable to load media ${token}`);
+      }
+
       if (media.width && media.height) {
         var img = new Image();
         img.onload = () => resolve(img);
         img.onerror = (e) => reject(e);
-        img.src = self._getMediaUrl(media, media.width, media.height, media.extension);
+        img.src = this._getMediaUrl(media, media.width, media.height, media.extension);
 
-        self._store(img, 'media', token);
+        this._store(img, 'media', token);
 
         if (img.complete) {
           resolve(img);
@@ -81,29 +74,28 @@ window.app.DataModel = class DataModel {
     });
   }
 
-  _getSnapData(name, method, id) {
-    var cached = this._cached(name, id);
+  _getSnapData(name, method, id, fetch) {
+    if (fetch) {
+      return this._service.snap[method](this._config.location, id).then(data => {
+        data = data || [];
+        this._store(data, name, id);
+        return data;
+      });
+    }
+
+    let cached = this._cached(name, id);
 
     if (cached) {
       return Promise.resolve(cached);
     }
 
-    if (navigator.onLine === false) {
-      var stored = this._stored(name, id);
+    let stored = this._stored(name, id);
 
-      if (stored) {
-        return Promise.resolve(stored);
-      }
-      else {
-        return Promise.reject(`Data is not available: /${name}/${id}`);
-      }
+    if (stored) {
+      return Promise.resolve(stored);
     }
 
-    return this._service.snap[method](this._config.location, id).then(data => {
-      data = data || [];
-      this._store(data, name, id);
-      return data;
-    });
+    return Promise.reject(`Content is not available: /${name}/${id}`);
   }
 
   _cached(group, id) {

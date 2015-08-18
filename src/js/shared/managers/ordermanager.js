@@ -23,8 +23,8 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
     return this._OrderModel;
   }
 
-  reset() {
-    super.reset();
+  finalize() {
+    super.finalize();
 
     return new Promise((resolve) => {
       this.model.clearWatcher(this.model.REQUEST_KIND_ORDER);

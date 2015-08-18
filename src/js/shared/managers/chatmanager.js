@@ -76,8 +76,8 @@ window.app.ChatManager = class ChatManager extends app.AbstractManager {
     return this._ChatModel;
   }
 
-  reset() {
-    super.reset();
+  finalize() {
+    super.finalize();
 
     this.model.reset();
 

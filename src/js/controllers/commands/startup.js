@@ -4,12 +4,13 @@ angular.module('SNAP.controllers')
   (Logger, AnalyticsManager, ChatManager, ShellManager, CustomerManager, DataManager, NavigationManager, SessionManager, SocialManager, SurveyManager, SNAPLocation) => {
 
   return function() {
-    return new Promise((result, reject) => {
+    return new Promise((resolve, reject) => {
       Q.allSettled([
         AnalyticsManager.initialize(),
         ChatManager.initialize(),
         CustomerManager.initialize(),
-        NavigationManager.initialize(),
+        ChatManager.initialize(),
+        DataManager.initialize(),
         ShellManager.initialize(),
         SessionManager.initialize(),
         SocialManager.initialize(),
@@ -25,7 +26,9 @@ angular.module('SNAP.controllers')
           CustomerManager.guestLogin();
         }
 
-        DataManager.initialize();
+        DataManager.fetchMedia();
+
+        resolve();
       }, reject);
     });
   };
