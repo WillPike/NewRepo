@@ -117,7 +117,7 @@
       <li><button class="button cart-cart" ng-click="showCart()">Current Order</button></li>
       <li ng-show="requestAssistanceAvailable"><button class="button cart-assistance" ng-click="requestAssistance()">Request Server</button></li>
       <li><button class="button cart-close" ng-click="closeCart()">Back to Menu</button></li>
-      <li ng-show="(totalOrder).length > 0"><button class="button cart-check" ng-click="payCheck()">Pay Check</button></li>
+      <li ng-show="checkoutEnabled && (totalOrder).length > 0"><button class="button cart-check" ng-click="payCheck()">Pay Check</button></li>
     </ul>
   </div>
 </div>

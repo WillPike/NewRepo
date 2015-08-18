@@ -61,6 +61,7 @@ angular.module('SNAP.controllers')
       amount_tip: item.tip,
       card_data: item.card_data,
       signature_token: item.signature_token,
+      payment_token: item.payment_token,
       order_tokens: item.items !== null ?
         item.items.reduce(function(result, item) {
             for (var i = 0; i < item.quantity; i++) {

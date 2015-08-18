@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('CheckoutPaymentCtrl',
-  ['$scope', '$timeout', 'CustomerModel', 'CardReader', 'DialogManager', 'OrderManager', 'Logger', 'SNAPEnvironment',
-  ($scope, $timeout, CustomerModel, CardReader, DialogManager, OrderManager, Logger, SNAPEnvironment) => {
+  ['$scope', '$timeout', 'CustomerModel', 'CardReader', 'DialogManager', 'OrderManager', 'Logger', 'SNAPEnvironment', 'SNAPLocation',
+  ($scope, $timeout, CustomerModel, CardReader, DialogManager, OrderManager, Logger, SNAPEnvironment, SNAPLocation) => {
 
   CardReader.onReceived.add(data => {
     Logger.debug(`Card reader result: ${JSON.stringify(data)}`);
@@ -27,19 +27,6 @@ angular.module('SNAP.controllers')
     CardReader.stop();
   });
 
-  //Generate a payment token
-  function generatePaymentToken() {
-    var job = DialogManager.startJob();
-
-    OrderManager.generatePaymentToken().then(() => {
-      DialogManager.endJob(job);
-    }, e => {
-      Logger.debug(`Payment token generation error: ${JSON.stringify(e)}`);
-      DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
-    });
-  }
-
   //Called when a card data is received
   function cardDataReceived(card) {
     $timeout(() => {
@@ -51,11 +38,16 @@ angular.module('SNAP.controllers')
     });
   }
 
-  $scope.canPayCard = SNAPEnvironment.platform !== 'web';
+  $scope.canPayCard = SNAPEnvironment.platform !== 'web' && SNAPLocation.payments;
 
   //Choose to pay with a credit card
   $scope.payCard = () => {
     $scope.current.payment_method = $scope.PAYMENT_METHOD_CARD;
+
+    if (!$scope.current.payment_token) {
+      generatePaymentToken();
+    }
+
     CardReader.start();
   };
 
@@ -97,5 +89,16 @@ angular.module('SNAP.controllers')
     });
   };
 
-  generatePaymentToken();
+  //Generate a payment token
+  function generatePaymentToken() {
+    var job = DialogManager.startJob();
+
+    OrderManager.generatePaymentToken().then(token => {
+      $scope.current.payment_token = token;
+      DialogManager.endJob(job);
+    }, e => {
+      DialogManager.endJob(job);
+      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+    });
+  }
 }]);

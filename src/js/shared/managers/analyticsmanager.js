@@ -11,17 +11,13 @@ window.app.AnalyticsManager = class AnalyticsManager extends app.AbstractManager
     return this.model.initialize();
   }
 
-  reset() {
-    super.reset();
-
-    return this.model.reset();
-  }
-
   get model() {
     return this._AnalyticsModel;
   }
 
-  submit() {
+  finalize() {
+    super.finalize();
+
     this._Logger.debug(`Submitting analytics data with ` +
       `${this.model.sessions.length} seat sessions, ` +
       `${this.model.answers.length} answers, ` +
@@ -32,26 +28,23 @@ window.app.AnalyticsManager = class AnalyticsManager extends app.AbstractManager
       `${this.model.advertisements.length} advertisements and ` +
       `${this.model.urls.length} URLs.`);
 
-    return this.reset();
-
-    /*var self = this;
     return new Promise((resolve, reject) => {
-      self._TelemetryService.submitTelemetry({
-        sessions: self.model.sessions.data,
-        advertisements: self.model.advertisements.data,
-        answers: self.model.answers.data,
-        chats: self.model.chats.data,
-        comments: self.model.comments.data,
-        clicks: self.model.clicks.data,
-        pages: self.model.pages.data,
-        urls: self.model.urls.data
+      this._TelemetryService.submitTelemetry({
+        sessions: this.model.sessions.data,
+        advertisements: this.model.advertisements.data,
+        answers: this.model.answers.data,
+        chats: this.model.chats.data,
+        comments: this.model.comments.data,
+        clicks: this.model.clicks.data,
+        pages: this.model.pages.data,
+        urls: this.model.urls.data
       }).then(() => {
-        self.model.reset();
+        this.model.reset();
         resolve();
       }, e => {
-        self._Logger.warn(`Unable to submit analytics data: ${e.message}`);
+        this._Logger.warn(`Unable to submit analytics data: ${e.message}`);
         reject(e);
       });
-    });*/
+    });
   }
 };

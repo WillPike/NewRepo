@@ -30,25 +30,23 @@ window.app.CustomerManager = class CustomerManager extends app.AbstractManager {
     return null;
   }
 
-  reset() {
-    super.reset();
+  finalize() {
+    super.finalize();
 
     return this.logout();
   }
 
   logout() {
-    var self = this;
     return new Promise(resolve => {
-      self._SessionModel.customerToken = null;
-      self._CustomerModel.profile = null;
+      this._SessionModel.customerToken = null;
+      this._CustomerModel.profile = null;
       resolve();
     });
   }
 
   guestLogin() {
-    var self = this;
     return new Promise(resolve => {
-      self._CustomerModel.profile = 'guest';
+      this._CustomerModel.profile = 'guest';
       resolve();
     });
   }
@@ -62,11 +60,10 @@ window.app.CustomerManager = class CustomerManager extends app.AbstractManager {
   }
 
   signUp(registration) {
-    var self = this;
     return new Promise((resolve, reject) => {
-      registration.client_id = self._customerAppId;
-      self._DtsApi.customer.signUp(registration).then(() => {
-        self.login({
+      registration.client_id = this._customerAppId;
+      this._DtsApi.customer.signUp(registration).then(() => {
+        this.login({
           login: registration.username,
           password: registration.password
         }).then(resolve, reject);
@@ -75,21 +72,19 @@ window.app.CustomerManager = class CustomerManager extends app.AbstractManager {
   }
 
   updateProfile(profile) {
-    var self = this;
     return new Promise((resolve, reject) => {
-      self._DtsApi.customer.updateProfile(profile).then(() => {
-        self._CustomerModel.profile = profile;
+      this._DtsApi.customer.updateProfile(profile).then(() => {
+        this._CustomerModel.profile = profile;
         resolve();
       }, reject);
     });
   }
 
   changePassword(request) {
-    var self = this;
     return new Promise((resolve, reject) => {
-      self._DtsApi.customer.changePassword(request).then(() => {
-        self.login({
-          login: self._CustomerModel.email,
+      this._DtsApi.customer.changePassword(request).then(() => {
+        this.login({
+          login: this._CustomerModel.email,
           password: request.new_password
         }).then(resolve, reject);
       }, reject);
@@ -97,19 +92,17 @@ window.app.CustomerManager = class CustomerManager extends app.AbstractManager {
   }
 
   resetPassword(request) {
-    var self = this;
     return new Promise((resolve, reject) => {
-      self._DtsApi.customer.resetPassword(request).then(() => {
+      this._DtsApi.customer.resetPassword(request).then(() => {
         resolve();
       }, reject);
     });
   }
 
   _loadProfile() {
-    var self = this;
     return new Promise((resolve, reject) => {
-      self._DtsApi.customer.getProfile().then(profile => {
-        self._CustomerModel.profile = profile;
+      this._DtsApi.customer.getProfile().then(profile => {
+        this._CustomerModel.profile = profile;
         resolve();
       }, reject);
     });

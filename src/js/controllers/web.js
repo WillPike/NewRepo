@@ -13,16 +13,16 @@ angular.module('SNAP.controllers')
       $scope.browserUrl = WebBrowser.isPrivateUrl(reference.url) ? '' : reference.url;
       $scope.type = reference.type;
       $scope.visible = true;
-    });
 
-    switch (reference.type) {
-      case 'iframe':
-        reference.attach(document.getElementById('page-web-iframe'));
-        break;
-      case 'webview':
-        reference.attach(document.getElementById('page-web-webview'));
-        break;
-    }
+      switch (reference.type) {
+        case 'iframe':
+          reference.attach(document.getElementById('page-web-iframe'));
+          break;
+        case 'webview':
+          reference.attach(document.getElementById('page-web-webview'));
+          break;
+      }
+    });
 
     reference.onNavigated.add(url => $timeout(() => $scope.browserUrl = WebBrowser.isPrivateUrl(url) ? '' : url));
   });

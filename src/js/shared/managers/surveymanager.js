@@ -22,8 +22,8 @@ window.app.SurveyManager = class SurveyManager extends app.AbstractManager {
     return Promise.resolve();
   }
 
-  reset() {
-    super.reset();
+  finalize() {
+    super.finalize();
 
     return new Promise((resolve, reject) => {
       if (this.model.isEnabled) {

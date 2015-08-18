@@ -9,7 +9,9 @@ window.app.AbstractManager = class AbstractManager {
     return Promise.resolve();
   }
 
-  reset() {
+  finalize() {
     this._Logger.debug(`Resetting ${this.constructor.name}...`);
+
+    return Promise.resolve();
   }
 };
