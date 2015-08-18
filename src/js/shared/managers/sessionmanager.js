@@ -2,8 +2,6 @@ window.app.SessionManager = class SessionManager extends app.AbstractManager {
   constructor(SNAPEnvironment, AnalyticsModel, CustomerModel, LocationModel, OrderModel, SurveyModel, storageProvider, Logger) {
     super(Logger);
 
-    var self = this;
-
     this.sessionStarted = new signals.Signal();
     this.sessionEnded = new signals.Signal();
 
@@ -17,21 +15,21 @@ window.app.SessionManager = class SessionManager extends app.AbstractManager {
     this._store = storageProvider('snap_seat_session');
 
     this._CustomerModel.profileChanged.add(customer => {
-      if (!self._session || !customer) {
+      if (!this._session || !customer) {
         return;
       }
 
-      self._session.customer = customer.token;
-      self._store.write(this._session);
+      this._session.customer = customer.token;
+      this._store.write(this._session);
     });
 
     this._LocationModel.seatChanged.add(seat => {
-      if (!self._session || !seat) {
+      if (!this._session || !seat) {
         return;
       }
 
-      self._session.seat = seat.token;
-      self._store.write(this._session);
+      this._session.seat = seat.token;
+      this._store.write(this._session);
     });
 
     this._OrderModel.orderTicketChanged.add(ticket => {
@@ -39,21 +37,20 @@ window.app.SessionManager = class SessionManager extends app.AbstractManager {
         return;
       }
 
-      self._session.ticket = ticket.token;
-      self._store.write(this._session);
+      this._session.ticket = ticket.token;
+      this._store.write(this._session);
     });
   }
 
   initialize() {
     super.initialize();
 
-    var self = this;
     return new Promise((resolve, reject) => {
-      self._store.read().then(data => {
-        self._session = data;
+      this._store.read().then(data => {
+        this._session = data;
 
         if (!data) {
-          self._startSession();
+          this._startSession();
         }
 
         resolve();
@@ -61,8 +58,8 @@ window.app.SessionManager = class SessionManager extends app.AbstractManager {
     });
   }
 
-  reset() {
-    super.reset();
+  finalize() {
+    super.finalize();
 
     return this._store.clear();
   }
@@ -72,20 +69,19 @@ window.app.SessionManager = class SessionManager extends app.AbstractManager {
   }
 
   endSession() {
-    var self = this;
     return new Promise((resolve, reject) => {
-      self._store.read().then(s => {
-        self._session = null;
+      this._store.read().then(s => {
+        this._session = null;
 
         if (s) {
-          self._Logger.debug(`Seat session ${s.id} ended.`);
+          this._Logger.debug(`Seat session ${s.id} ended.`);
 
           s.ended = new Date();
-          self._AnalyticsModel.logSession(s);
-          self.sessionEnded.dispatch(s);
+          this._AnalyticsModel.logSession(s);
+          this.sessionEnded.dispatch(s);
         }
 
-        self._store.clear().then(resolve, reject);
+        this._store.clear().then(resolve, reject);
       }, reject);
     });
   }
@@ -133,8 +129,8 @@ window.app.SessionManager = class SessionManager extends app.AbstractManager {
   }
 
   _generateID(){
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      let r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
       return v.toString(16);
     });
   }

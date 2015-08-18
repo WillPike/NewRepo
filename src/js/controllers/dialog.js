@@ -120,6 +120,12 @@ angular.module('SNAP.controllers')
           case ALERT_ERROR_STARTUP:
             message = "Unable to start the application.";
             break;
+          case ALERT_ERROR_CACHE_UPDATE:
+            message = "Unable to load the application data.";
+            break;
+          case ALERT_WARNING_CACHE_OBSOLETE:
+            message = "Unable to update the application cache. Falling back to cached version.";
+            break;
       }
     }
 
