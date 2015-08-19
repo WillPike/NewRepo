@@ -49,8 +49,11 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
   fetchContent() {
     this._Logger.debug('Loading application content...');
 
-    return this.model.digest(true).then(digest => {
-      return this._loadContent(digest, true);
+    return new Promise((resolve, reject) => {
+      this.model.digest(true).then(digest => {
+        this._loadContent(digest, true)
+          .then(() => resolve(), reject);
+      }, reject);
     });
   }
 
