@@ -14,7 +14,7 @@ window.app.DataModel = class DataModel {
   }
 
   digest(fetch) {
-    return this._getSnapData('digest', 'getDigest', this._config.location, fetch);
+    return this._getSnapData('digest', 'getDigest', undefined, fetch);
   }
 
   home(fetch) {
