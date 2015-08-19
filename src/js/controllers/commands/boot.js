@@ -3,18 +3,24 @@ angular.module('SNAP.controllers')
   ['AuthenticationManager', 'LocationManager',
   (AuthenticationManager, LocationManager) => {
 
-  function loadLocation() {
-    return LocationManager.loadConfig()
-      .then(() => LocationManager.loadSeats());
-  }
-
   return function() {
-    return AuthenticationManager.validate().then(authorized => {
-      if (authorized === false) {
-        return AuthenticationManager.authorize().then(() => loadLocation());
+    return new Promise((resolve, reject) => {
+      function loadLocation() {
+        LocationManager.loadConfig().then(() => {
+          LocationManager.loadSeats().then(() => {
+            resolve();
+          }, reject);
+        }, reject);
       }
 
-      return loadLocation();
+      AuthenticationManager.validate().then(authorized => {
+        if (authorized === false) {
+          AuthenticationManager.authorize().then(loadLocation, reject);
+          return;
+        }
+
+        loadLocation();
+      }, reject);
     });
   };
 }]);

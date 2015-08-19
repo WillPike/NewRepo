@@ -11,14 +11,31 @@ angular.module('SNAP.controllers')
     }
   }
 
+  var ItemDescription = React.createClass({
+    render: function() {
+      var entry = this.props.entry;
+      return (
+        React.DOM.div({
+          className: 'page-item-info'
+        }, [
+          React.DOM.h1({ key: 1 }, entry.item.title || '&nbsp;'),
+          React.DOM.h2({ key: 2 }, $scope.formatPrice(entry.item.order.price) || '&nbsp;'),
+          React.DOM.p({ key: 3 }, entry.item.description || '&nbsp;')
+        ])
+      );
+    }
+  });
+
   DataManager.itemChanged.add(item => {
     if (!item) {
-      return $timeout(() => {
+      $scope.visible = false;
+      $timeout(() => {
         $scope.entry = $scope.entries = null;
         $scope.type = 1;
         $scope.step = 0;
         $scope.entryIndex = 0;
       });
+      return;
     }
 
     var type = item.type;
@@ -36,15 +53,30 @@ angular.module('SNAP.controllers')
         .then(browser => browser.onExit.addOnce(onClose));
     }
 
-    $timeout(() => {
-      if (type === 1) {
-        $scope.entry = new app.CartItem(item, 1);
-      }
+    var entry;
+    var element = document.getElementById('page-item-info');
 
-      $scope.type = type;
-      $scope.step = 0;
-      $scope.entryIndex = 0;
-    });
+    if (type === 1) {
+      entry = new app.CartItem(item, 1);
+
+      if (element) {
+        React.render(
+          React.createElement(ItemDescription, { entry: entry }),
+          element
+        );
+      }
+    }
+    else {
+      if (element) {
+        element.innerHTML = '';
+      }
+    }
+
+    $scope.visible = type === 1;
+    $scope.entry = entry;
+    $scope.type = type;
+    $scope.step = 0;
+    $scope.entryIndex = 0;
   });
 
   $scope.getMediaUrl = (media, w, h, extension) => ShellManager.getMediaUrl(media, w, h, extension);
@@ -101,7 +133,6 @@ angular.module('SNAP.controllers')
 
   NavigationManager.locationChanging.add(location => {
     DataManager.item = location.type === 'item' ? location.token : undefined;
-    $scope.visible = Boolean(DataManager.item);
     $timeout(() => $scope.$apply());
   });
 }]);

@@ -57,10 +57,16 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
       var store = this._getStore('snap_location');
 
       this._getStore('snap_location').read().then(config => {
-        this.location = config || null;
+        this.location = new window.app.LocationConfig(config);
 
-        if (!this.location && this.options.location) {
-          this._getStore('snap_location').write(this.options.location);
+        if (!this.location.location) {
+          if (this.options.location) {
+            this._getStore('snap_location').write(this.options.location);
+            this.location = new window.app.LocationConfig(this.options.location);
+          }
+          else {
+            console.error('No location info found.');
+          }
         }
 
         angular.module('SNAP.configs', [])

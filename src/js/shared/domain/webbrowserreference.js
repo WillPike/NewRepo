@@ -56,12 +56,12 @@ window.app.IframeWebBrowserReference = class IframeWebBrowserReference extends a
     var self = this;
 
     function onLoad(e) {
-      self.onNavigated.dispatch(e.url);
+      self.onNavigated.dispatch(reference.src);
     }
 
     this._onLoad = onLoad;
 
-    this._reference.addEventListener('loadstart', this._onLoad);
+    this._reference.addEventListener('load', this._onLoad);
 
     this._reference.src = this._initialUrl;
   }
@@ -75,7 +75,7 @@ window.app.IframeWebBrowserReference = class IframeWebBrowserReference extends a
     super.exit();
 
     if (this._reference) {
-      this._reference.removeEventListener('loadstart', this._onLoad);
+      this._reference.removeEventListener('load', this._onLoad);
 
       this._reference.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
     }
