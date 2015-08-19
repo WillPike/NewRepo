@@ -95,7 +95,7 @@ window.app.DataModel = class DataModel {
       return Promise.resolve(stored);
     }
 
-    return Promise.reject(`Content is not available: /${name}/${id}`);
+    return Promise.reject(`Content is not available: /${name}/${id || ''}`);
   }
 
   _cached(group, id) {
