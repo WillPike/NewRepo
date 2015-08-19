@@ -125,8 +125,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('ChatManager', ['AnalyticsModel', 'ChatModel', 'CustomerModel', 'LocationModel', 'SocketClient', 'Logger', (AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient, Logger) => {
     return new app.ChatManager(AnalyticsModel, ChatModel, CustomerModel, LocationModel, SocketClient, Logger);
   }])
-  .factory('DataManager', ['DataModel', 'Logger', 'SNAPEnvironment', (DataModel, Logger, SNAPEnvironment) => {
-    return new app.DataManager(DataModel, Logger, SNAPEnvironment);
+  .factory('DataManager', ['DataModel', 'Logger', 'SNAPEnvironment', 'SNAPLocation', (DataModel, Logger, SNAPEnvironment, SNAPLocation) => {
+    return new app.DataManager(DataModel, Logger, SNAPEnvironment, SNAPLocation);
   }])
   .factory('DialogManager', ['Logger', (Logger) => {
     return new app.DialogManager(Logger);
