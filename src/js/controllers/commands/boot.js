@@ -8,7 +8,7 @@ angular.module('SNAP.controllers')
       AuthenticationManager.validate().then(authorized => {
         if (authorized === false) {
           AuthenticationManager.authorize().then(() => {
-            resolve('reboot');
+            resolve();
           }, reject);
           return;
         }

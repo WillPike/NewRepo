@@ -13,7 +13,10 @@ window.app.LocationModel = class LocationModel extends app.AbstractModel {
         return Promise.reject('Device data is missing.');
       }
 
-      return DtsApi.snap.getConfig(self.device.location_token);
+      return DtsApi.snap.getConfig(self.device.location_token).then(config => {
+        SNAPLocation.inject(config);
+        return SNAPLocation;
+      });
     });
 
     this.initialize();
