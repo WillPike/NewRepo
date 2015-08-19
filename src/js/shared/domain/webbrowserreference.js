@@ -55,13 +55,20 @@ window.app.IframeWebBrowserReference = class IframeWebBrowserReference extends a
 
     var self = this;
 
-    function onLoad(e) {
+    this._onLoad = function onLoad(e) {
       self.onNavigated.dispatch(reference.src);
-    }
+    };
 
-    this._onLoad = onLoad;
+    this._checkUrl = function() {
+      let url = self._reference.src;
+
+      if (self.url !== url) {
+        self.onNavigated.dispatch(url);
+      }
+    };
 
     this._reference.addEventListener('load', this._onLoad);
+    this._interval = setInterval(this._checkUrl, 1000);
 
     this._reference.src = this._initialUrl;
   }
@@ -76,6 +83,7 @@ window.app.IframeWebBrowserReference = class IframeWebBrowserReference extends a
 
     if (this._reference) {
       this._reference.removeEventListener('load', this._onLoad);
+      clearInterval(this._interval);
 
       this._reference.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
     }
@@ -94,13 +102,20 @@ window.app.WebViewBrowserReference = class WebViewBrowserReference extends app.W
 
     var self = this;
 
-    function onLoad(e) {
+    this._onLoad = function onLoad(e) {
       self.onNavigated.dispatch(self._reference.getUrl());
-    }
+    };
 
-    this._onLoad = onLoad;
+    this._checkUrl = function() {
+      let url = self._reference.getUrl();
+
+      if (self.url !== url) {
+        self.onNavigated.dispatch(url);
+      }
+    };
 
     this._reference.addEventListener('did-stop-loading', this._onLoad);
+    this._interval = setInterval(this._checkUrl, 1000);
 
     this._reference.src = this._initialUrl;
   }
@@ -115,6 +130,7 @@ window.app.WebViewBrowserReference = class WebViewBrowserReference extends app.W
 
     if (this._reference) {
       this._reference.removeEventListener('did-stop-loading', this._onLoad);
+      clearInterval(this._interval);
 
       this._reference.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
     }
