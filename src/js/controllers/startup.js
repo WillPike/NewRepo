@@ -9,7 +9,14 @@ angular.module('SNAP.controllers')
   function step1() {
     $timeout(() => $scope.step = 1);
 
-    CommandBoot().then(step2, e => {
+    CommandBoot().then(result => {
+      if (result === 'reboot') {
+        ManagementService.loadStartup();
+        return;
+      }
+      
+      step2();
+    }, e => {
       DialogManager.alert(ALERT_ERROR_STARTUP).then(() => step1());
     });
   }

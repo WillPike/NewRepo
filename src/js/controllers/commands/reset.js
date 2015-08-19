@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .factory('CommandReset',
-  ['AnalyticsManager', 'ChatManager', 'CustomerManager', 'OrderManager', 'SessionManager', 'SurveyManager', 'ManagementService', 'Logger',
-  (AnalyticsManager, ChatManager, CustomerManager, OrderManager, SessionManager, SurveyManager, ManagementService, Logger) => {
+  ['AnalyticsManager', 'ChatManager', 'CustomerManager', 'OrderManager', 'SessionManager', 'SurveyManager', 'Logger',
+  (AnalyticsManager, ChatManager, CustomerManager, OrderManager, SessionManager, SurveyManager, Logger) => {
 
   return function() {
     return new Promise((resolve, reject) => {
