@@ -13,6 +13,11 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     this.categoryChanged = new signals.Signal();
     this.itemChanged = new signals.Signal();
 
+    this.homeChanged.add(value => this._home = value);
+    this.menuChanged.add(value => this._menu = value);
+    this.categoryChanged.add(value => this._category = value);
+    this.itemChanged.add(value => this._item = value);
+
     this._CACHEABLE_MEDIA_KINDS = [
       app.MediaKind.advertisementimage,
       app.MediaKind.backgroundimage,
@@ -62,97 +67,121 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
 
     var layout = this._SNAPLocation.theme.layout;
 
-    return this.model.digest().then(digest => {
-      this.model.advertisements().then(advertisements => {
-        var ads = {
-          main: advertisements.main.reduce(this._reduceAd, {}),
-          misc: advertisements.misc.reduce(this._reduceAd, {})
-        };
+    return new Promise((resolve, reject) => {
+      this.model.digest().then(digest => {
+        this.model.advertisements().then(advertisements => {
+          var ads = {
+            main: advertisements.main.reduce(this._reduceAd, {}),
+            misc: advertisements.misc.reduce(this._reduceAd, {})
+          };
 
-        var medias = (digest.media || [])
-          .filter(media => this._CACHEABLE_MEDIA_KINDS.indexOf(media.kind) !== -1)
-          .map(media => {
-            var width, height;
+          var medias = (digest.media || [])
+            .filter(media => this._CACHEABLE_MEDIA_KINDS.indexOf(media.kind) !== -1)
+            .map(media => {
+              var width, height;
 
-            switch (media.kind) {
-              case app.MediaKind.advertisementimage:
-                if (ads.main[media.token]) {
-                  width = 970;
-                  height = 90;
-                }
-                else if (ads.misc[media.token]) {
-                  width = 300;
-                  height = 250;
-                }
-                break;
-              case app.MediaKind.backgroundimage:
-                width = 1920;
-                height = 1080;
-                break;
-              case app.MediaKind.elementimage:
-                if (layout === 'classic') {
-                  width = 160;
-                  height = 160;
-                }
-                else if (layout === 'galaxies') {
+              switch (media.kind) {
+                case app.MediaKind.advertisementimage:
+                  if (ads.main[media.token]) {
+                    width = 970;
+                    height = 90;
+                  }
+                  else if (ads.misc[media.token]) {
+                    width = 300;
+                    height = 250;
+                  }
+                  break;
+                case app.MediaKind.backgroundimage:
+                  width = 1920;
+                  height = 1080;
+                  break;
+                case app.MediaKind.elementimage:
+                  if (layout === 'classic') {
+                    width = 160;
+                    height = 160;
+                  }
+                  else if (layout === 'galaxies') {
+                    width = 100;
+                    height = 100;
+                  }
+                  break;
+                case app.MediaKind.menuimage:
+                  if (layout === 'classic') {
+                    width = 160;
+                    height = 160;
+                  }
+                  else if (layout === 'galaxies') {
+                    width = 470;
+                    height = 410;
+                  }
+                  break;
+                case app.MediaKind.menucategoryimage:
+                case app.MediaKind.menuitemimage:
+                  if (layout === 'classic') {
+                    width = 370;
+                    height = 370;
+                  }
+                  else if (layout === 'galaxies') {
+                    width = 470;
+                    height = 410;
+                  }
+                  break;
+                case app.MediaKind.menuitemphoto:
+                  if (layout === 'classic') {
+                    width = 600;
+                    height = 600;
+                  }
+                  else if (layout === 'galaxies') {
+                    width = 470;
+                    height = 410;
+                  }
+                  break;
+                case app.MediaKind.modifierimage:
                   width = 100;
                   height = 100;
-                }
-                break;
-              case app.MediaKind.menuimage:
-                if (layout === 'classic') {
-                  width = 160;
-                  height = 160;
-                }
-                else if (layout === 'galaxies') {
-                  width = 470;
-                  height = 410;
-                }
-                break;
-              case app.MediaKind.menucategoryimage:
-              case app.MediaKind.menuitemimage:
-                if (layout === 'classic') {
-                  width = 370;
-                  height = 370;
-                }
-                else if (layout === 'galaxies') {
-                  width = 470;
-                  height = 410;
-                }
-                break;
-              case app.MediaKind.menuitemphoto:
-                if (layout === 'classic') {
-                  width = 600;
-                  height = 600;
-                }
-                else if (layout === 'galaxies') {
-                  width = 470;
-                  height = 410;
-                }
-                break;
-              case app.MediaKind.modifierimage:
-                width = 100;
-                height = 100;
-                break;
-              case app.MediaKind.promoimage:
-                if (layout === 'classic') {
-                  width = 160;
-                  height = 160;
-                }
-                break;
+                  break;
+                case app.MediaKind.promoimage:
+                  if (layout === 'classic') {
+                    width = 160;
+                    height = 160;
+                  }
+                  break;
+              }
+
+              media.width = width;
+              media.height = height;
+
+              return media;
+            })
+            .filter(media => media.width && media.height);
+
+          var table = {};
+          medias = medias.reduce((unique, media) => {
+            var key = `${media.token}_${media.width}_${media.height}`;
+
+            if (!table.hasOwnProperty(key)) {
+              unique.push(media);
+              table[key] = true;
             }
 
-            media.width = width;
-            media.height = height;
+            return unique;
+          }, []);
 
-            return media;
-          })
-          .filter(media => media.width && media.height);
+          this._Logger.debug(`Digest contains ${medias.length} media files, preloading...`);
 
-        this._Logger.debug(`Digest contains ${medias.length} media files, preloading...`);
+          let mediaTasks = medias.map(m => this.model.media(m, true));
 
-        let tasks = medias.map(m => this.model.media(m, true));
-        return Promise.all(tasks);
+          this.model.assetsDigest(layout).then((data) => {
+            var assetsTasks = [
+              data.images.map(i => this.model.url(i)),
+              data.partials.map(i => this.model.url(i))
+            ];
+
+            Promise.all(assetsTasks.concat(mediaTasks)).then(resolve, reject);
+          }, e => {
+            reject(e);
+          });
+        });
       });
     });
   }
@@ -164,16 +193,11 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     }
 
     if (value) {
-      this._home = value;
       this.model.home().then(home => {
-        if (this._home) {
-          home = this._filterHome(home);
-          this.homeChanged.dispatch(home);
-        }
+        this.homeChanged.dispatch(this._filterHome(home));
       });
     }
     else {
-      this._home = undefined;
       this.homeChanged.dispatch(undefined);
     }
   }
@@ -184,18 +208,14 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
       return;
     }
 
-    if (value) {
-      this._menu = value;
+    this._menu = value;
 
+    if (value) {
       this.model.menu(value).then(menu => {
-        if (this._menu) {
-          menu = this._filterMenu(menu);
-          this.menuChanged.dispatch(menu);
-        }
+        this.menuChanged.dispatch(this._filterMenu(menu));
       });
     }
     else {
-      this._menu = undefined;
       this.menuChanged.dispatch(undefined);
     }
   }
@@ -206,18 +226,14 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
       return;
     }
 
-    if (value) {
-      this._category = value;
+    this._category = value;
 
+    if (value) {
       this.model.category(value).then(category => {
-        if (this._category) {
-          category = this._filterCategory(category);
-          this.categoryChanged.dispatch(category);
-        }
+        this.categoryChanged.dispatch(this._filterCategory(category));
       });
     }
     else {
-      this._category = undefined;
       this.categoryChanged.dispatch(undefined);
     }
   }
@@ -228,17 +244,14 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
       return;
     }
 
-    if (value) {
-      this._item = value;
+    this._item = value;
 
+    if (value) {
       this.model.item(value).then(item => {
-        if (this._item) {
-          this.itemChanged.dispatch(item);
-        }
+        this.itemChanged.dispatch(item);
       });
     }
     else {
-      this._item = undefined;
       this.itemChanged.dispatch(undefined);
     }
   }
@@ -251,6 +264,10 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
   }
 
   _filterMenu(data) {
+    if (!data.categories) {
+      data.categories = [];
+    }
+
     return data;
   }
 

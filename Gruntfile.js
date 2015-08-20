@@ -1,8 +1,39 @@
+var fs = require('fs');
+
 module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   var pkg = grunt.file.readJSON('package.json'),
       bwr = grunt.file.readJSON('bower.json');
+
+  function listFiles(dir, files_) {
+      files_ = files_ || [];
+      var files = fs.readdirSync(dir);
+
+      for (var i in files) {
+        var name = dir + '/' + files[i];
+        if (fs.statSync(name).isDirectory()) {
+          getFiles(name, files_);
+        }
+        else {
+          files_.push(name);
+        }
+      }
+
+      return files_;
+  }
+
+  function createManifest(layout) {
+    return function(fs, fd, done) {
+      var data = JSON.stringify({
+        images: listFiles('assets/' + layout + '/images'),
+        partials: listFiles('assets/' + layout + '/partials')
+      }, null, 2);
+
+      fs.writeSync(fd, data);
+      done();
+    };
+  }
 
   grunt.initConfig({
     pkg: pkg,
@@ -139,6 +170,12 @@ module.exports = function(grunt) {
         }
       }
     },
+    'file-creator': {
+      'manifest': {
+        'assets/classic/manifest.json': createManifest('classic'),
+        'assets/galaxies/manifest.json': createManifest('galaxies'),
+      }
+    },
     clean: {
       dist: 'dist',
       temp: 'temp'
@@ -161,7 +198,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', []);
   grunt.registerTask('validate', ['jshint']);
   grunt.registerTask('build', ['clean', 'buildcss', 'buildjs', 'buildassets', 'clean:temp']);
-  grunt.registerTask('buildassets', ['concat:web']);
+  grunt.registerTask('buildassets', ['concat:web', 'file-creator:manifest']);
   grunt.registerTask('buildcss', ['concat:css', 'less', 'cssmin']);
   grunt.registerTask('buildjs', ['concat:js', 'babel:client', 'uglify']);
   grunt.registerTask('run', ['concurrent:dev']);
