@@ -208,6 +208,8 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
       return;
     }
 
+    this._menu = value;
+
     if (value) {
       this.model.menu(value).then(menu => {
         this.menuChanged.dispatch(this._filterMenu(menu));
@@ -224,6 +226,8 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
       return;
     }
 
+    this._category = value;
+
     if (value) {
       this.model.category(value).then(category => {
         this.categoryChanged.dispatch(this._filterCategory(category));
@@ -239,6 +243,8 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     if (this._item === value) {
       return;
     }
+
+    this._item = value;
 
     if (value) {
       this.model.item(value).then(item => {
@@ -258,6 +264,10 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
   }
 
   _filterMenu(data) {
+    if (!data.categories) {
+      data.categories = [];
+    }
+
     return data;
   }
 

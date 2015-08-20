@@ -3,7 +3,22 @@ angular.module('SNAP.controllers')
   ['$scope', '$timeout', 'DataManager', 'NavigationManager', 'ShellManager',
   ($scope, $timeout, DataManager, NavigationManager, ShellManager) => {
 
-  $scope.goBack = () => NavigationManager.goBack();
+  var MenuTitle = React.createClass({
+    render: function() {
+      var menu = this.props.menu;
+      return React.DOM.div({}, [
+        React.DOM.button({
+          key: 1,
+          className: 'clickable',
+          onClick: e => {
+            e.preventDefault();
+            NavigationManager.goBack();
+          }
+        }),
+        React.DOM.h1({ key: 2 }, menu.title || ' ')
+      ]);
+    }
+  });
 
   var MenuList = React.createClass({
     render: function() {
@@ -38,9 +53,42 @@ angular.module('SNAP.controllers')
     }
   });
 
+  const titleId = 'page-menu-title';
+  const contentId = 'page-menu-content';
+  const conainerId = 'page-menu-content-container';
+
+  function renderTitle(element, menu) {
+    if (!element) {
+      element = document.getElementById(titleId);
+    }
+
+    React.render(
+      React.createElement(MenuTitle, { menu: menu }),
+      element
+    );
+  }
+
+  function renderContent(element, tiles) {
+    if (!element) {
+      element = document.getElementById(contentId);
+    }
+
+    React.render(
+      React.createElement(MenuList, { tiles: tiles }),
+      element
+    );
+  }
+
+  function reset() {
+    var container = document.getElementById(conainerId);
+    if (container) {
+      container.scrollLeft = 0;
+    }
+  }
+
   DataManager.menuChanged.add(menu => {
     if (!menu) {
-      return $timeout(() => $scope.menu = null);
+      return;
     }
 
     var tiles = menu.categories
@@ -58,29 +106,24 @@ angular.module('SNAP.controllers')
         };
       });
 
-    var element = document.getElementById('page-menu-content');
+      var titleElement = document.getElementById(titleId),
+          contentElement = document.getElementById(contentId);
 
-    if (element) {
-      React.render(
-        React.createElement(MenuList, { tiles: tiles }),
-        element
-      );
-    }
-
-    $scope.menu = menu;
-    $timeout(() => $scope.$apply());
+      if (contentElement && titleElement) {
+        renderTitle(titleElement, menu);
+        renderContent(contentElement, tiles);
+      }
+      else {
+        $timeout(() => {
+          renderTitle(titleElement, menu);
+          renderContent(contentElement, tiles);
+        });
+      }
   });
 
   NavigationManager.locationChanging.add(location => {
     DataManager.menu = location.type === 'menu' ? location.token : undefined;
     $scope.visible = Boolean(DataManager.menu);
-    $timeout(() => {
-      var container = document.getElementById('page-menu-content-container');
-      if (container) {
-        container.scrollLeft = 0;
-      }
-
-      $scope.$apply();
-    });
+    $timeout(() => reset());
   });
 }]);

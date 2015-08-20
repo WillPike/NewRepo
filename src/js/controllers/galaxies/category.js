@@ -3,7 +3,22 @@ angular.module('SNAP.controllers')
   ['$scope', '$timeout', 'DataManager', 'NavigationManager', 'ShellManager',
   ($scope, $timeout, DataManager, NavigationManager, ShellManager) => {
 
-  $scope.goBack = () => NavigationManager.goBack();
+  var CategoryTitle = React.createClass({
+    render: function() {
+      var category = this.props.category;
+      return React.DOM.div({}, [
+        React.DOM.button({
+          key: 1,
+          className: 'clickable',
+          onClick: e => {
+            e.preventDefault();
+            NavigationManager.goBack();
+          }
+        }),
+        React.DOM.h1({ key: 2 }, category.title || ' ')
+      ]);
+    }
+  });
 
   var CategoryList = React.createClass({
     render: function() {
@@ -38,9 +53,42 @@ angular.module('SNAP.controllers')
     }
   });
 
+  const titleId = 'page-category-title';
+  const contentId = 'page-category-content';
+  const conainerId = 'page-category-content-container';
+
+  function renderTitle(element, category) {
+    if (!element) {
+      element = document.getElementById(titleId);
+    }
+
+    React.render(
+      React.createElement(CategoryTitle, { category: category }),
+      element
+    );
+  }
+
+  function renderContent(element, tiles) {
+    if (!element) {
+      element = document.getElementById(contentId);
+    }
+
+    React.render(
+      React.createElement(CategoryList, { tiles: tiles }),
+      element
+    );
+  }
+
+  function reset() {
+    var container = document.getElementById(conainerId);
+    if (container) {
+      container.scrollLeft = 0;
+    }
+  }
+
   DataManager.categoryChanged.add(category => {
     if (!category) {
-      return $timeout(() => $scope.category = null);
+      return;
     }
 
     var items = category && category.items ? category.items : [],
@@ -55,17 +103,19 @@ angular.module('SNAP.controllers')
       };
     });
 
-    var element = document.getElementById('page-category-content');
+    var titleElement = document.getElementById(titleId),
+        contentElement = document.getElementById(contentId);
 
-    if (element) {
-      React.render(
-        React.createElement(CategoryList, { tiles: tiles }),
-        element
-      );
+    if (titleElement && contentElement) {
+      renderTitle(titleElement, category);
+      renderContent(contentElement, tiles);
     }
-
-    $scope.category = category;
-    $timeout(() => $scope.$apply());
+    else {
+      $timeout(() => {
+        renderTitle(titleElement, category);
+        renderContent(contentElement, tiles);
+      });
+    }
   });
 
   NavigationManager.locationChanging.add(function(location) {
@@ -78,13 +128,6 @@ angular.module('SNAP.controllers')
 
     DataManager.category = location.type === 'category' ? location.token : undefined;
     $scope.visible = Boolean(DataManager.category);
-    $timeout(() => {
-      var container = document.getElementById('page-category-content-container');
-      if (container) {
-        container.scrollLeft = 0;
-      }
-
-      $scope.$apply();
-    });
+    $timeout(() => reset());
   });
 }]);

@@ -3,5 +3,5 @@
   "execMap": {
     "js": "iojs"
   },
-  "ignore": [ ".git", "node_modules/**", "temp/**/*", "*.min.js", "src/**", "assets/**/manifest.json" ]
+  "ignore": [ ".git", "node_modules/**", "temp/**/*", "*.min.js", "src/**", "manifest.json" ]
 }
