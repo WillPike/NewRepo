@@ -47,8 +47,7 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('ManagementService', ['SNAPEnvironment', (SNAPEnvironment) => {
     switch (SNAPEnvironment.platform) {
       case 'desktop':
-        //return new app.ElectronManagementService();
-        return new app.GenericManagementService();
+        return new app.ElectronManagementService();
       case 'mobile':
         return new app.CordovaManagementService();
       default:

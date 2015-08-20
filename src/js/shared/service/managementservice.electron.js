@@ -36,18 +36,19 @@ window.app.ElectronManagementService = class ElectronManagementService {
 
   rotateScreen() {
     return new Promise(resolve => {
-      this._ipc.send('rotate-screen');
+      //this._ipc.send('rotate-screen');
       resolve();
     });
   }
 
   getSoundVolume() {
-    return new Promise(resolve => {
-      this._ipc.on('get-sound-volume-result', function(value) {
-        resolve(parseFloat(value) * 100);
-      });
-      this._ipc.send('get-sound-volume');
-    });
+    return Promise.resolve(50);
+    // return new Promise(resolve => {
+    //   this._ipc.on('get-sound-volume-result', function(value) {
+    //     resolve(parseFloat(value) * 100);
+    //   });
+    //   this._ipc.send('get-sound-volume');
+    // });
   }
 
   setSoundVolume() {
@@ -56,17 +57,18 @@ window.app.ElectronManagementService = class ElectronManagementService {
     }
 
     return new Promise(resolve => {
-      this._ipc.send('set-sound-volume', value * 0.01);
+      //this._ipc.send('set-sound-volume', value * 0.01);
       resolve();
     });
   }
 
   getDisplayBrightness() {
+    return Promise.resolve(50);
     return new Promise(resolve => {
-      this._ipc.on('get-display-brightness-result', function(value) {
-        resolve(parseFloat(value) * 100);
-      });
-      this._ipc.send('get-display-brightness');
+      // this._ipc.on('get-display-brightness-result', function(value) {
+      //   resolve(parseFloat(value) * 100);
+      // });
+      // this._ipc.send('get-display-brightness');
     });
   }
 
@@ -76,27 +78,29 @@ window.app.ElectronManagementService = class ElectronManagementService {
     }
 
     return new Promise(resolve => {
-      this._ipc.send('set-display-brightness', value * 0.01);
+      //this._ipc.send('set-display-brightness', value * 0.01);
       resolve();
     });
   }
 
   startCardReader() {
-    return new Promise((resolve, reject) => {
-      this._ipc.on('card-reader-result', function(data) {
-        resolve(data);
-      });
-      this._ipc.on('card-reader-error', function() {
-        reject();
-      });
-      this._ipc.send('start-card-reader');
-    });
+    return Promise.reject();
+    // return new Promise((resolve, reject) => {
+    //   this._ipc.on('card-reader-result', function(data) {
+    //     resolve(data);
+    //   });
+    //   this._ipc.on('card-reader-error', function() {
+    //     reject();
+    //   });
+    //   this._ipc.send('start-card-reader');
+    // });
   }
 
   stopCardReader() {
-    return new Promise(resolve => {
-      this._ipc.send('stop-card-reader');
-      resolve();
-    });
+    return Promise.reject();
+    // return new Promise(resolve => {
+    //   this._ipc.send('stop-card-reader');
+    //   resolve();
+    // });
   }
 };
