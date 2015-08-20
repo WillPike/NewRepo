@@ -13,6 +13,11 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     this.categoryChanged = new signals.Signal();
     this.itemChanged = new signals.Signal();
 
+    this.homeChanged.add(value => this._home = value);
+    this.menuChanged.add(value => this._menu = value);
+    this.categoryChanged.add(value => this._category = value);
+    this.itemChanged.add(value => this._item = value);
+
     this._CACHEABLE_MEDIA_KINDS = [
       app.MediaKind.advertisementimage,
       app.MediaKind.backgroundimage,
@@ -149,6 +154,18 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
           })
           .filter(media => media.width && media.height);
 
+        var table = {};
+        medias = medias.reduce((unique, media) => {
+          var key = `${media.token}_${media.width}_${media.height}`;
+          
+          if (!table.hasOwnProperty(key)) {
+            unique.push(media);
+            table[key] = true;
+          }
+
+          return unique;
+        }, []);
+
         this._Logger.debug(`Digest contains ${medias.length} media files, preloading...`);
 
         let tasks = medias.map(m => this.model.media(m, true));
@@ -164,16 +181,11 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     }
 
     if (value) {
-      this._home = value;
       this.model.home().then(home => {
-        if (this._home) {
-          home = this._filterHome(home);
-          this.homeChanged.dispatch(home);
-        }
+        this.homeChanged.dispatch(this._filterHome(home));
       });
     }
     else {
-      this._home = undefined;
       this.homeChanged.dispatch(undefined);
     }
   }
@@ -185,17 +197,11 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     }
 
     if (value) {
-      this._menu = value;
-
       this.model.menu(value).then(menu => {
-        if (this._menu) {
-          menu = this._filterMenu(menu);
-          this.menuChanged.dispatch(menu);
-        }
+        this.menuChanged.dispatch(this._filterMenu(menu));
       });
     }
     else {
-      this._menu = undefined;
       this.menuChanged.dispatch(undefined);
     }
   }
@@ -207,17 +213,11 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     }
 
     if (value) {
-      this._category = value;
-
       this.model.category(value).then(category => {
-        if (this._category) {
-          category = this._filterCategory(category);
-          this.categoryChanged.dispatch(category);
-        }
+        this.categoryChanged.dispatch(this._filterCategory(category));
       });
     }
     else {
-      this._category = undefined;
       this.categoryChanged.dispatch(undefined);
     }
   }
@@ -229,16 +229,11 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     }
 
     if (value) {
-      this._item = value;
-
       this.model.item(value).then(item => {
-        if (this._item) {
-          this.itemChanged.dispatch(item);
-        }
+        this.itemChanged.dispatch(item);
       });
     }
     else {
-      this._item = undefined;
       this.itemChanged.dispatch(undefined);
     }
   }
