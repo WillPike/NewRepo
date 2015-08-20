@@ -4,7 +4,17 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
     return new app.FlashStarter(Logger, SNAPHosts);
   }])
   .factory('Logger', ['SNAPEnvironment', (SNAPEnvironment) => {
-    return new app.Logger(SNAPEnvironment);
+    var loggers = [
+      new app.Log4JsLogger()
+    ];
+
+    switch (SNAPEnvironment.platform) {
+      case 'desktop':
+        loggers.push(new app.ElectronLogger());
+        break;
+    }
+
+    return new app.CompositeLogger(loggers);
   }])
   .factory('$exceptionHandler', ['Logger', (Logger) => {
     return (exception, cause) => {
