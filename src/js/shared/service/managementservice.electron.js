@@ -64,12 +64,12 @@ window.app.ElectronManagementService = class ElectronManagementService {
 
   getDisplayBrightness() {
     return Promise.resolve(50);
-    return new Promise(resolve => {
-      // this._ipc.on('get-display-brightness-result', function(value) {
-      //   resolve(parseFloat(value) * 100);
-      // });
-      // this._ipc.send('get-display-brightness');
-    });
+    // return new Promise(resolve => {
+    //   this._ipc.on('get-display-brightness-result', function(value) {
+    //     resolve(parseFloat(value) * 100);
+    //   });
+    //   this._ipc.send('get-display-brightness');
+    // });
   }
 
   setDisplayBrightness(value) {
