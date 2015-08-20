@@ -87,8 +87,9 @@ angular.module('SNAP.controllers')
   });
 
   NavigationManager.locationChanging.add(location => {
-    DataManager.home = $scope.visible = Boolean(location.type === 'home');
-    
+    $scope.visible = Boolean(location.type === 'home');
+    DataManager.home = $scope.visible;
+
     $timeout(() => {
       var container = document.getElementById('page-home-menu-container');
       if (container) {
