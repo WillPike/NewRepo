@@ -57,12 +57,14 @@ window.app.DataModel = class DataModel {
       }
 
       if (media.width && media.height) {
+        var src = this._getMediaUrl(media, media.width, media.height, media.extension);
+
         var img = new Image();
         img.onload = () => resolve(img);
         img.onerror = (e) => reject(e);
-        img.src = this._getMediaUrl(media, media.width, media.height, media.extension);
+        img.src = src;
 
-        this._store(img, 'media', token);
+        this._store(img, 'media', src);
 
         if (img.complete) {
           resolve(img);
@@ -71,6 +73,35 @@ window.app.DataModel = class DataModel {
       else {
         reject('Missing image dimensions');
       }
+    });
+  }
+
+  assetsDigest(layout) {
+    return new Promise((resolve, reject) => {
+      $.get(`assets/${layout}/manifest.json`, function(data, status) {
+        if (status !== 'success') {
+          return reject(`Manifest load error: ${status}`);
+        }
+        resolve(data);
+      });
+    });
+  }
+
+  url(url) {
+    var self = this;
+    return this._cached('url', url) || new Promise((resolve, reject) => {
+      if (navigator.onLine === false) {
+        reject(`Application is offline, unable to load media ${token}`);
+      }
+
+      $.get(url, function(data, status) {
+        if (status !== 'success') {
+          return reject(`URL load error: ${status}`);
+        }
+
+        self._store(data, 'url', url);
+        resolve(data);
+      });
     });
   }
 
@@ -127,7 +158,7 @@ window.app.DataModel = class DataModel {
       this._cache[group] = data;
     }
 
-    if (group !== 'media') {
+    if (group !== 'media' && group !== 'url') {
       let storage = this._getStorage(group, id);
       storage.write(data);
     }
