@@ -1,6 +1,6 @@
 {
   "name": "dts-snap-web",
-  "version": "1.0.47",
+  "version": "1.0.48",
   "private": true,
   "main": "server.js",
   "scripts": {
