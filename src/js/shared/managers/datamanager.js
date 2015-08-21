@@ -195,6 +195,8 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
       return;
     }
 
+    this._home = value;
+
     if (value) {
       this.model.home().then(home => {
         this.homeChanged.dispatch(this._filterHome(home));

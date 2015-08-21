@@ -109,7 +109,7 @@ angular.module('SNAP.controllers')
 
   NavigationManager.locationChanging.add(location => {
     DataManager.home = location.type === 'home';
-    $scope.visible = Boolean(DataManager.menu);
+    $scope.visible = Boolean(DataManager.home);
     $timeout(() => reset());
   });
 }]);
