@@ -172,9 +172,12 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
           let mediaTasks = medias.map(m => this.model.media(m, true));
 
           this.model.assetsDigest(layout).then((data) => {
+            this._Logger.debug(`Preloading assets: ${data.images.length} images and ` +
+              `${data.partials.length} templates...`);
+
             var assetsTasks = [
-              data.images.map(i => this.model.url(i)),
-              data.partials.map(i => this.model.url(i))
+              data.images.map(i => this.model.asset(i)),
+              data.partials.map(i => this.model.asset(i))
             ];
 
             Promise.all(assetsTasks.concat(mediaTasks)).then(resolve, reject);

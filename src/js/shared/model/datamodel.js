@@ -1,9 +1,10 @@
 window.app.DataModel = class DataModel {
-  constructor(config, service, storageProvider) {
+  constructor(config, service, storageProvider, SNAPHosts) {
     this._config = config;
     this._service = service;
     this._cache = {};
     this._storageProvider = storageProvider;
+    this._SNAPHosts = SNAPHosts;
   }
 
   clear() {
@@ -78,18 +79,29 @@ window.app.DataModel = class DataModel {
 
   assetsDigest(layout) {
     return new Promise((resolve, reject) => {
-      $.get(`assets/${layout}/manifest.json`, function(data, status) {
+      $.get(`${this._SNAPHosts.static.path}assets/${layout}/manifest.json`, function(data, status) {
         if (status !== 'success') {
           return reject(`Manifest load error: ${status}`);
         }
+
+        if (typeof data === 'string') {
+          try {
+            data = JSON.parse(data);
+          }
+          catch (e) {
+            reject(e);
+          }
+        }
+
         resolve(data);
       });
     });
   }
 
-  url(url) {
+  asset(url) {
     var self = this;
-    return this._cached('url', url) || new Promise((resolve, reject) => {
+    url = this._SNAPHosts.static.path + url;
+    return this._cached('asset', this._SNAPHosts.static.path + url) || new Promise((resolve, reject) => {
       if (navigator.onLine === false) {
         reject(`Application is offline, unable to load media ${token}`);
       }
@@ -99,7 +111,7 @@ window.app.DataModel = class DataModel {
           return reject(`URL load error: ${status}`);
         }
 
-        self._store(data, 'url', url);
+        self._store(data, 'asset', url);
         resolve(data);
       });
     });
@@ -158,7 +170,7 @@ window.app.DataModel = class DataModel {
       this._cache[group] = data;
     }
 
-    if (group !== 'media' && group !== 'url') {
+    if (group !== 'asset' && group !== 'media') {
       let storage = this._getStorage(group, id);
       storage.write(data);
     }

@@ -79,8 +79,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('CustomerModel', ['SNAPLocation', 'StorageProvider', (SNAPLocation, StorageProvider) => {
     return new app.CustomerModel(SNAPLocation, StorageProvider);
   }])
-  .factory('DataModel', ['SNAPLocation', 'DtsApi', 'StorageProvider', (SNAPLocation, DtsApi, StorageProvider) => {
-    return new app.DataModel(SNAPLocation, DtsApi, StorageProvider);
+  .factory('DataModel', ['SNAPLocation', 'DtsApi', 'StorageProvider', 'SNAPHosts', (SNAPLocation, DtsApi, StorageProvider, SNAPHosts) => {
+    return new app.DataModel(SNAPLocation, DtsApi, StorageProvider, SNAPHosts);
   }])
   .factory('HeatMap', () => {
     return new app.HeatMap(document.body);
