@@ -1,13 +1,14 @@
 angular.module('SNAP.controllers')
 .controller('GalaxiesItemCtrl',
-  ['$scope', '$timeout', 'DataManager', 'NavigationManager', 'OrderManager', 'ShellManager', 'WebBrowser', 'CommandSubmitOrder',
-  ($scope, $timeout, DataManager, NavigationManager, OrderManager, ShellManager, WebBrowser, CommandSubmitOrder) => {
+  ['$scope', '$timeout', 'CartModel', 'DataManager', 'NavigationManager', 'OrderManager', 'ShellManager', 'WebBrowser', 'CommandSubmitOrder',
+  ($scope, $timeout, CartModel, DataManager, NavigationManager, OrderManager, ShellManager, WebBrowser, CommandSubmitOrder) => {
 
   $scope.goBack = () => NavigationManager.goBack();
+  $scope.goHome = () => NavigationManager.location = { type: 'home' };
 
   function onClose() {
     if (NavigationManager.location.type === 'item') {
-      $timeout(() => $scope.goBack());
+      NavigationManager.goBack();
     }
   }
 
@@ -110,7 +111,7 @@ angular.module('SNAP.controllers')
       $scope.currentEntry = $scope.entries[--$scope.entryIndex];
     }
     else if ($scope.step === 0) {
-      $scope.goBack();
+      NavigationManager.goBack();
     }
     else {
       $scope.step--;
@@ -127,8 +128,8 @@ angular.module('SNAP.controllers')
   };
 
   $scope.submitOrder = () => {
-    CommandSubmitOrder();
-    $scope.goBack();
+    NavigationManager.goBack();
+    CartModel.isCartOpen = true;
   };
 
   NavigationManager.locationChanging.add(location => {
