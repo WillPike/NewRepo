@@ -102,6 +102,9 @@ angular.module('SNAP.controllers')
           case app.Alert.TABLE_RESET:
             message = "Are you sure you want to reset?";
             break;
+          case app.Alert.TABLE_SUBMIT_ORDER:
+            message = "Are you sure you want to submit the order?";
+            break;
           case app.Alert.DELET_CARD:
             message = "Are you sure you want to remove this payment method?";
             break;

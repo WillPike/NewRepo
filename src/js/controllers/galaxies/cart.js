@@ -99,29 +99,26 @@ angular.module('SNAP.controllers')
       $scope.reorderItem = entry => $scope.currentOrder = OrderManager.addToCart(entry.clone());
 
       $scope.submitCart = () => {
-        var job = DialogManager.startJob();
+        DialogManager.confirm(app.Alert.TABLE_SUBMIT_ORDER).then(() => {
+          var job = DialogManager.startJob();
 
-        var options = $scope.options.toGo ? 2 : 0;
+          var options = $scope.options.toGo ? 2 : 0;
 
-        OrderManager.submitCart(options).then(function() {
-          DialogManager.endJob(job);
+          OrderManager.submitCart(options).then(function() {
+            DialogManager.endJob(job);
 
-          $scope.$apply(() => {
-            $scope.currentOrder = OrderManager.model.orderCart;
-            $scope.totalOrder = OrderManager.model.orderCheck;
-            $scope.options.toGo = false;
+            $scope.$apply(() => {
+              $scope.currentOrder = OrderManager.model.orderCart;
+              $scope.totalOrder = OrderManager.model.orderCheck;
+              $scope.options.toGo = false;
+            });
+
+            DialogManager.alert(app.Alert.REQUEST_ORDER_SENT);
+          }, () => {
+            DialogManager.endJob(job);
+            DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
           });
-
-          DialogManager.alert(app.Alert.REQUEST_ORDER_SENT);
-        }, () => {
-          DialogManager.endJob(job);
-          DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
         });
-      };
-
-      $scope.clearCart = () => {
-        $scope.options.toGo = false;
-        $scope.currentOrder = OrderManager.clearCart();
       };
 
       $scope.closeEditor = () => {

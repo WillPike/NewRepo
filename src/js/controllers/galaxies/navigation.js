@@ -175,7 +175,9 @@ angular.module('SNAP.controllers')
     ActivityMonitor.activityDetected();
     $scope.settingsOpen = false;
 
-    CommandSubmitOrder();
+    DialogManager.confirm(app.Alert.TABLE_SUBMIT_ORDER).then(() => {
+      CommandSubmitOrder();
+    });
   };
 
   $scope.viewOrder = () => {
