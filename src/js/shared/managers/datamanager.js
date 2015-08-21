@@ -77,6 +77,7 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
 
           var medias = (digest.media || [])
             .filter(media => this._CACHEABLE_MEDIA_KINDS.indexOf(media.kind) !== -1)
+            .filter(media => media.mime_type.startsWith('image'))
             .map(media => {
               var width, height;
 
