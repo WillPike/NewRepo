@@ -5,7 +5,7 @@ angular.module('SNAP.controllers')
 
   return function(options) {
     if (!LocationModel.seat || !LocationModel.seat.token) {
-      DialogManager.alert(ALERT_ERROR_NO_SEAT);
+      DialogManager.alert(app.Alert.ERROR_NO_SEAT);
       return;
     }
 
@@ -15,10 +15,10 @@ angular.module('SNAP.controllers')
 
     OrderManager.submitCart(options).then(() => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_ORDER_SENT);
+      DialogManager.alert(app.Alert.REQUEST_ORDER_SENT);
     }, () => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 }]);

@@ -66,7 +66,7 @@ angular.module('SNAP.controllers')
       $scope.showProfileEdit = false;
     }, function(e) {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 
@@ -86,7 +86,7 @@ angular.module('SNAP.controllers')
       $scope.showPasswordEdit = false;
     }, function(e) {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 

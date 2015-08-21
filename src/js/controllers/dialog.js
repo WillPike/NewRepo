@@ -66,64 +66,64 @@ angular.module('SNAP.controllers')
   function getMessage(message) {
       if (typeof message !== 'string') {
         switch (message) {
-          case ALERT_GENERIC_ERROR:
+          case app.Alert.GENERIC_ERROR:
             message = "Oops! My bits are fiddled. Our request system has been disconnected. Please notify a server.";
             break;
-          case ALERT_REQUEST_SUBMIT_ERROR:
+          case app.Alert.REQUEST_SUBMIT_ERROR:
             message = "Oops! My bits are fiddled. Our request system has been disconnected. Please notify a server.";
             break;
-          case ALERT_REQUEST_ASSISTANCE_SENT:
+          case app.Alert.REQUEST_ASSISTANCE_SENT:
             message = "Call Server request was sent successfully.";
             break;
-          case ALERT_REQUEST_ASSISTANCE_RECEIVED:
+          case app.Alert.REQUEST_ASSISTANCE_RECEIVED:
             message = "Your request for server assistance has been seen, and accepted.";
             break;
-          case ALERT_REQUEST_CLOSEOUT_SENT:
+          case app.Alert.REQUEST_CLOSEOUT_SENT:
             message = "Request check request was sent successfully.";
             break;
-          case ALERT_REQUEST_CLOSEOUT_RECEIVED:
+          case app.Alert.REQUEST_CLOSEOUT_RECEIVED:
             message = "Your check request has been seen, and accepted.";
             break;
-          case ALERT_REQUEST_ORDER_SENT:
+          case app.Alert.REQUEST_ORDER_SENT:
             message = "Order sent! You will be notified when your waiter accepts the order.";
             break;
-          case ALERT_REQUEST_ORDER_RECEIVED:
+          case app.Alert.REQUEST_ORDER_RECEIVED:
             message = "Your order has been successfully accepted.";
             break;
-          case ALERT_SIGNIN_REQUIRED:
+          case app.Alert.SIGNIN_REQUIRED:
             message = "You must be logged into SNAP to access this page.";
             break;
-          case ALERT_TABLE_ASSISTANCE:
+          case app.Alert.TABLE_ASSISTANCE:
             message = "Are you sure you want to call the waiter?";
             break;
-          case ALERT_TABLE_CLOSEOUT:
+          case app.Alert.TABLE_CLOSEOUT:
             message = "Are you sure you want to request your check?";
             break;
-          case ALERT_TABLE_RESET:
+          case app.Alert.TABLE_RESET:
             message = "Are you sure you want to reset?";
             break;
-          case ALERT_DELET_CARD:
+          case app.Alert.DELET_CARD:
             message = "Are you sure you want to remove this payment method?";
             break;
-          case ALERT_PASSWORD_RESET_COMPLETE:
+          case app.Alert.PASSWORD_RESET_COMPLETE:
             message = "A link to change your password has been emailed.";
             break;
-          case ALERT_SOFTWARE_OUTDATED:
+          case app.Alert.SOFTWARE_OUTDATED:
             message = "A software update is available. Please restart the application.";
             break;
-          case ALERT_CARDREADER_ERROR:
+          case app.Alert.CARDREADER_ERROR:
             message = "Unable to read the card data. Please try again.";
             break;
-          case ALERT_ERROR_NO_SEAT:
+          case app.Alert.ERROR_NO_SEAT:
             message = "Device is not assigned to any table.";
             break;
-          case ALERT_ERROR_STARTUP:
+          case app.Alert.ERROR_STARTUP:
             message = "Unable to start the application.";
             break;
-          case ALERT_ERROR_CACHE_UPDATE:
+          case app.Alert.ERROR_CACHE_UPDATE:
             message = "Unable to load the application data.";
             break;
-          case ALERT_WARNING_CACHE_OBSOLETE:
+          case app.Alert.WARNING_CACHE_OBSOLETE:
             message = "Unable to update the application cache. Falling back to cached version.";
             break;
       }

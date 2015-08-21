@@ -72,7 +72,7 @@ angular.module('SNAP.controllers')
       });
 
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   }
 }]);

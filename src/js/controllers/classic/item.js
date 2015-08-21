@@ -70,7 +70,7 @@ angular.module('SNAP.controllers')
 
   $scope.addToCart = () => {
     if (CustomerModel.isEnabled && !CustomerModel.isAuthenticated) {
-      DialogManager.alert(ALERT_SIGNIN_REQUIRED);
+      DialogManager.alert(app.Alert.SIGNIN_REQUIRED);
       return;
     }
 

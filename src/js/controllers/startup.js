@@ -12,7 +12,7 @@ angular.module('SNAP.controllers')
     CommandBoot().then(result => {
       step2();
     }, e => {
-      DialogManager.alert(ALERT_ERROR_STARTUP).then(() => step1());
+      DialogManager.alert(app.Alert.ERROR_STARTUP).then(() => step1());
     });
   }
 
@@ -21,13 +21,13 @@ angular.module('SNAP.controllers')
 
     CommandUpdateCache().then(result => {
       if (result === 'obsolete') {
-        DialogManager.alert(ALERT_WARNING_CACHE_OBSOLETE).then(() => finished());
+        DialogManager.alert(app.Alert.WARNING_CACHE_OBSOLETE).then(() => finished());
       }
       else {
         finished();
       }
     }, e => {
-      DialogManager.alert(ALERT_ERROR_CACHE_UPDATE).then(() => step2());
+      DialogManager.alert(app.Alert.ERROR_CACHE_UPDATE).then(() => step2());
     });
   }
 

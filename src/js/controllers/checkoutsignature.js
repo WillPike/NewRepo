@@ -41,7 +41,7 @@ angular.module('SNAP.controllers')
     }, e => {
       Logger.debug(`Signature upload error: ${JSON.stringify(e)}`);
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 
@@ -75,7 +75,7 @@ angular.module('SNAP.controllers')
 
     OrderManager.payOrder(request).then(result => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_CLOSEOUT_SENT);
+      DialogManager.alert(app.Alert.REQUEST_CLOSEOUT_SENT);
 
       $timeout(() => {
         $scope.current.checkout_token = result.token;
@@ -84,7 +84,7 @@ angular.module('SNAP.controllers')
     }, e => {
       Logger.debug(`Order payment error: ${JSON.stringify(e)}`);
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   }
 

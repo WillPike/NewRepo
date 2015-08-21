@@ -91,10 +91,10 @@ angular.module('SNAP.controllers')
         $scope.toGoOrder = false;
       });
 
-      DialogManager.alert(ALERT_REQUEST_ORDER_SENT);
+      DialogManager.alert(app.Alert.REQUEST_ORDER_SENT);
     }, () => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 
@@ -118,15 +118,15 @@ angular.module('SNAP.controllers')
       return;
     }
 
-    DialogManager.confirm(ALERT_TABLE_ASSISTANCE).then(() => {
+    DialogManager.confirm(app.Alert.TABLE_ASSISTANCE).then(() => {
       var job = DialogManager.startJob();
 
       OrderManager.requestAssistance().then(() => {
         DialogManager.endJob(job);
-        DialogManager.alert(ALERT_REQUEST_ASSISTANCE_SENT);
+        DialogManager.alert(app.Alert.REQUEST_ASSISTANCE_SENT);
       }, () => {
         DialogManager.endJob(job);
-        DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+        DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
       });
     });
   };
@@ -140,10 +140,10 @@ angular.module('SNAP.controllers')
 
     OrderManager.requestCloseout().then(() => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_CLOSEOUT_SENT);
+      DialogManager.alert(app.Alert.REQUEST_CLOSEOUT_SENT);
     }, () => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 }]);
