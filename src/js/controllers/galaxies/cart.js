@@ -32,7 +32,7 @@ angular.module('SNAP.controllers')
 
       $scope.customerName = CustomerManager.customerName;
       CustomerManager.model.profileChanged.add(() => {
-        $timeout(() => $scope.customerName = CustomerManager.customerName);
+        $timeout(() => $scope.customerName = CustomerManager.customerName || 'Guest');
       });
 
       $scope.checkoutEnabled = CustomerManager.model.isEnabled;

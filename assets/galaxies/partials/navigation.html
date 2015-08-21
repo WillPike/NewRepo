@@ -31,12 +31,14 @@
     </tr>
   </table>
 
-  <form id="page-navigation-actions" class="form vertical page-navigation-dropmenu" ng-show="menuOpen" ng-click="toggleMenu()">
-    <button class="button" ng-click="submitOrder()" ng-show="cartCount > 0">Submit Order ({{cartCount}})</button>
-    <button class="button" ng-click="viewOrder()">View Order</button>
-    <button class="button green" ng-click="payBill()" ng-show="checkoutEnabled && (totalOrder.length > 0)">Pay Bill</button>
-    <hr/>
-    <button class="button button-assistance" ng-click="requestAssistance()" ng-class="{disabled: !requestAssistanceAvailable}">Request Server</button>
+  <form id="page-navigation-actions" class="form page-navigation-dropmenu" ng-show="menuOpen" ng-click="toggleMenu()">
+    <ul class="vertical">
+      <li ng-show="cartCount > 0"><button class="button" ng-click="submitOrder()">Submit Order ({{cartCount}})</button></li>
+      <li><button class="button" ng-click="viewOrder()">View Order</button></li>
+      <li ng-show="checkoutEnabled && (totalOrder.length > 0)"><button class="button green" ng-click="payBill()">Pay Bill</button></li>
+      <li><hr/></li>
+      <li><button class="button button-assistance" ng-click="requestAssistance()" ng-class="{disabled: !requestAssistanceAvailable}">Request Server</button></li>
+    </ul>
     <div id="page-navigation-profile-ad" ng-show="advertisements">
       <slider source="advertisements" slideclick="advertisementClick" slideshow="advertisementImpression" timeout="20000" />
     </div>
