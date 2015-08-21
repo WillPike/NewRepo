@@ -53,7 +53,7 @@
 
 <form class="form vertical screen-floater screen-cart-controls" ng-show="state === STATE_CART">
   <ul class="vertical">
-    <li ng-show="currentOrder.length > 0"><button class="button" ng-click="submitCart()">Submit order ({{currentOrder.length}})</button></li>
+    <li ng-show="currentOrder.length > 0"><button class="button" ng-click="submitCart()">Submit order ({{cartCount}})</button></li>
     <li><button class="button grey" ng-click="closeCart()">Back</button></li>
     <li><hr/></li>
     <li><button class="button button-assistance" ng-click="requestAssistance()" ng-class="{ disabled: !requestAssistanceAvailable }">Request Server</button></li>
@@ -138,5 +138,5 @@
     <li><button class="button grey" ng-click="closeCart()">Back</button></li>
     <li><hr/></li>
     <li><button class="button button-assistance" ng-click="requestAssistance()" ng-class="{ disabled: !requestAssistanceAvailable }">Request Server</button></li>
-  </ul>  
+  </ul>
 </form>

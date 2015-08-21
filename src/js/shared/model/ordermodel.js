@@ -92,6 +92,37 @@ window.app.OrderModel = class OrderModel {
   set orderCart(value) {
     this._orderCart = value || [];
     this.orderCartChanged.dispatch(this.orderCart);
+
+    this.orderCart.forEach(entry => {
+      entry.quantityChanged.removeAll();
+      entry.quantityChanged.add(() => this.orderCartChanged.dispatch(this.orderCart));
+    });
+  }
+
+  $orderCartAdd(item) {
+    this.orderCart.push(item);
+    this.orderCartChanged.dispatch(this.orderCart);
+
+    item.quantityChanged.add(() => this.orderCartChanged.dispatch(this.orderCart));
+  }
+
+  $orderCartRemove(item) {
+    this.orderCart = this.orderCart.filter(entry => {
+      if (entry === item) {
+        entry.quantityChanged.removeAll();
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+  $orderCartClear() {
+    this.orderCart.forEach(entry => entry.quantityChanged.removeAll());
+    this.orderCartStash.forEach(entry => entry.quantityChanged.removeAll());
+
+    this.orderCart = [];
+    this.orderCartStash = [];
   }
 
   get orderCartStash() {
@@ -110,6 +141,39 @@ window.app.OrderModel = class OrderModel {
   set orderCheck(value) {
     this._orderCheck = value || [];
     this.orderCheckChanged.dispatch(this.orderCheck);
+  }
+
+  $moveCartToCheck() {
+    this.orderCart.forEach(entry => entry.quantityChanged.removeAll());
+    this.orderCartStash.forEach(entry => entry.quantityChanged.removeAll());
+
+    let cart = this.orderCart.concat(this.orderCartStas);
+
+    this.orderCart = [];
+    this.orderCartStash = [];
+
+    this.orderCheck = cart;
+  }
+
+  $orderCheckClear(items) {
+    var result = [];
+
+    if (items) {
+      result = this.orderCheck;
+
+      items.forEach(item => {
+        for (var i = 0; i < result.length; i++) {
+          if (result[i].request === item.request) {
+            result[i].quantity -= item.quantity;
+            break;
+          }
+        }
+      });
+
+      result = result.filter(item => item.quantity > 0);
+    }
+
+    this.orderCheck = result;
   }
 
   get orderTicket() {

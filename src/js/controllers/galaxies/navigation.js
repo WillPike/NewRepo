@@ -132,9 +132,9 @@ angular.module('SNAP.controllers')
     $timeout(() => $scope.elements = value);
   });
 
-  $scope.cartCount = OrderManager.model.orderCart.length;
+  $scope.cartCount = OrderManager.calculateCount(OrderManager.model.orderCart);
   OrderManager.model.orderCartChanged.add(cart => {
-    $timeout(() => $scope.cartCount = cart.length);
+    $timeout(() => $scope.cartCount = OrderManager.calculateCount(cart));
   });
 
   $scope.checkoutEnabled = CustomerManager.model.isEnabled;

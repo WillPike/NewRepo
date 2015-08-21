@@ -25,6 +25,11 @@ angular.module('SNAP.controllers')
       $scope.totalOrder = OrderManager.model.orderCheck;
       OrderManager.model.orderCheckChanged.add(value => $scope.totalOrder = value);
 
+      $scope.cartCount = OrderManager.calculateCount(OrderManager.model.orderCart);
+      OrderManager.model.orderCartChanged.add(cart => {
+        $timeout(() => $scope.cartCount = OrderManager.calculateCount(cart));
+      });
+
       $scope.giftSeat = LocationModel.getSeat(ChatManager.model.giftSeat);
       ChatManager.model.giftSeatChanged.add(token => {
         $timeout(() => $scope.giftSeat = LocationModel.getSeat(token));
