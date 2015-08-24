@@ -1,57 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('GalaxiesMenuCtrl',
-  ['$scope', '$timeout', 'DataManager', 'NavigationManager', 'ShellManager',
-  ($scope, $timeout, DataManager, NavigationManager, ShellManager) => {
-
-  var MenuTitle = React.createClass({
-    render: function() {
-      var menu = this.props.menu;
-      return React.DOM.div({}, [
-        React.DOM.button({
-          key: 1,
-          className: 'clickable',
-          onClick: e => {
-            e.preventDefault();
-            NavigationManager.goBack();
-          }
-        }),
-        React.DOM.h1({ key: 2 }, menu.title || ' ')
-      ]);
-    }
-  });
-
-  var MenuList = React.createClass({
-    render: function() {
-      var rows = this.props.tiles.map((tile, i) => {
-        var background = ShellManager.getMediaUrl(tile.image, 470, 410);
-        return (
-          React.DOM.td({
-            className: 'tile tile-regular',
-            key: i
-          }, React.DOM.a({
-            onClick: e => {
-              e.preventDefault();
-              NavigationManager.location = tile.destination;
-            },
-            style: {
-              backgroundImage: background ? 'url("' + background + '")' : null
-            }
-          },
-            React.DOM.span(null, tile.title)
-          ))
-        );
-      })
-      .reduce((result, value, i) => {
-        result[i % 2].push(value);
-        return result;
-      }, [[], []])
-      .map((row, i) => React.DOM.tr({ key: i }, row));
-
-      return React.DOM.table({
-        className: 'tile-table'
-      }, rows);
-    }
-  });
+  ['$scope', '$timeout', 'ComponentMenuTitle', 'ComponentMenuList', 'DataManager', 'NavigationManager', 'ShellManager',
+  ($scope, $timeout, ComponentMenuTitle, ComponentMenuList, DataManager, NavigationManager, ShellManager) => {
 
   const titleId = 'page-menu-title';
   const contentId = 'page-menu-content';
@@ -63,7 +13,11 @@ angular.module('SNAP.controllers')
     }
 
     React.render(
-      React.createElement(MenuTitle, { menu: menu }),
+      React.createElement(ComponentMenuTitle, {
+        menu: {
+          title: menu.title
+        }
+      }),
       element
     );
   }
@@ -74,7 +28,7 @@ angular.module('SNAP.controllers')
     }
 
     React.render(
-      React.createElement(MenuList, { tiles: tiles }),
+      React.createElement(ComponentMenuList, { tiles: tiles }),
       element
     );
   }
