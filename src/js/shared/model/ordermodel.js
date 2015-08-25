@@ -39,7 +39,10 @@ window.app.OrderModel = class OrderModel {
     }
 
     function restoreCartData(items) {
-      return items.map ? items.map(app.CartItem.prototype.restore) : [];
+      return items && items.length > 0 ? items
+        .filter(x => x)
+        .map(app.CartItem.prototype.restore) :
+        [];
     }
 
     this._orderCartStorage = storageProvider('snap_order_cart');

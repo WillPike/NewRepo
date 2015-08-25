@@ -75,7 +75,7 @@ angular.module('SNAP.controllers')
       $scope.requestCloseoutAvailable = OrderManager.model.closeoutRequest === null;
 
       $scope.getModifiers = entry => {
-        if (!entry.modifiers) {
+        if (!entry || !entry.modifiers) {
           return [];
         }
 

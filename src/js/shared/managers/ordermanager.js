@@ -155,6 +155,10 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
   }
 
   calculatePrice(entry) {
+    if (!entry) {
+      return 0;
+    }
+
     var modifiers = entry.modifiers.reduce((total, category) => {
       return total + category.modifiers.reduce((total, modifier) => {
         return total + (modifier.isSelected && modifier.data.price > 0 ?
