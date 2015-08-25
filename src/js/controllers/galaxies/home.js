@@ -33,13 +33,13 @@ angular.module('SNAP.controllers')
     .map(menu => {
       let destination = {
         type: 'menu',
-        token: menu.token
+        token: menu.token,
+        title: menu.title
       };
 
       return {
         title: menu.title,
         image: menu.image,
-        url: '#' + NavigationManager.getPath(destination),
         destination: destination
       };
     });

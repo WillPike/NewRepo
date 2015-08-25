@@ -2,7 +2,8 @@ angular.module('SNAP.components')
 .factory('ComponentMenuTitle', ['NavigationManager', (NavigationManager) => {
   return React.createClass({
     render: function() {
-      var menu = this.props.menu;
+      var title = this.props.title || '',
+          history = this.props.history || [];
       return React.DOM.div({}, [
         React.DOM.button({
           key: 1,
@@ -12,7 +13,16 @@ angular.module('SNAP.components')
             NavigationManager.goBack();
           }
         }),
-        React.DOM.h1({ key: 2 }, menu.title || ' ')
+        React.DOM.ul({ key: 2 }, history.map((destination, i) => {
+          return React.DOM.li({
+            key: i,
+            onClick: e => {
+              e.preventDefault();
+              NavigationManager.location = destination;
+            }
+          }, destination.title);
+        })),
+        React.DOM.h1({ key: 3 }, title)
       ]);
     }
   });

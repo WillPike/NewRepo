@@ -1,10 +1,14 @@
-window.app.DataModel = class DataModel {
+window.app.DataModel = class DataModel extends app.AbstractModel {
   constructor(config, service, storageProvider, SNAPHosts) {
+    super(storageProvider);
+
     this._config = config;
     this._service = service;
     this._cache = {};
     this._storageProvider = storageProvider;
     this._SNAPHosts = SNAPHosts;
+
+    this._defineProperty('menuMap', 'snap_menumap', {});
   }
 
   clear() {

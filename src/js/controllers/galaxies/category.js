@@ -7,16 +7,17 @@ angular.module('SNAP.controllers')
   const contentId = 'page-category-content';
   const conainerId = 'page-category-content-container';
 
-  function renderTitle(element, category) {
+  var destinations = [];
+
+  function renderTitle(element, data, destinations) {
     if (!element) {
       element = document.getElementById(titleId);
     }
 
     React.render(
       React.createElement(ComponentMenuTitle, {
-        menu: {
-          title: category.title
-        }
+        title: data.title,
+        history: data.destinations
       }),
       element
     );
@@ -40,48 +41,73 @@ angular.module('SNAP.controllers')
     }
   }
 
-  DataManager.categoryChanged.add(category => {
-    if (!category) {
-      return;
-    }
+  function renderData(items, entry) {
+    var tiles = items.map(item => {
+      let destination = {
+        type: item.destination.type,
+        token: item.destination.token,
+        title: item.title
+      };
 
-    var items = category && category.items ? category.items : [],
-        categories = category && category.categories ? category.categories : [];
-
-    var tiles = categories.concat(items).map(item => {
       return {
         title: item.title,
         image: item.image,
-        url: '#' + NavigationManager.getPath(item.destination),
-        destination: item.destination
+        destination: destination
       };
     });
 
     var titleElement = document.getElementById(titleId),
         contentElement = document.getElementById(contentId);
 
+    var data = {
+      title: entry.title,
+      destinations: destinations
+    };
+
     if (titleElement && contentElement) {
-      renderTitle(titleElement, category);
+      renderTitle(titleElement, data);
       renderContent(contentElement, tiles);
     }
     else {
       $timeout(() => {
-        renderTitle(titleElement, category);
+        renderTitle(titleElement, data);
         renderContent(contentElement, tiles);
       });
     }
-  });
+  }
 
-  NavigationManager.locationChanging.add(function(location) {
-    if (location.type === 'item') {
-      $scope.showModal = true;
+  DataManager.menuChanged.add(menu => {
+    if (!menu) {
       return;
     }
 
-    $scope.showModal = false;
+    renderData(menu.categories || [], menu);
+  });
 
+  DataManager.categoryChanged.add(category => {
+    if (!category) {
+      return;
+    }
+
+    let elements = (category.categories || [])
+      .concat(category.items || []);
+
+    renderData(elements, category);
+  });
+
+  NavigationManager.locationChanging.add(location => {
+    if (location.type === 'menu' || location.type === 'category') {
+      destinations = DataManager.getDestinationPath(location);
+    }
+
+    DataManager.menu = location.type === 'menu' ? location.token : undefined;
     DataManager.category = location.type === 'category' ? location.token : undefined;
-    $scope.visible = Boolean(DataManager.category);
+
+    $scope.showModal = location.type === 'item';
+    $scope.visible = Boolean(DataManager.menu) ||
+      Boolean(DataManager.category) ||
+      Boolean($scope.showModal);
+
     $timeout(() => reset());
   });
 }]);

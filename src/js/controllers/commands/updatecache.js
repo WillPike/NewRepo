@@ -6,7 +6,8 @@ angular.module('SNAP.controllers')
   return function() {
     return new Promise((resolve, reject) => {
       DataManager.fetchContent().then(resolve, e => {
-        if (result === 'nodigest') {
+        console.error(e);
+        if (e === 'nodigest') {
           reject(e);
         }
         else{
