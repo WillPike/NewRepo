@@ -99,7 +99,7 @@ angular.module('SNAP.controllers')
   $scope.resetTable = () => {
     ActivityMonitor.activityDetected();
     $scope.settingsOpen = false;
-    DialogManager.confirm(ALERT_TABLE_RESET).then(() => {
+    DialogManager.confirm(app.Alert.TABLE_RESET).then(() => {
       var job = DialogManager.startJob();
       CommandCloseTable().then(() => DialogManager.endJob(job));
     });
@@ -132,9 +132,9 @@ angular.module('SNAP.controllers')
     $timeout(() => $scope.elements = value);
   });
 
-  $scope.cartCount = OrderManager.model.orderCart.length;
+  $scope.cartCount = OrderManager.calculateCount(OrderManager.model.orderCart);
   OrderManager.model.orderCartChanged.add(cart => {
-    $timeout(() => $scope.cartCount = cart.length);
+    $timeout(() => $scope.cartCount = OrderManager.calculateCount(cart));
   });
 
   $scope.checkoutEnabled = CustomerManager.model.isEnabled;
@@ -152,15 +152,15 @@ angular.module('SNAP.controllers')
     ActivityMonitor.activityDetected();
     $scope.settingsOpen = false;
 
-    DialogManager.confirm(ALERT_TABLE_ASSISTANCE).then(() => {
+    DialogManager.confirm(app.Alert.TABLE_ASSISTANCE).then(() => {
       var job = DialogManager.startJob();
 
       OrderManager.requestAssistance().then(() => {
         DialogManager.endJob(job);
-        DialogManager.alert(ALERT_REQUEST_ASSISTANCE_SENT);
+        DialogManager.alert(app.Alert.REQUEST_ASSISTANCE_SENT);
       }, () => {
         DialogManager.endJob(job);
-        DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+        DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
       });
     });
   };
@@ -175,7 +175,9 @@ angular.module('SNAP.controllers')
     ActivityMonitor.activityDetected();
     $scope.settingsOpen = false;
 
-    CommandSubmitOrder();
+    DialogManager.confirm(app.Alert.TABLE_SUBMIT_ORDER).then(() => {
+      CommandSubmitOrder();
+    });
   };
 
   $scope.viewOrder = () => {
@@ -183,7 +185,7 @@ angular.module('SNAP.controllers')
     $scope.settingsOpen = false;
 
     if (CustomerManager.model.isEnabled && !CustomerManager.model.isAuthenticated) {
-      DialogManager.alert(ALERT_SIGNIN_REQUIRED);
+      DialogManager.alert(app.Alert.SIGNIN_REQUIRED);
       return;
     }
 
@@ -196,7 +198,7 @@ angular.module('SNAP.controllers')
     $scope.settingsOpen = false;
 
     if (CustomerManager.model.isEnabled && !CustomerManager.model.isAuthenticated) {
-      DialogManager.alert(ALERT_SIGNIN_REQUIRED);
+      DialogManager.alert(app.Alert.SIGNIN_REQUIRED);
       return;
     }
 

@@ -12,11 +12,10 @@
     <article id="page-item-info" ng-show="step < 2">
     </article>
 
-    <form class="page-item-count form" ng-show="step === 0">
+    <form class="page-item-count huge form" ng-show="step === 0">
       <h3>How many would you like?</h3>
-      <ul>
-        <li><output id="item-count-output" class="output" for="item-count">{{entry.quantity}}</output></li>
-        <li><input id="item-count" class="range" type="range" ng-model="entry.quantity" min="1" max="9" /></li>
+      <ul class="horizontal">
+        <li><quantity min="1" max="9" quantity="entry.quantity" /></li>
       </ul>
     </form>
 
@@ -63,7 +62,7 @@
     <form class="page-item-done form" ng-show="step === 2">
       <h2><span>Item has been added to your order!</span></h2>
       <ul class="horizontal">
-        <li><button class="button secondary" ng-click="goHome()">Add More</button></li>
+        <li><button class="button secondary" ng-click="goHome()">Continue Ordering</button></li>
         <li><button class="button" ng-click="submitOrder()">Place Order</button></li>
       </ul>
     </form>

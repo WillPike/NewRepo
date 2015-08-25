@@ -36,6 +36,7 @@ window.app.ApplicationBootstraper = class ApplicationBootstraper {
       'ngSanitize',
       'SNAP.configs',
       'SNAP.controllers',
+      'SNAP.components',
       'SNAP.directives',
       'SNAP.filters',
       'SNAP.services'

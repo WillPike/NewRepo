@@ -52,10 +52,12 @@
 </div>
 
 <form class="form vertical screen-floater screen-cart-controls" ng-show="state === STATE_CART">
-  <button class="button" ng-click="submitCart()" ng-show="currentOrder.length > 0">Submit order ({{currentOrder.length}})</button>
-  <button class="button grey" ng-click="closeCart()">Back</button>
-  <hr/>
-  <button class="button button-assistance" ng-click="requestAssistance()" ng-class="{ disabled: !requestAssistanceAvailable }">Request Server</button>
+  <ul class="vertical">
+    <li ng-show="currentOrder.length > 0"><button class="button" ng-click="submitCart()">Submit order ({{cartCount}})</button></li>
+    <li><button class="button grey" ng-click="closeCart()">Back</button></li>
+    <li><hr/></li>
+    <li><button class="button button-assistance" ng-click="requestAssistance()" ng-class="{ disabled: !requestAssistanceAvailable }">Request Server</button></li>
+  </ul>
 </form>
 
 <div class="modal" ng-show="state === STATE_CART && editableItem">
@@ -131,8 +133,10 @@
   </div>
 </div>
 
-<form class="form vertical screen-floater screen-cart-controls" ng-show="state === STATE_HISTORY">
-  <button class="button grey" ng-click="closeCart()">Back</button>
-  <hr/>
-  <button class="button button-assistance" ng-click="requestAssistance()" ng-class="{ disabled: !requestAssistanceAvailable }">Request Server</button>
+<form class="form screen-floater screen-cart-controls" ng-show="state === STATE_HISTORY">
+  <ul class="vertical">
+    <li><button class="button grey" ng-click="closeCart()">Back</button></li>
+    <li><hr/></li>
+    <li><button class="button button-assistance" ng-click="requestAssistance()" ng-class="{ disabled: !requestAssistanceAvailable }">Request Server</button></li>
+  </ul>
 </form>

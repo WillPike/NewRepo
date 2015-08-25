@@ -56,8 +56,7 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
 
     return new Promise((resolve, reject) => {
       this.model.digest(true).then(digest => {
-        this._loadContent(digest, true)
-          .then(() => resolve(), reject);
+        this._loadContent(digest, true).then(() => resolve(), reject);
       }, reject);
     });
   }
@@ -77,6 +76,7 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
 
           var medias = (digest.media || [])
             .filter(media => this._CACHEABLE_MEDIA_KINDS.indexOf(media.kind) !== -1)
+            .filter(media => media.mime_type.startsWith('image'))
             .map(media => {
               var width, height;
 
@@ -175,10 +175,10 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
             this._Logger.debug(`Preloading assets: ${data.images.length} images and ` +
               `${data.partials.length} templates...`);
 
-            var assetsTasks = [
+            var assetsTasks = ([]).concat(
               data.images.map(i => this.model.asset(i)),
               data.partials.map(i => this.model.asset(i))
-            ];
+            );
 
             Promise.all(assetsTasks.concat(mediaTasks)).then(resolve, reject);
           }, e => {
@@ -261,6 +261,39 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     }
   }
 
+  getDestinationPath(destination) {
+    var menuMap = this.model.menuMap;
+    var menus = Object.keys(menuMap).map(x => menuMap[x]);
+
+    if (destination.type === 'category') {
+      return menus.reduce((res, menu) => {
+        var category = menu.categories[destination.token];
+
+        if (category) {
+          while (category.parent) {
+            category = menu.categories[category.parent];
+
+            res.push({
+              type: 'category',
+              token: category.token,
+              title: category.title
+            });
+          }
+
+          res.push({
+            type: 'menu',
+            token: menu.token,
+            title: menu.title
+          });
+        }
+
+        return res;
+      }, []);
+    }
+
+    return [];
+  }
+
   _filterHome(data) {
     data.menus = data.menus
       .filter(menu => this._SNAPEnvironment.platform === 'desktop' || menu.type !== 3);
@@ -284,8 +317,33 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
   }
 
   _loadContent(digest, fetch) {
-    var menuSets = (digest.menu_sets || []).map(m => this.model.menu(m.token, fetch));
-    var menuCategories = (digest.menu_categories || []).map(c => this.model.category(c.token, fetch));
+    var menuMap = digest.menu_sets.reduce((res, menu) => {
+      res[menu.token] = {
+        token: menu.token,
+        categories: {}
+      };
+
+      return res;
+    }, {});
+
+    var menuSets = (digest.menu_sets || []).map(m => {
+      return this.model.menu(m.token, fetch).then(data => {
+        let menu = menuMap[m.token];
+        menu.title = data.title;
+      });
+    });
+
+    var menuCategories = (digest.menu_categories || []).map(c => {
+      return this.model.category(c.token, fetch).then(data => {
+        let menu = menuMap[data.menu_id];
+        menu.categories[c.token] = {
+          token: c.token,
+          title: data.title,
+          parent: data.category_id
+        };
+      });
+    });
+
     var menuItems = (digest.menu_items || []).map(i => this.model.item(i.token, fetch));
 
     this._Logger.debug(`Digest contains ${menuSets.length} menus, ` +
@@ -303,7 +361,9 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
       .concat(menuCategories)
       .concat(menuItems);
 
-    return Promise.all(tasks);
+    return Promise.all(tasks).then(() => {
+      this.model.menuMap = menuMap;
+    });
   }
 
   _reduceAd(result, item) {

@@ -108,7 +108,7 @@ window.app.SocialManager = class SocialManager extends app.AbstractManager {
 
             this._DtsApi.customer.signUpGooglePlus({
               code: googleplusAuth.code,
-              client_id: this._SNAPEnvironment.googleplus_application.client_id
+              client_id: this._SNAPEnvironment.customer_application.client_id
             }).then(ticket => {
               this._Logger.debug('Google+ signin complete.');
 

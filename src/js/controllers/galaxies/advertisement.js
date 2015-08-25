@@ -7,7 +7,7 @@ angular.module('SNAP.controllers')
 
   $scope.advertisementClick = item => {
     if (CustomerManager.model.isEnabled && !CustomerManager.model.isAuthenticated) {
-      DialogManager.alert(ALERT_SIGNIN_REQUIRED);
+      DialogManager.alert(app.Alert.SIGNIN_REQUIRED);
       return;
     }
 

@@ -44,8 +44,7 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
   //-----------------------------------------------
 
   addToCart(item) {
-    this.model.orderCart.push(item);
-    this.model.orderCartChanged.dispatch(this.model.orderCart);
+    this.model.$orderCartAdd(item);
 
     if (this._ChatModel.giftSeat) {
       this._ChatModel.giftReady.dispatch();
@@ -55,36 +54,19 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
   }
 
   removeFromCart(item) {
-    this.model.orderCart = this.model.orderCart.filter(entry => entry !== item);
+    this.model.$orderCartRemove(item);
+
     return this.model.orderCart;
   }
 
   clearCart() {
-    this.model.orderCart = [];
-    this.model.orderCartStash = [];
+    this.model.$orderCartClear();
 
     this._ChatModel.giftSeat = null;
   }
 
   clearCheck(items) {
-    var result = [];
-
-    if (items) {
-      result = this.model.orderCheck;
-
-      items.forEach(item => {
-        for (var i = 0; i < result.length; i++) {
-          if (result[i].request === item.request) {
-            result[i].quantity -= item.quantity;
-            break;
-          }
-        }
-      });
-
-      result = result.filter(item => item.quantity > 0);
-    }
-
-    this.model.orderCheck = result;
+    this.model.$orderCheckClear(items);
   }
 
   submitCart(options) {
@@ -132,8 +114,7 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
 
         self.model.orderTicket = { token: response.ticket_token };
 
-        self.model.orderCheck = self.model.orderCheck.concat(self.model.orderCart);
-        self.clearCart();
+        self.model.$moveCartToCheck();
 
         self._ChatModel.giftSeat = null;
 
@@ -174,6 +155,10 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
   }
 
   calculatePrice(entry) {
+    if (!entry) {
+      return 0;
+    }
+
     var modifiers = entry.modifiers.reduce((total, category) => {
       return total + category.modifiers.reduce((total, modifier) => {
         return total + (modifier.isSelected && modifier.data.price > 0 ?
@@ -194,6 +179,10 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
 
   calculateTax(entries) {
     return this.calculateTotalPrice(entries) * this.model.tax;
+  }
+
+  calculateCount(entries) {
+    return entries.reduce((total, entry) => total + entry.quantity, 0);
   }
 
   uploadSignature(data) {

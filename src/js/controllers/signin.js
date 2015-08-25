@@ -44,7 +44,7 @@ angular.module('SNAP.controllers')
       $timeout(() => $scope.step = STEP_GUESTS);
     }, () => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 
@@ -58,7 +58,7 @@ angular.module('SNAP.controllers')
       $timeout(() => $scope.step = STEP_GUESTS);
     }, () => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_GENERIC_ERROR);
+      DialogManager.alert(app.Alert.GENERIC_ERROR);
     });
   };
 
@@ -104,7 +104,7 @@ angular.module('SNAP.controllers')
       $timeout(() => $scope.step = STEP_GUESTS);
     }, () => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 
@@ -151,10 +151,10 @@ angular.module('SNAP.controllers')
     CustomerManager.resetPassword($scope.passwordreset).then(() => {
       DialogManager.endJob(job);
       $scope.passwordReset = false;
-      DialogManager.alert(ALERT_PASSWORD_RESET_COMPLETE);
+      DialogManager.alert(app.Alert.PASSWORD_RESET_COMPLETE);
     }, () => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 
@@ -178,7 +178,7 @@ angular.module('SNAP.controllers')
 
     if (e) {
       console.error(e);
-      DialogManager.alert(ALERT_GENERIC_ERROR);
+      DialogManager.alert(app.Alert.GENERIC_ERROR);
     }
   }
 

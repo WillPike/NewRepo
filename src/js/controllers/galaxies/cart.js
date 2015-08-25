@@ -25,6 +25,11 @@ angular.module('SNAP.controllers')
       $scope.totalOrder = OrderManager.model.orderCheck;
       OrderManager.model.orderCheckChanged.add(value => $scope.totalOrder = value);
 
+      $scope.cartCount = OrderManager.calculateCount(OrderManager.model.orderCart);
+      OrderManager.model.orderCartChanged.add(cart => {
+        $timeout(() => $scope.cartCount = OrderManager.calculateCount(cart));
+      });
+
       $scope.giftSeat = LocationModel.getSeat(ChatManager.model.giftSeat);
       ChatManager.model.giftSeatChanged.add(token => {
         $timeout(() => $scope.giftSeat = LocationModel.getSeat(token));
@@ -32,7 +37,7 @@ angular.module('SNAP.controllers')
 
       $scope.customerName = CustomerManager.customerName;
       CustomerManager.model.profileChanged.add(() => {
-        $timeout(() => $scope.customerName = CustomerManager.customerName);
+        $timeout(() => $scope.customerName = CustomerManager.customerName || 'Guest');
       });
 
       $scope.checkoutEnabled = CustomerManager.model.isEnabled;
@@ -70,7 +75,7 @@ angular.module('SNAP.controllers')
       $scope.requestCloseoutAvailable = OrderManager.model.closeoutRequest === null;
 
       $scope.getModifiers = entry => {
-        if (!entry.modifiers) {
+        if (!entry || !entry.modifiers) {
           return [];
         }
 
@@ -99,29 +104,26 @@ angular.module('SNAP.controllers')
       $scope.reorderItem = entry => $scope.currentOrder = OrderManager.addToCart(entry.clone());
 
       $scope.submitCart = () => {
-        var job = DialogManager.startJob();
+        DialogManager.confirm(app.Alert.TABLE_SUBMIT_ORDER).then(() => {
+          var job = DialogManager.startJob();
 
-        var options = $scope.options.toGo ? 2 : 0;
+          var options = $scope.options.toGo ? 2 : 0;
 
-        OrderManager.submitCart(options).then(function() {
-          DialogManager.endJob(job);
+          OrderManager.submitCart(options).then(function() {
+            DialogManager.endJob(job);
 
-          $scope.$apply(() => {
-            $scope.currentOrder = OrderManager.model.orderCart;
-            $scope.totalOrder = OrderManager.model.orderCheck;
-            $scope.options.toGo = false;
+            $scope.$apply(() => {
+              $scope.currentOrder = OrderManager.model.orderCart;
+              $scope.totalOrder = OrderManager.model.orderCheck;
+              $scope.options.toGo = false;
+            });
+
+            DialogManager.alert(app.Alert.REQUEST_ORDER_SENT);
+          }, () => {
+            DialogManager.endJob(job);
+            DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
           });
-
-          DialogManager.alert(ALERT_REQUEST_ORDER_SENT);
-        }, () => {
-          DialogManager.endJob(job);
-          DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
         });
-      };
-
-      $scope.clearCart = () => {
-        $scope.options.toGo = false;
-        $scope.currentOrder = OrderManager.clearCart();
       };
 
       $scope.closeEditor = () => {
@@ -143,15 +145,15 @@ angular.module('SNAP.controllers')
           return;
         }
 
-        DialogManager.confirm(ALERT_TABLE_ASSISTANCE).then(() => {
+        DialogManager.confirm(app.Alert.TABLE_ASSISTANCE).then(() => {
           var job = DialogManager.startJob();
 
           OrderManager.requestAssistance().then(() => {
             DialogManager.endJob(job);
-            DialogManager.alert(ALERT_REQUEST_ASSISTANCE_SENT);
+            DialogManager.alert(app.Alert.REQUEST_ASSISTANCE_SENT);
           }, () => {
             DialogManager.endJob(job);
-            DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+            DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
           });
         });
       };
@@ -165,10 +167,10 @@ angular.module('SNAP.controllers')
 
         OrderManager.requestCloseout().then(() => {
           DialogManager.endJob(job);
-          DialogManager.alert(ALERT_REQUEST_CLOSEOUT_SENT);
+          DialogManager.alert(app.Alert.REQUEST_CLOSEOUT_SENT);
         }, () => {
           DialogManager.endJob(job);
-          DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+          DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
         });
       };
     }]);

@@ -11,21 +11,21 @@ angular.module('SNAP.controllers')
     if (!item) {
       return;
     }
-    item.promise.then(() => DialogManager.alert(ALERT_REQUEST_ORDER_RECEIVED));
+    item.promise.then(() => DialogManager.alert(app.Alert.REQUEST_ORDER_RECEIVED));
   });
 
   OrderManager.model.assistanceRequestChanged.add(item => {
     if (!item) {
       return;
     }
-    item.promise.then(() => DialogManager.alert(ALERT_REQUEST_ASSISTANCE_RECEIVED));
+    item.promise.then(() => DialogManager.alert(app.Alert.REQUEST_ASSISTANCE_RECEIVED));
   });
 
   OrderManager.model.closeoutRequestChanged.add(item => {
     if (!item) {
       return;
     }
-    item.promise.then(() => DialogManager.alert(ALERT_REQUEST_CLOSEOUT_RECEIVED));
+    item.promise.then(() => DialogManager.alert(app.Alert.REQUEST_CLOSEOUT_RECEIVED));
   });
 
   ChatManager.model.chatRequestReceived.add(token => {
@@ -91,7 +91,7 @@ angular.module('SNAP.controllers')
         NavigationManager.location = { type: 'chat' };
       }, () => {
         DialogManager.endJob(job);
-        DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+        DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
 
         ChatManager.endGift();
         NavigationManager.location = { type: 'chat' };

@@ -18,7 +18,7 @@ angular.module('SNAP.controllers')
 
   CardReader.onError.add(e => {
     Logger.debug(`Card reader error: ${JSON.stringify(e)}`);
-    DialogManager.alert(ALERT_CARDREADER_ERROR).then(() => {
+    DialogManager.alert(app.Alert.CARDREADER_ERROR).then(() => {
       $timeout(() => $scope.payCardCancel());
     });
   });
@@ -61,7 +61,7 @@ angular.module('SNAP.controllers')
     $scope.current.payment_method = $scope.PAYMENT_METHOD_CASH;
 
     if (OrderManager.model.closeoutRequest !== null) {
-      DialogManager.alert(ALERT_REQUEST_CLOSEOUT_SENT);
+      DialogManager.alert(app.Alert.REQUEST_CLOSEOUT_SENT);
       $timeout(() => {
         if ($scope.current.items) {
           OrderManager.clearCheck($scope.current.items);
@@ -75,7 +75,7 @@ angular.module('SNAP.controllers')
 
     OrderManager.requestCloseout().then(() => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_CLOSEOUT_SENT);
+      DialogManager.alert(app.Alert.REQUEST_CLOSEOUT_SENT);
       $timeout(() => {
         if ($scope.current.items) {
           OrderManager.clearCheck($scope.current.items);
@@ -85,7 +85,7 @@ angular.module('SNAP.controllers')
     }, e => {
       Logger.debug(`Request closeout error: ${JSON.stringify(e)}`);
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 
@@ -98,7 +98,7 @@ angular.module('SNAP.controllers')
       DialogManager.endJob(job);
     }, e => {
       DialogManager.endJob(job);
-      DialogManager.alert(ALERT_REQUEST_SUBMIT_ERROR);
+      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   }
 }]);

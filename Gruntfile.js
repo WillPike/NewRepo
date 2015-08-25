@@ -67,7 +67,7 @@ module.exports = function(grunt) {
         tasks: ['buildjs']
       },
       assets: {
-        files: ['assets/**/*'],
+        files: ['assets/**/*', '!manifest.json'],
         tasks: ['buildassets']
       }
     },
@@ -159,6 +159,18 @@ module.exports = function(grunt) {
         }
       }
     },
+    postcss: {
+      options: {
+        processors: [
+          require('autoprefixer-core')({
+            browsers: 'last 2 versions'
+          })
+        ]
+      },
+      dist: {
+        src: 'temp/css/*.css'
+      }
+    },
     uglify: {
       options: {
         mangle: false,
@@ -199,7 +211,7 @@ module.exports = function(grunt) {
   grunt.registerTask('validate', ['jshint']);
   grunt.registerTask('build', ['clean', 'buildcss', 'buildjs', 'buildassets', 'clean:temp']);
   grunt.registerTask('buildassets', ['concat:web', 'file-creator:manifest']);
-  grunt.registerTask('buildcss', ['concat:css', 'less', 'cssmin']);
+  grunt.registerTask('buildcss', ['concat:css', 'less', 'postcss', 'cssmin']);
   grunt.registerTask('buildjs', ['concat:js', 'babel:client', 'uglify']);
   grunt.registerTask('run', ['concurrent:dev']);
   grunt.registerTask('dev', ['build', 'concurrent:dev']);

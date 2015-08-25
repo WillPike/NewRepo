@@ -1,5 +1,14 @@
 window.app.CartItem = class CartItem {
   constructor(item, quantity, name, modifiers, request) {
+    this.quantityChanged = new signals.Signal();
+
+    Object.defineProperty(this, 'quantityChanged', {
+      value: new signals.Signal(),
+      enumerable: false,
+      writable: false,
+      configurable: false
+    });
+
     this.item = item;
     this.quantity = quantity;
     this.name = name;
@@ -32,6 +41,21 @@ window.app.CartItem = class CartItem {
     }, []);
   }
 
+  get quantity() {
+    return this._quantity;
+  }
+
+  set quantity(value) {
+    value = parseInt(value);
+
+    if (this._quantity === value) {
+      return;
+    }
+
+    this._quantity = value;
+    this.quantityChanged.dispatch(value);
+  }
+
   clone(count) {
     return new app.CartItem(
       this.item,
@@ -61,7 +85,7 @@ window.app.CartItem = class CartItem {
   restore(data) {
     return new app.CartItem(
       data.item,
-      data.quantity,
+      data.quantity || data._quantity || 1,
       data.name,
       data.modifiers.map(app.CartModifierCategory.prototype.restore),
       data.request
