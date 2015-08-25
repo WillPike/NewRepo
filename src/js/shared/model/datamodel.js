@@ -9,6 +9,8 @@ window.app.DataModel = class DataModel extends app.AbstractModel {
     this._SNAPHosts = SNAPHosts;
 
     this._defineProperty('menuMap', 'snap_menumap', {});
+
+    this.initialize();
   }
 
   clear() {
@@ -54,15 +56,19 @@ window.app.DataModel = class DataModel extends app.AbstractModel {
     return this._getSnapData('surveys', 'getSurveys', undefined, fetch);
   }
 
-  media(media) {
-    var token = `${media.token}_${media.width}_${media.height}`;
+  media(m) {
+    var token = `${m.token}_${m.width}_${m.height}`;
     return this._cached('media', token) || new Promise((resolve, reject) => {
       if (navigator.onLine === false) {
         reject(`Application is offline, unable to load media ${token}`);
       }
 
-      if (media.width && media.height) {
-        var src = this._getMediaUrl(media, media.width, media.height, media.extension);
+      if (m.width && m.height) {
+        var src = this._getMediaUrl(m, m.width, m.height, m.extension);
+
+        if (!src) {
+          reject('Invalid media URL');
+        }
 
         var img = new Image();
         img.onload = () => resolve(img);
@@ -105,7 +111,7 @@ window.app.DataModel = class DataModel extends app.AbstractModel {
   asset(url) {
     var self = this;
     url = this._SNAPHosts.static.path + url;
-    return this._cached('asset', this._SNAPHosts.static.path + url) || new Promise((resolve, reject) => {
+    return this._cached('asset', url) || new Promise((resolve, reject) => {
       if (navigator.onLine === false) {
         reject(`Application is offline, unable to load media ${token}`);
       }

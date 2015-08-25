@@ -175,10 +175,10 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
             this._Logger.debug(`Preloading assets: ${data.images.length} images and ` +
               `${data.partials.length} templates...`);
 
-            var assetsTasks = [
+            var assetsTasks = ([]).concat(
               data.images.map(i => this.model.asset(i)),
               data.partials.map(i => this.model.asset(i))
-            ];
+            );
 
             Promise.all(assetsTasks.concat(mediaTasks)).then(resolve, reject);
           }, e => {
