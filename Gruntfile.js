@@ -67,7 +67,7 @@ module.exports = function(grunt) {
         tasks: ['buildjs']
       },
       assets: {
-        files: ['assets/**/*'],
+        files: ['assets/**/*', '!manifest.json'],
         tasks: ['buildassets']
       }
     },

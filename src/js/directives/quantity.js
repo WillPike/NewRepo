@@ -14,22 +14,17 @@ angular.module('SNAP.directives')
     link: function (scope, elem) {
       scope.min = scope.min || 1;
       scope.max = scope.max || 9;
-      scope.data = {
-        min: scope.min,
-        max: scope.max,
-        quantity: parseInt(scope.quantity)
-      };
 
       scope.decrease = () => {
-        scope.quantity = scope.data.quantity = scope.data.quantity > scope.data.min ?
-          scope.data.quantity - 1 :
-          scope.data.min;
+        scope.quantity = scope.quantity > scope.min ?
+          scope.quantity - 1 :
+          scope.min;
       };
 
       scope.increase = () => {
-        scope.quantity = scope.data.quantity = scope.data.quantity < scope.data.max ?
-          scope.data.quantity + 1 :
-          scope.data.max;
+        scope.quantity = scope.quantity < scope.max ?
+          scope.quantity + 1 :
+          scope.max;
       };
     },
     templateUrl: ShellManager.getPartialUrl('input-quantity')
