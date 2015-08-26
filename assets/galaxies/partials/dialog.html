@@ -1,4 +1,4 @@
-<div id="dialog-modal" ng-click="closeAlert()">
+<div id="dialog-modal">
   <div id="dialog-confirm" ng-show="showConfirm">
     <div class="column">
       <form class="form huge center">
@@ -22,6 +22,9 @@
       <form class="form huge center">
         <h1 ng-show="alertTitle"><span>{{alertTitle}}</span></h1>
         <p>{{alertText}}</p>
+        <ul class="horizontal">
+          <li><button type="button" class="button" ng-click="closeAlert()">OK</button></li>
+        </ul>
       </form>
     </div>
   </div>

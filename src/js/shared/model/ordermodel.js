@@ -35,7 +35,7 @@ window.app.OrderModel = class OrderModel {
     //-----------------------------------------------
 
     function prepareCartData(items) {
-      return items;
+      return items && items.length > 0 ? items.filter(x => x) : [];
     }
 
     function restoreCartData(items) {
