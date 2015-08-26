@@ -93,6 +93,8 @@ angular.module('SNAP.controllers')
   $scope.calculateChecks = function() {
     $scope.$parent.data.forEach(check => {
       check.items = $scope.split_items.filter(item => item.check === check);
+      check.subtotal = OrderManager.calculateTotalPrice(check.items);
+      check.tax = OrderManager.calculateTax(check.items);
     });
   };
 
