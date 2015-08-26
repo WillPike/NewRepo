@@ -133,6 +133,7 @@ angular.module('SNAP.controllers')
       $scope.closeCart = () => {
         CartModel.isCartOpen = false;
         CartModel.state = CartModel.STATE_CART;
+        NavigationManager.location = { type: 'home' };
       };
 
       $scope.showHistory = () => CartModel.state = CartModel.STATE_HISTORY;
