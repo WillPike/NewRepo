@@ -8,23 +8,27 @@ angular.module('SNAP.directives')
     replace: true,
     scope: {
       quantity: '=',
-      min: '=',
-      max: '='
+      min: '@',
+      max: '@',
+      step: '@',
+      appendix: '@'
     },
     link: function (scope, elem) {
       scope.min = scope.min || 1;
       scope.max = scope.max || 9;
+      scope.step = scope.step || 1;
+      scope.appendix = scope.appendix || '';
 
       scope.decrease = () => {
-        scope.quantity = scope.quantity > scope.min ?
-          scope.quantity - 1 :
-          scope.min;
+        scope.quantity = scope.quantity > parseInt(scope.min) ?
+          Math.max(scope.quantity - parseInt(scope.step), parseInt(scope.min)) :
+          parseInt(scope.min);
       };
 
       scope.increase = () => {
-        scope.quantity = scope.quantity < scope.max ?
-          scope.quantity + 1 :
-          scope.max;
+        scope.quantity = scope.quantity < parseInt(scope.max) ?
+          Math.min(scope.quantity + parseInt(scope.step), parseInt(scope.max)) :
+          parseInt(scope.max);
       };
     },
     templateUrl: ShellManager.getPartialUrl('input-quantity')

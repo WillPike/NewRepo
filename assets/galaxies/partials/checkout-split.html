@@ -8,11 +8,10 @@
     </ul>
   </form>
 
-  <form class="form checkout-right-block" ng-show="guestEditorType" ng-submit="splitCheck(guestEditorType)">
+  <form class="form huge checkout-right-block" ng-show="guestEditorType" ng-submit="splitCheck(guestEditorType)">
     <h2><span>How many checks?</span></h2>
-    <ul class="vertical">
-      <li><output class="output" for="checkout-guests-items">{{options.guest_count}}</output></li>
-      <li><input id="checkout-guests-items" class="range" type="range" ng-model="options.guest_count" min="{{options.guest_count_min}}" max="{{options.guest_count_max}}" step="1" /></li>
+    <ul class="horizontal">
+      <li><quantity min="{{options.guest_count_min}}" max="{{options.guest_count_max}}" quantity="options.guest_count" /></li>
     </ul>
     <ul class="horizontal">
       <li><button class="button secondary" type="button" ng-click="cancelEditGuestCount()">Back</button></li>
