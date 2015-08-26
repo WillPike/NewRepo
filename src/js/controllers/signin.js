@@ -37,28 +37,35 @@ angular.module('SNAP.controllers')
   };
 
   $scope.guestLogin = () => {
-    var job = DialogManager.startJob();
+    var job = startBusy();
 
     CommandCustomerGuestLogin().then(() => {
-      DialogManager.endJob(job);
+      endBusy(job);
       $timeout(() => $scope.step = STEP_GUESTS);
     }, () => {
-      DialogManager.endJob(job);
+      endBusy(job);
       DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
 
   $scope.doLogin = (credentials) => {
-    var job = DialogManager.startJob();
+    var job = startBusy();
 
     $scope.credentials.username = $scope.credentials.email;
 
     CommandCustomerLogin($scope.credentials).then(() => {
-      DialogManager.endJob(job);
+      endBusy(job);
       $timeout(() => $scope.step = STEP_GUESTS);
-    }, () => {
-      DialogManager.endJob(job);
-      DialogManager.alert(app.Alert.GENERIC_ERROR);
+    }, e => {
+      endBusy(job);
+
+      if (e && e.message) {
+        let msg = JSON.parse(e.message);
+        DialogManager.alert(msg.message || app.Alert.GENERIC_ERROR);
+      }
+      else {
+        DialogManager.alert(app.Alert.GENERIC_ERROR);
+      }
     });
   };
 
@@ -97,14 +104,21 @@ angular.module('SNAP.controllers')
   $scope.doRegistration = () => {
     $scope.registration.username = $scope.registration.email;
 
-    var job = DialogManager.startJob();
+    var job = startBusy();
 
     CommandCustomerSignup($scope.registration).then(() => {
-      DialogManager.endJob(job);
+      endBusy(job);
       $timeout(() => $scope.step = STEP_GUESTS);
-    }, () => {
-      DialogManager.endJob(job);
-      DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
+    }, e => {
+      endBusy(job);
+      
+      if (e && e.message) {
+        let msg = JSON.parse(e.message);
+        DialogManager.alert(msg.message || app.Alert.GENERIC_ERROR);
+      }
+      else {
+        DialogManager.alert(app.Alert.GENERIC_ERROR);
+      }
     });
   };
 
@@ -146,14 +160,14 @@ angular.module('SNAP.controllers')
   };
 
   $scope.passwordResetSubmit = () => {
-    var job = DialogManager.startJob();
+    var job = startBusy();
 
     CustomerManager.resetPassword($scope.passwordreset).then(() => {
-      DialogManager.endJob(job);
+      endBusy(job);
       $scope.passwordReset = false;
       DialogManager.alert(app.Alert.PASSWORD_RESET_COMPLETE);
     }, () => {
-      DialogManager.endJob(job);
+      endBusy(job);
       DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
     });
   };
@@ -167,6 +181,16 @@ angular.module('SNAP.controllers')
   //  Private methods
   //
   //------------------------------------------------------------------------
+
+  function startBusy() {
+    $timeout(() => $scope.isBusy = true);
+    return DialogManager.startJob();
+  }
+
+  function endBusy(job) {
+    $timeout(() => $scope.isBusy = false);
+    DialogManager.endJob(job);
+  }
 
   function socialLogin() {
     socialBusyEnd();
@@ -186,10 +210,13 @@ angular.module('SNAP.controllers')
 
   function socialBusy() {
     socialStep = $scope.step;
+    $scope.isBusy = true;
     $scope.step = STEP_SOCIAL;
   }
 
   function socialBusyEnd() {
+    $scope.isBusy = false;
+
     if (socialStep) {
       $scope.step = socialStep;
       socialStep = undefined;

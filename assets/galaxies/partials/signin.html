@@ -17,8 +17,8 @@
   <div class="page-split">
     <form class="form huge page-left" ng-submit="doLogin()">
       <ul class="vertical">
-        <li><email placeholder="E-mail" ng-model="credentials.login" nosubmit /></li>
-        <li><password placeholder="Password" ng-model="credentials.password" /></li>
+        <li><email placeholder="E-mail" ng-disabled="isBusy" ng-model="credentials.login" nosubmit /></li>
+        <li><password placeholder="Password" ng-disabled="isBusy" ng-model="credentials.password" /></li>
       </ul>
       <ul class="horizontal">
         <li><p><a ng-click="resetPassword()" class="clickable link">Forgot password</a></p></li>
@@ -31,8 +31,8 @@
     <form class="form huge page-right">
       <ul class="vertical">
         <li><button type="button" class="button icon button-facebook" ng-click="loginFacebook()"></button></li>
-        <li><button type="button" class="button icon button-twitter" ng-click="loginTwitter()"></button></li>
-        <li><button type="button" class="button icon button-google" ng-click="loginGoogle()"></button></li>
+        <!-- <li><button type="button" class="button icon button-twitter" ng-click="loginTwitter()"></button></li>
+        <li><button type="button" class="button icon button-google" ng-click="loginGoogle()"></button></li> -->
       </ul>
     </form>
   </div>
@@ -44,20 +44,20 @@
     <p>Create a VIP account or use another account</p>
   </form>
   <div class="page-split">
-    <form class="form huge page-left" ng-submit="doLogin()">
+    <form class="form huge page-left" ng-submit="doRegistration()">
       <ul class="horizontal">
-        <li><input type="text" class="input" placeholder="First Name" ng-model="registration.first_name" autocomplete="off" required /></li>
-        <li><input type="text" class="input" placeholder="Last Name" ng-model="registration.last_name" autocomplete="off" required /></li>
+        <li><input type="text" class="input" placeholder="First Name" ng-disabled="isBusy" ng-model="registration.first_name" autocomplete="off" required /></li>
+        <li><input type="text" class="input" placeholder="Last Name" ng-disabled="isBusy" ng-model="registration.last_name" autocomplete="off" required /></li>
       </ul>
       <ul class="vertical">
-        <li><input type="email" class="input" placeholder="E-mail" ng-model="registration.email" autocomplete="off" required /></li>
+        <li><input type="email" class="input" placeholder="E-mail" ng-disabled="isBusy" ng-model="registration.email" autocomplete="off" required /></li>
       </ul>
       <ul class="horizontal">
-        <li><input id="registration-password" type="password" class="input" placeholder="Password" ng-model="registration.password" autocomplete="off" minlength="6" required /></li>
-        <li><input id="registration-password2" type="password" class="input" placeholder="Confirm Password" ng-model="registration.password2" autocomplete="off" required /></li>
+        <li><input id="registration-password" type="password" class="input" placeholder="Password" ng-disabled="isBusy" ng-model="registration.password" autocomplete="off" minlength="6" required /></li>
+        <li><input id="registration-password2" type="password" class="input" placeholder="Confirm Password" ng-disabled="isBusy" ng-model="registration.password2" autocomplete="off" required /></li>
       </ul>
       <ul>
-        <li><button type="submit" class="button">Sign Me Up</button></li>
+        <li><button type="submit" ng-disabled="isBusy" class="button">Sign Me Up</button></li>
       </ul>
       <ul class="horizontal">
         <li><p class="right"><a class="clickable link" ng-click="guestLogin()">Skip</a></p></li>
@@ -68,9 +68,9 @@
 
     <form class="form huge page-right">
       <ul class="vertical">
-        <li><button type="button" class="button icon button-facebook" ng-click="loginFacebook()"></button></li>
-        <li><button type="button" class="button icon button-twitter" ng-click="loginTwitter()"></button></li>
-        <li><button type="button" class="button icon button-google" ng-click="loginGoogle()"></button></li>
+        <li><button type="button" ng-disabled="isBusy" class="button icon button-facebook" ng-click="loginFacebook()"></button></li>
+        <!-- <li><button type="button" class="button icon button-twitter" ng-click="loginTwitter()"></button></li>
+        <li><button type="button" class="button icon button-google" ng-click="loginGoogle()"></button></li> -->
       </ul>
     </form>
   </div>
@@ -118,7 +118,7 @@
     <h1><span>Retrieve Password</span></h1>
     <p>To reset your password, enter the e-mail associated with this account.</p>
     <ul class="half">
-      <li><email placeholder="E-mail" ng-model="passwordreset.email" /></li>
+      <li><email placeholder="E-mail" ng-disabled="isBusy" ng-model="passwordreset.email" /></li>
     </ul>
     <ul class="horizontal">
       <li><p class="right"><a class="clickable link" ng-click="guestLogin()">Skip</a></p></li>
