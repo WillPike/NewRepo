@@ -104,7 +104,15 @@ module.exports = function(grunt) {
       css: {
         files: {
           'temp/main_classic.less': 'src/less/classic/main/*.less',
-          'temp/main_galaxies.less': 'src/less/galaxies/main/*.less'
+          'temp/main_galaxies.less': 'src/less/galaxies/main/*.less',
+          'temp/desktop_galaxies.less': [
+            'src/less/galaxies/main/_variables.less',
+            'src/less/galaxies/desktop.less'
+          ],
+          'temp/mobile_galaxies.less': [
+            'src/less/galaxies/main/_variables.less',
+            'src/less/galaxies/mobile.less'
+          ]
         }
       },
       web: {
@@ -154,8 +162,8 @@ module.exports = function(grunt) {
         },
         files: {
           'temp/css/galaxies_main.css': 'temp/main_galaxies.less',
-          'temp/css/galaxies_desktop.css': 'src/less/galaxies/desktop.less',
-          'temp/css/galaxies_mobile.css': 'src/less/galaxies/mobile.less'
+          'temp/css/galaxies_desktop.css': 'temp/desktop_galaxies.less',
+          'temp/css/galaxies_mobile.css': 'temp/mobile_galaxies.less'
         }
       }
     },
