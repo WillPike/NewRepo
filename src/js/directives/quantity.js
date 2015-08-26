@@ -14,21 +14,31 @@ angular.module('SNAP.directives')
       appendix: '@'
     },
     link: function (scope, elem) {
-      scope.min = scope.min || 1;
-      scope.max = scope.max || 9;
-      scope.step = scope.step || 1;
-      scope.appendix = scope.appendix || '';
+      var min = parseInt(scope.min),
+          max = parseInt(scope.max),
+          step = parseInt(scope.step) || 1,
+          appendix = scope.appendix || '';
+
+      if (isNaN(min)) {
+        min = 1;
+      }
+
+      if (isNaN(max)) {
+        max = 9;
+      }
 
       scope.decrease = () => {
-        scope.quantity = scope.quantity > parseInt(scope.min) ?
-          Math.max(scope.quantity - parseInt(scope.step), parseInt(scope.min)) :
-          parseInt(scope.min);
+
+
+        scope.quantity = (scope.quantity - step) >= min ?
+          scope.quantity - step :
+          min;
       };
 
       scope.increase = () => {
-        scope.quantity = scope.quantity < parseInt(scope.max) ?
-          Math.min(scope.quantity + parseInt(scope.step), parseInt(scope.max)) :
-          parseInt(scope.max);
+        scope.quantity = scope.quantity + step <= max ?
+          scope.quantity + step :
+          max;
       };
     },
     templateUrl: ShellManager.getPartialUrl('input-quantity')

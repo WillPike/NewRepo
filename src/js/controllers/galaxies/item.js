@@ -129,6 +129,7 @@ angular.module('SNAP.controllers')
 
   $scope.submitOrder = () => {
     NavigationManager.goBack();
+    CartModel.cartState = CartModel.STATE_CART;
     CartModel.isCartOpen = true;
   };
 
