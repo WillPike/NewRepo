@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
   .controller('GalaxiesCartCtrl',
   ['$scope', '$timeout', '$sce', 'CustomerManager', 'ShellManager', 'NavigationManager', 'OrderManager', 'DialogManager', 'CartModel', 'LocationModel', 'ChatManager',
-    ($scope, $timeout, $sce, CustomerManager, ShellManager, NavigationManager, OrderManager, DialogManager, CartModel, LocationModel, ChatManager) => {
+  ($scope, $timeout, $sce, CustomerManager, ShellManager, NavigationManager, OrderManager, DialogManager, CartModel, LocationModel, ChatManager) => {
 
       $scope.STATE_CART = CartModel.STATE_CART;
       $scope.STATE_HISTORY = CartModel.STATE_HISTORY;
@@ -50,10 +50,7 @@ angular.module('SNAP.controllers')
         }
       });
 
-      CartModel.isCartOpenChanged.add(value => {
-        $scope.showCart();
-        $scope.visible = value;
-      });
+      CartModel.isCartOpenChanged.add(value => $timeout(() => $scope.visible = value));
 
       $scope.seat_name = LocationModel.seat ?
         LocationModel.seat.name :
@@ -132,12 +129,12 @@ angular.module('SNAP.controllers')
 
       $scope.closeCart = () => {
         CartModel.isCartOpen = false;
-        CartModel.state = CartModel.STATE_CART;
+        CartModel.cartState = CartModel.STATE_CART;
         NavigationManager.location = { type: 'home' };
       };
 
-      $scope.showHistory = () => CartModel.state = CartModel.STATE_HISTORY;
-      $scope.showCart = () => CartModel.state = CartModel.STATE_CART;
+      $scope.showHistory = () => CartModel.cartState = CartModel.STATE_HISTORY;
+      $scope.showCart = () => CartModel.cartState = CartModel.STATE_CART;
 
       $scope.payCheck = () => NavigationManager.location = { type: 'checkout' };
 
@@ -174,4 +171,4 @@ angular.module('SNAP.controllers')
           DialogManager.alert(app.Alert.REQUEST_SUBMIT_ERROR);
         });
       };
-    }]);
+  }]);

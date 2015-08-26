@@ -1,7 +1,7 @@
 angular.module('SNAP.controllers')
 .controller('GalaxiesNavigationCtrl',
-  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataModel', 'DialogManager', 'LocationModel', 'ManagementService', 'NavigationManager', 'OrderManager', 'CommandCloseTable', 'CommandSubmitOrder', 'CommandFlipScreen', 'SNAPEnvironment', 'WebBrowser',
-  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataModel, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, SNAPEnvironment, WebBrowser) => {
+  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataModel', 'DialogManager', 'LocationModel', 'ManagementService', 'NavigationManager', 'OrderManager', 'SurveyManager', 'CommandCloseTable', 'CommandSubmitOrder', 'CommandFlipScreen', 'SNAPEnvironment', 'WebBrowser',
+  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataModel, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, SurveyManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, SNAPEnvironment, WebBrowser) => {
 
   $scope.menus = [];
   $scope.showVolume = $scope.showBrightness = SNAPEnvironment.platform !== 'web';
@@ -72,6 +72,7 @@ angular.module('SNAP.controllers')
   $scope.navigateHome = () => {
     ActivityMonitor.activityDetected();
     $scope.settingsOpen = false;
+    CartModel.isCartOpen = false;
     NavigationManager.location = { type: 'home' };
   };
 
@@ -90,7 +91,17 @@ angular.module('SNAP.controllers')
   $scope.openCart = () => {
     ActivityMonitor.activityDetected();
     $scope.settingsOpen = false;
-    CartModel.isCartOpen = !CartModel.isCartOpen;
+
+    CartModel.cartState = CartModel.STATE_CART;
+    CartModel.isCartOpen = true;
+  };
+
+  $scope.openSurvey = () => {
+    if (!$scope.surveyAvailable) {
+      return;
+    }
+
+    NavigationManager.location = { type: 'survey' };
   };
 
   $scope.seatName = LocationModel.seat ? LocationModel.seat.name : 'Table';
@@ -170,6 +181,13 @@ angular.module('SNAP.controllers')
   };
   OrderManager.model.assistanceRequestChanged.add(refreshAssistanceRequest);
   refreshAssistanceRequest();
+
+  var refreshSurvey = () => {
+    $scope.surveyAvailable = SurveyManager.model.isEnabled && SurveyManager.model.feedbackSurvey && !SurveyManager.model.feedbackSurveyComplete;
+  };
+  SurveyManager.model.feedbackSurveyChanged.add(refreshSurvey);
+  SurveyManager.model.surveyCompleted.add(refreshSurvey);
+  refreshSurvey();
 
   $scope.submitOrder = () => {
     ActivityMonitor.activityDetected();

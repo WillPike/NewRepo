@@ -54,6 +54,7 @@
 <form class="form vertical screen-floater screen-cart-controls" ng-show="state === STATE_CART">
   <ul class="vertical">
     <li ng-show="currentOrder.length > 0"><button class="button" ng-click="submitCart()">Submit order ({{cartCount}})</button></li>
+    <li ng-show="totalOrder.length > 0"><button class="button green" ng-click="showHistory()">View Bill</button></li>
     <li><button class="button grey" ng-click="closeCart()">Home</button></li>
     <li><hr/></li>
     <li><button class="button button-assistance" ng-click="requestAssistance()" ng-class="{ disabled: !requestAssistanceAvailable }">Request Server</button></li>
@@ -127,7 +128,7 @@
 
       <div class="cart-order-total form vertical">
         <h4>Total <b>{{formatPrice(calculateTotalPrice(totalOrder))}}</b><i class="currency" ng-show="currency"> {{currency}}</i></h4>
-        <button class="button green" ng-click="payCheck()">Pay Now</button>
+        <button class="button green" ng-show="checkoutEnabled && (totalOrder.length > 0)" ng-click="payCheck()">Pay Now</button>
       </div>
     </form>
   </div>
@@ -135,7 +136,7 @@
 
 <form class="form screen-floater screen-cart-controls" ng-show="state === STATE_HISTORY">
   <ul class="vertical">
-    <li><button class="button grey" ng-click="closeCart()">Back</button></li>
+    <li><button class="button grey" ng-click="closeCart()">Home</button></li>
     <li><hr/></li>
     <li><button class="button button-assistance" ng-click="requestAssistance()" ng-class="{ disabled: !requestAssistanceAvailable }">Request Server</button></li>
   </ul>

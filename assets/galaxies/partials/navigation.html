@@ -36,6 +36,7 @@
       <li ng-show="cartCount > 0"><button class="button" ng-click="submitOrder()">Submit Order ({{cartCount}})</button></li>
       <li ng-show="cartCount > 0"><button class="button" ng-click="viewOrder()">View Order</button></li>
       <li ng-show="checkoutEnabled && (totalOrder.length > 0)"><button class="button green" ng-click="payBill()">View / Pay Bill</button></li>
+      <li ng-show="checkoutEnabled && (totalOrder.length > 0)"><button class="button" ng-click="openSurvey()">Rate us</button></li>
       <li><hr/></li>
       <li><button class="button button-assistance" ng-click="requestAssistance()" ng-class="{disabled: !requestAssistanceAvailable}">Request Server</button></li>
     </ul>
