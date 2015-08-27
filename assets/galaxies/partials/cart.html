@@ -66,30 +66,8 @@
     <button type="submit" class="modal-close"></button>
 
     <h1>Revise Your Order</h1>
-
-    <div class="scroller">
-      <div class="scrollee">
-        <table class="modifiers-list">
-          <tr>
-            <td class="modifier-category" ng-repeat="category in editableItem.modifiers">
-              <h3>{{category.data.title}}</h3>
-              <ul>
-                <li class="modifier-item clickable" ng-repeat="modifier in category.modifiers" ng-click="updateModifiers(category, modifier)">
-                  <h4>{{modifier.data.title}}<span ng-show="modifier.data.price > 0">&nbsp;+{{formatPrice(modifier.data.price)}}</span></h4>
-                  <img ng-src="{{getMediaUrl(modifier.data.image, 100, 100)}}" />
-                  <input
-                    type="checkbox"
-                    class="modifier-checkbox"
-                    id="{{modifier.data.id}}"
-                    ng-model="modifier.isSelected" />
-                  <label for="{{modifier.data.id}}"></label>
-                </li>
-              </ul>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
+    
+    <modifierslist entry="editableItem" />
 
     <ul class="horizontal">
       <li><button type="submit" class="button screen-cart-editor-submit">Submit</button></li>

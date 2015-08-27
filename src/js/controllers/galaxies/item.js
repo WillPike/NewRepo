@@ -142,15 +142,6 @@ angular.module('SNAP.controllers')
     }
   };
 
-  $scope.updateModifiers = (category, modifier) => {
-    if (category.data.selection === 1) {
-      angular.forEach(category.modifiers, m => m.isSelected = (m === modifier));
-    }
-    else {
-      modifier.isSelected = !modifier.isSelected;
-    }
-  };
-
   $scope.submitOrder = () => {
     NavigationManager.goBack();
     CartModel.cartState = CartModel.STATE_CART;
