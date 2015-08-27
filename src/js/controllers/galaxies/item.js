@@ -1,7 +1,10 @@
 angular.module('SNAP.controllers')
 .controller('GalaxiesItemCtrl',
-  ['$scope', '$timeout', 'CartModel', 'DataManager', 'NavigationManager', 'OrderManager', 'ShellManager', 'WebBrowser', 'CommandSubmitOrder',
-  ($scope, $timeout, CartModel, DataManager, NavigationManager, OrderManager, ShellManager, WebBrowser, CommandSubmitOrder) => {
+  ['$scope', '$timeout', 'CartModel', 'DataManager', 'NavigationManager', 'OrderManager', 'ShellManager', 'WebBrowser', 'CommandSubmitOrder', 'ComponentMenuTitle', 'ComponentItemDescription',
+  ($scope, $timeout, CartModel, DataManager, NavigationManager, OrderManager, ShellManager, WebBrowser, CommandSubmitOrder, ComponentMenuTitle, ComponentItemDescription) => {
+
+  const titleId = 'page-item-title';
+  const contentId = 'page-item-info';
 
   $scope.goBack = () => NavigationManager.goBack();
   $scope.goHome = () => NavigationManager.location = { type: 'home' };
@@ -12,30 +15,57 @@ angular.module('SNAP.controllers')
     }
   }
 
-  var ItemDescription = React.createClass({
-    render: function() {
-      var entry = this.props.entry;
-      return (
-        React.DOM.div({
-          className: 'page-item-info'
-        }, [
-          React.DOM.h1({ key: 1 }, entry.item.title || '&nbsp;'),
-          React.DOM.h2({ key: 2 }, $scope.formatPrice(entry.item.order.price) || '&nbsp;'),
-          React.DOM.p({ key: 3 }, entry.item.description || '&nbsp;')
-        ])
+  function renderTitle(element) {
+    if (!element) {
+      element = document.getElementById(titleId);
+    }
+
+    React.render(
+      React.createElement(ComponentMenuTitle, {
+        title: '',
+        history: []
+      }),
+      element
+    );
+  }
+
+  function renderContent(element, entry) {
+    if (!element) {
+      element = document.getElementById(contentId);
+    }
+
+    if (entry) {
+      React.render(
+        React.createElement(ComponentItemDescription, { entry: entry }),
+        element
       );
     }
-  });
+    else {
+      element.innerHTML = '';
+    }
+  }
+
+  function renderData(entry) {
+    var titleElement = document.getElementById(titleId),
+        contentElement = document.getElementById(contentId);
+
+    if (titleElement && contentElement) {
+      renderTitle(titleElement);
+      renderContent(contentElement, entry);
+    }
+    else {
+      $timeout(() => {
+        renderTitle(titleElement);
+        renderContent(contentElement, entry);
+      });
+    }
+  }
+
+  function reset() {
+  }
 
   DataManager.itemChanged.add(item => {
     if (!item) {
-      $scope.visible = false;
-      $timeout(() => {
-        $scope.entry = $scope.entries = null;
-        $scope.type = 1;
-        $scope.step = 0;
-        $scope.entryIndex = 0;
-      });
       return;
     }
 
@@ -55,25 +85,13 @@ angular.module('SNAP.controllers')
     }
 
     var entry;
-    var element = document.getElementById('page-item-info');
 
     if (type === 1) {
       entry = new app.CartItem(item, 1);
-
-      if (element) {
-        React.render(
-          React.createElement(ItemDescription, { entry: entry }),
-          element
-        );
-      }
-    }
-    else {
-      if (element) {
-        element.innerHTML = '';
-      }
     }
 
-    $scope.visible = type === 1;
+    renderData(entry);
+
     $scope.entry = entry;
     $scope.type = type;
     $scope.step = 0;
@@ -135,6 +153,8 @@ angular.module('SNAP.controllers')
 
   NavigationManager.locationChanging.add(location => {
     DataManager.item = location.type === 'item' ? location.token : undefined;
-    $timeout(() => $scope.$apply());
+    $scope.visible = Boolean(DataManager.item);
+
+    $timeout(() => reset());
   });
 }]);
