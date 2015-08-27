@@ -97,7 +97,12 @@ angular.module('SNAP.controllers')
         }
       };
 
-      $scope.removeFromCart = entry => $scope.currentOrder = OrderManager.removeFromCart(entry);
+      $scope.removeFromCart = entry => {
+        DialogManager.confirm(app.Alert.ITEM_REMOVE_FROM_CART).then(() => {
+          $scope.currentOrder = OrderManager.removeFromCart(entry);
+        });
+      };
+
       $scope.reorderItem = entry => {
         DialogManager.alert(app.Alert.ITEM_ADDED_TO_CART);
         $scope.currentOrder = OrderManager.addToCart(entry.clone());

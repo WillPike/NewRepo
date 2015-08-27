@@ -132,6 +132,9 @@ angular.module('SNAP.controllers')
           case app.Alert.ITEM_ADDED_TO_CART:
             message = "Item has been added to your cart.";
             break;
+          case app.Alert.ITEM_REMOVE_FROM_CART:
+            message = "Are you sure you want to remove the item?";
+            break;
       }
     }
 

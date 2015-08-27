@@ -5,6 +5,7 @@ angular.module('SNAP.controllers')
 
   const titleId = 'page-item-title';
   const contentId = 'page-item-info';
+  const modifiersConainerId = 'page-item-modifiers-container';
 
   $scope.goBack = () => NavigationManager.goBack();
   $scope.goHome = () => NavigationManager.location = { type: 'home' };
@@ -107,6 +108,11 @@ angular.module('SNAP.controllers')
         $scope.entries = $scope.entry.cloneMany();
         $scope.currentEntry = $scope.entries[$scope.entryIndex = 0];
         $scope.step = 1;
+
+        var modifiersConainer = document.getElementById(modifiersConainerId);
+        if (modifiersConainer) {
+          modifiersConainer.scrollLeft = 0;
+        }
       }
       else {
         OrderManager.addToCart($scope.entry);
