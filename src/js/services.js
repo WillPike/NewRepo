@@ -144,8 +144,8 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
   .factory('LocationManager', ['DataModel', 'DtsApi', 'LocationModel', 'Logger', (DataModel, DtsApi, LocationModel, Logger) => {
     return new app.LocationManager(DataModel, DtsApi, LocationModel, Logger);
   }])
-  .factory('NavigationManager', ['$rootScope', '$location', '$window', 'AnalyticsModel', 'Logger', ($rootScope, $location, $window, AnalyticsModel, Logger) => {
-    return new app.NavigationManager($rootScope, $location, $window, AnalyticsModel, Logger);
+  .factory('NavigationManager', ['$rootScope', '$location', '$timeout', 'AnalyticsModel', 'Logger', ($rootScope, $location, $timeout, AnalyticsModel, Logger) => {
+    return new app.NavigationManager($rootScope, $location, $timeout, AnalyticsModel, Logger);
   }])
   .factory('OrderManager', ['ChatModel', 'CustomerModel', 'DtsApi', 'OrderModel', 'Logger', (ChatModel, CustomerModel, DtsApi, OrderModel, Logger) => {
     return new app.OrderManager(ChatModel, CustomerModel, DtsApi, OrderModel, Logger);

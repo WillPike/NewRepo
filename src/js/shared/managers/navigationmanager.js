@@ -1,12 +1,13 @@
 window.app.NavigationManager = class NavigationManager extends app.AbstractManager {
   /* global signals */
 
-  constructor($rootScope, $location, $window, AnalyticsModel, Logger) {
+  constructor($rootScope, $location, $timeout, AnalyticsModel, Logger) {
     super(Logger);
 
     this.$$location = $location;
-    this.$$window = $window;
+    this.$$timeout = $timeout;
     this._AnalyticsModel = AnalyticsModel;
+    this._history = [ this.$$location.path() ];
 
     this.locationChanging = new signals.Signal();
     this.locationChanged = new signals.Signal();
@@ -27,12 +28,6 @@ window.app.NavigationManager = class NavigationManager extends app.AbstractManag
   }
 
   get path() { return this._path; }
-  set path(value) {
-    var i = value.indexOf('#'),
-        path = i !== -1 ? value.substring(i + 1) : value;
-
-    this.location = this.getLocation(path);
-  }
 
   get location() { return this._location; }
   set location(value) {
@@ -44,10 +39,12 @@ window.app.NavigationManager = class NavigationManager extends app.AbstractManag
     }
 
     this._location = value;
+    this._path = this.getPath(this.location);
+
+    this._history.push(this.path);
     this.locationChanging.dispatch(this.location);
 
-    this._path = this.getPath(this.location);
-    this.$$location.path(this._path);
+    this.$$location.path(this.path);
   }
 
   getPath(location) {
@@ -98,7 +95,12 @@ window.app.NavigationManager = class NavigationManager extends app.AbstractManag
 
   goBack() {
     if (this.location.type !== 'home' && this.location.type !== 'signin') {
-      this.$$window.history.back();
+      if (this._history.length > 1) {
+        this._history.pop();
+        let path = this._history[this._history.length - 1];
+
+        this.$$timeout(() => this.$$location.path(path));
+      }
     }
   }
 
