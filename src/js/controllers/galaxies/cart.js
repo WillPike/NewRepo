@@ -98,7 +98,10 @@ angular.module('SNAP.controllers')
       };
 
       $scope.removeFromCart = entry => $scope.currentOrder = OrderManager.removeFromCart(entry);
-      $scope.reorderItem = entry => $scope.currentOrder = OrderManager.addToCart(entry.clone());
+      $scope.reorderItem = entry => {
+        DialogManager.alert(app.Alert.ITEM_ADDED_TO_CART);
+        $scope.currentOrder = OrderManager.addToCart(entry.clone());
+      };
 
       $scope.submitCart = () => {
         DialogManager.confirm(app.Alert.TABLE_SUBMIT_ORDER).then(() => {

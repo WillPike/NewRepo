@@ -129,6 +129,9 @@ angular.module('SNAP.controllers')
           case app.Alert.WARNING_CACHE_OBSOLETE:
             message = "Unable to update the application cache. Falling back to cached version.";
             break;
+          case app.Alert.ITEM_ADDED_TO_CART:
+            message = "Item has been added to your cart.";
+            break;
       }
     }
 
