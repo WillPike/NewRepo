@@ -16,7 +16,7 @@
               <table class="table">
                 <tbody>
                   <tr ng-repeat="data in currentOrder">
-                    <td class="cart-item-image-column"><span class="cart-item-image"><img ng-src="{{getMediaUrl(data.item.image, 370, 370)}}" /></span></td>
+                    <td class="cart-item-image-column"><span class="cart-item-image"><img ng-src="{{data.item.image | thumbnail:370:370}}" /></span></td>
                     <td class="cart-item-name-column"><span class="cart-item-name"><span ng-bind-html="calculateDescription(data)" /></span></td>
                     <td class="cart-item-actions-column cart-actions">
                       <a class="action-link cart-action-edit" ng-show="!giftSeat && data.hasModifiers" ng-click="editItem(data)">Edit</a>
@@ -82,7 +82,7 @@
               <table class="table">
                 <tbody>
                   <tr ng-repeat="data in totalOrder">
-                    <td class="cart-item-image-column"><span class="cart-item-image"><img ng-src="{{getMediaUrl(data.item.image, 370, 370)}}" /></span></td>
+                    <td class="cart-item-image-column"><span class="cart-item-image"><img ng-src="data.item.image | thumbnail:370:370" /></span></td>
                     <td class="cart-item-name-column"><span class="cart-item-name"><span ng-bind-html="calculateDescription(data)" /></span></td>
                     <td class="cart-item-actions-column cart-actions">
                       <a class="action-link cart-action-duplicate" ng-click="reorderItem(data)">Reorder</a>

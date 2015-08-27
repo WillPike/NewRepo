@@ -1,6 +1,6 @@
 <div class="content-box item-edit-popup">
   <div class="item-main">
-    <div class="item-photo"><img ng-src="{{getMediaUrl(entry.item.image, 600, 600)}}" alt=""/></div>
+    <div class="item-photo"><img ng-src="{{entry.item.image | thumbnail:600:600}}" alt=""/></div>
   </div>
 
   <div class="item-editor">
@@ -18,7 +18,7 @@
             <ul>
               <li ng-repeat="modifier in category.modifiers" ng-click="updateModifiers(category, modifier)">
                 <label for="{{modifier.data.id}}">
-                  <img ng-src="{{getMediaUrl(modifier.data.image, 100, 100)}}" />
+                  <img ng-src="{{modifier.data.image | thumbnail:100:100}}" />
                   <span>{{getModifierTitle(modifier)}}</span>
                 </label>
                 <input

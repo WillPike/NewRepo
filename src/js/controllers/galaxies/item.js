@@ -99,7 +99,6 @@ angular.module('SNAP.controllers')
     $scope.entryIndex = 0;
   });
 
-  $scope.getMediaUrl = (media, w, h, extension) => ShellManager.getMediaUrl(media, w, h, extension);
   $scope.formatPrice = value => value ? ShellManager.formatPrice(value) : 0;
 
   $scope.nextStep = () => {

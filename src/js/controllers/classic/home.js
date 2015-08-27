@@ -92,7 +92,6 @@ angular.module('SNAP.controllers')
     NavigationManager.location = destination;
   };
 
-  $scope.getMediaUrl = (media, width, height, extension) => ShellManager.getMediaUrl(media, width, height, extension);
   $scope.predicateEven = ShellManager.predicateEven;
   $scope.predicateOdd = ShellManager.predicateOdd;
 

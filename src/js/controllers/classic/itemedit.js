@@ -3,7 +3,6 @@ angular.module('SNAP.controllers')
   ['$scope', 'ShellManager', 'NavigationManager', 'OrderManager', 'CartModel',
   ($scope, ShellManager, NavigationManager, OrderManager, CartModel) => {
 
-  $scope.getMediaUrl = (media, width, height, extension) => ShellManager.getMediaUrl(media, width, height, extension);
   $scope.formatPrice = value => ShellManager.formatPrice(value);
 
   var currentIndex = -1;

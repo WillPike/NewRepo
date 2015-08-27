@@ -6,7 +6,6 @@ angular.module('SNAP.controllers')
       $scope.STATE_CART = CartModel.STATE_CART;
       $scope.STATE_HISTORY = CartModel.STATE_HISTORY;
 
-      $scope.getMediaUrl = (media, width, height, extension) => ShellManager.getMediaUrl(media, width, height, extension);
       $scope.formatPrice = value => ShellManager.formatPrice(value);
       $scope.options = {};
 

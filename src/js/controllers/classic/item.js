@@ -65,7 +65,6 @@ angular.module('SNAP.controllers')
     });
   });
 
-  $scope.getMediaUrl = (media, width, height, extension) => ShellManager.getMediaUrl(media, width, height, extension);
   $scope.formatPrice = value => value ? ShellManager.formatPrice(value) : 0;
 
   $scope.addToCart = () => {
