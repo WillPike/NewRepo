@@ -115,7 +115,7 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
 
   .factory('ActivityMonitor', ['$rootScope', '$timeout', 'SNAPEnvironment', ($rootScope, $timeout, SNAPEnvironment) => {
     var monitor = new app.ActivityMonitor($rootScope, $timeout);
-    monitor.timeout = 30000;
+    monitor.timeout = 5 * 60 * 1000;
 
     if (SNAPEnvironment.debug) {
       monitor.timeout *= 9000;
