@@ -1,26 +1,13 @@
 window.app.CartModel = class CartModel {
   constructor() {
+    this.STATE_NONE = 'none';
     this.STATE_CART = 'cart';
     this.STATE_HISTORY = 'history';
 
-    this._isCartOpen = false;
-    this.isCartOpenChanged = new signals.Signal();
-    this._cartState = this.STATE_CART;
+    this._cartState = this.STATE_NONE;
     this.cartStateChanged = new signals.Signal();
     this._editableItem = null;
     this.editableItemChanged = new signals.Signal();
-  }
-
-  get isCartOpen() {
-    return this._isCartOpen;
-  }
-
-  set isCartOpen(value) {
-    if (this._isCartOpen === value) {
-      return;
-    }
-    this._isCartOpen = value;
-    this.isCartOpenChanged.dispatch(value);
   }
 
   get cartState() {

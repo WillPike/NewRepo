@@ -1,14 +1,14 @@
 angular.module('SNAP.controllers')
 .controller('GalaxiesNavigationCtrl',
-  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DataModel', 'DialogManager', 'LocationModel', 'ManagementService', 'NavigationManager', 'OrderManager', 'SurveyManager', 'CommandCloseTable', 'CommandSubmitOrder', 'CommandFlipScreen', 'SNAPEnvironment', 'WebBrowser',
-  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DataModel, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, SurveyManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, SNAPEnvironment, WebBrowser) => {
+  ['$scope', '$timeout', 'ActivityMonitor', 'CustomerManager', 'AnalyticsModel', 'CartModel', 'ShellManager', 'DataManager', 'DialogManager', 'LocationModel', 'ManagementService', 'NavigationManager', 'OrderManager', 'SurveyManager', 'CommandCloseTable', 'CommandSubmitOrder', 'CommandFlipScreen', 'SNAPEnvironment', 'WebBrowser',
+  ($scope, $timeout, ActivityMonitor, CustomerManager, AnalyticsModel, CartModel, ShellManager, DataManager, DialogManager, LocationModel, ManagementService, NavigationManager, OrderManager, SurveyManager, CommandCloseTable, CommandSubmitOrder, CommandFlipScreen, SNAPEnvironment, WebBrowser) => {
 
   $scope.menus = [];
   $scope.showVolume = $scope.showBrightness = SNAPEnvironment.platform !== 'web';
   $scope.showRotate = SNAPEnvironment.platform !== 'web';
   $scope.applicationVersion = SNAPEnvironment.version;
 
-  DataModel.home().then(response => {
+  DataManager.model.home().then(response => {
     if (!response) {
       return;
     }
@@ -55,7 +55,7 @@ angular.module('SNAP.controllers')
 
   $scope.advertisements = [];
 
-  DataModel.advertisements().then(data => {
+  DataManager.model.advertisements().then(data => {
     $timeout(() => {
       $scope.advertisements = data.misc
         .map(ad => {
@@ -72,7 +72,7 @@ angular.module('SNAP.controllers')
   $scope.navigateHome = () => {
     ActivityMonitor.activityDetected();
     $scope.settingsOpen = false;
-    CartModel.isCartOpen = false;
+    CartModel.cartState = CartModel.STATE_NONE;
     NavigationManager.location = { type: 'home' };
   };
 
@@ -93,7 +93,6 @@ angular.module('SNAP.controllers')
     $scope.settingsOpen = false;
 
     CartModel.cartState = CartModel.STATE_CART;
-    CartModel.isCartOpen = true;
   };
 
   $scope.openSurvey = () => {
@@ -208,7 +207,6 @@ angular.module('SNAP.controllers')
     }
 
     CartModel.cartState = CartModel.STATE_CART;
-    CartModel.isCartOpen = true;
   };
 
   $scope.payBill = () => {
@@ -221,7 +219,6 @@ angular.module('SNAP.controllers')
     }
 
     CartModel.cartState = CartModel.STATE_HISTORY;
-    CartModel.isCartOpen = true;
   };
 
   $scope.customerName = CustomerManager.customerName || 'Guest';
@@ -276,21 +273,24 @@ angular.module('SNAP.controllers')
 
   $scope.navigate = destination => NavigationManager.location = destination;
 
-  NavigationManager.locationChanging.add(location => {
-    $scope.visible = location.type !== 'signin';
-    $timeout(() => $scope.$apply());
-  });
-
   NavigationManager.locationChanged.add(location => {
-    $timeout(() => {
-      if (location.type !== 'category' && location.type !== 'item') {
-        $scope.menus.forEach(menu => {
-          menu.selected = (location.type === 'menu' && menu.token === location.token);
-        });
-      }
+    if (location.type === 'menu') {
+      $scope.menus.forEach(menu => menu.selected = location.token === menu.token);
+    }
+    else if (location.type === 'category' || location.type === 'item') {
+      var menuToken = DataManager.getDestinationPath(location)
+        .filter(d => d.type === 'menu')
+        .map(d => d.token)[0];
 
-      $scope.menuOpen = false;
-      $scope.settingsOpen = false;
-    });
+      $scope.menus.forEach(menu => menu.selected = menuToken === menu.token);
+    }
+    else {
+      $scope.menus.forEach(menu => menu.selected = false);
+    }
+
+    $scope.menuOpen = false;
+    $scope.settingsOpen = false;
+
+    $scope.visible = location.type !== 'signin';
   });
 }]);

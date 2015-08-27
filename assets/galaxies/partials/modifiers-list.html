@@ -6,7 +6,7 @@
           <h3>{{category.data.title}}</h3>
           <ul>
             <li class="modifier-item clickable" ng-repeat="modifier in category.modifiers" ng-click="updateModifiers(category, modifier)">
-              <h4>{{modifier.data.title}}<span ng-show="modifier.data.price > 0">&nbsp;+{{formatPrice(modifier.data.price)}}</span></h4>
+              <h4>{{modifier.data.title}}<span ng-show="modifier.data.price > 0">&nbsp;+{{modifier.data.price | formatprice}}</span></h4>
               <img ng-src="{{modifier.data.image | thumbnail:100:100}}" />
               <input
                 type="checkbox"

@@ -80,7 +80,7 @@ angular.module('SNAP.controllers')
     }
     else {
       OrderManager.addToCart(entry);
-      CartModel.isCartOpen = true;
+      CartModel.cartState = CartModel.STATE_CART;
     }
 
     NavigationManager.goBack();

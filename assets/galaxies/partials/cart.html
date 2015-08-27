@@ -27,14 +27,14 @@
                 </span>
               </h3>
               <ul class="cart-modifiers" ng-show="data.hasModifiers">
-                <li ng-repeat="modifier in getModifiers(data)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> (+{{formatPrice(modifier.data.price)}})</i></li>
+                <li ng-repeat="modifier in getModifiers(data)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> (+{{modifier.data.price | formatprice}})</i></li>
               </ul>
             </td>
             <td class="cart-column-quantity">
               <quantity min="1" max="9" quantity="data.quantity" />
             </td>
             <td class="cart-column-price">
-              <h3>{{formatPrice(calculatePrice(data))}}<i class="currency" ng-show="currency">{{currency}}</i></h3>
+              <h3>{{calculatePrice(data) | formatprice}}<i class="currency" ng-show="currency">{{currency}}</i></h3>
             </td>
           </tr>
         </tbody>
@@ -45,7 +45,7 @@
       </ul>
 
       <div class="cart-order-total form vertical">
-        <h4>Order Total <b>{{formatPrice(calculateTotalPrice(currentOrder))}}</b><i class="currency" ng-show="currency"> {{currency}}</i></h4>
+        <h4>Order Total <b>{{calculateTotalPrice(currentOrder) | formatprice}}</b><i class="currency" ng-show="currency"> {{currency}}</i></h4>
       </div>
     </form>
   </div>
@@ -66,7 +66,7 @@
     <button type="submit" class="modal-close"></button>
 
     <h1>Revise Your Order</h1>
-    
+
     <modifierslist entry="editableItem" />
 
     <ul class="horizontal">
@@ -95,7 +95,7 @@
             <td class="cart-column-description">
               <h3>{{data.name || data.item.title}}</h3>
               <ul class="cart-modifiers" ng-show="data.hasModifiers">
-                <li ng-repeat="modifier in getModifiers(data)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> (+{{formatPrice(modifier.data.price)}})</i></li>
+                <li ng-repeat="modifier in getModifiers(data)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> (+{{modifier.data.price | formatprice}})</i></li>
               </ul>
             </td>
             <td class="cart-column-reorder">
@@ -105,14 +105,14 @@
               <span>{{data.quantity}}</span>
             </td>
             <td class="cart-column-price">
-              <h3>{{formatPrice(calculatePrice(data))}}<i class="currency" ng-show="currency">{{currency}}</i></h3>
+              <h3>{{calculatePrice(data) | formatprice}}<i class="currency" ng-show="currency">{{currency}}</i></h3>
             </td>
           </tr>
         </tbody>
       </table>
 
       <div class="cart-order-total form vertical">
-        <h4>Total <b>{{formatPrice(calculateTotalPrice(totalOrder))}}</b><i class="currency" ng-show="currency"> {{currency}}</i></h4>
+        <h4>Total <b>{{calculateTotalPrice(totalOrder) | formatprice}}</b><i class="currency" ng-show="currency"> {{currency}}</i></h4>
         <button class="button green" ng-show="checkoutEnabled && (totalOrder.length > 0)" ng-click="payCheck()">Pay Now</button>
       </div>
     </form>

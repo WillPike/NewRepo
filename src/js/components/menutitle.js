@@ -13,12 +13,18 @@ angular.module('SNAP.components')
             NavigationManager.goBack();
           }
         }),
-        React.DOM.ul({ key: 2 }, history.map((destination, i) => {
+        React.DOM.ul({ key: 2 }, history.splice(0).reverse().map((destination, i) => {
           return React.DOM.li({
             key: i,
             onClick: e => {
               e.preventDefault();
-              NavigationManager.location = destination;
+
+              if (i === history.length - 1) {
+                NavigationManager.goBack();
+              }
+              else {
+                NavigationManager.location = destination;
+              }
             }
           }, destination.title);
         })),

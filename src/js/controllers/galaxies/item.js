@@ -5,7 +5,8 @@ angular.module('SNAP.controllers')
 
   const titleId = 'page-item-title';
   const contentId = 'page-item-info';
-  const modifiersConainerId = 'page-item-modifiers-container';
+
+  var destinations = [];
 
   $scope.goBack = () => NavigationManager.goBack();
   $scope.goHome = () => NavigationManager.location = { type: 'home' };
@@ -16,7 +17,7 @@ angular.module('SNAP.controllers')
     }
   }
 
-  function renderTitle(element) {
+  function renderTitle(element, destinations) {
     if (!element) {
       element = document.getElementById(titleId);
     }
@@ -24,7 +25,7 @@ angular.module('SNAP.controllers')
     React.render(
       React.createElement(ComponentMenuTitle, {
         title: '',
-        history: []
+        history: destinations
       }),
       element
     );
@@ -51,12 +52,12 @@ angular.module('SNAP.controllers')
         contentElement = document.getElementById(contentId);
 
     if (titleElement && contentElement) {
-      renderTitle(titleElement);
+      renderTitle(titleElement, destinations);
       renderContent(contentElement, entry);
     }
     else {
       $timeout(() => {
-        renderTitle(titleElement);
+        renderTitle(titleElement, destinations);
         renderContent(contentElement, entry);
       });
     }
@@ -99,19 +100,12 @@ angular.module('SNAP.controllers')
     $scope.entryIndex = 0;
   });
 
-  $scope.formatPrice = value => value ? ShellManager.formatPrice(value) : 0;
-
   $scope.nextStep = () => {
     if ($scope.step === 0) {
       if ($scope.entry.hasModifiers) {
         $scope.entries = $scope.entry.cloneMany();
         $scope.currentEntry = $scope.entries[$scope.entryIndex = 0];
         $scope.step = 1;
-
-        var modifiersConainer = document.getElementById(modifiersConainerId);
-        if (modifiersConainer) {
-          modifiersConainer.scrollLeft = 0;
-        }
       }
       else {
         OrderManager.addToCart($scope.entry);
@@ -144,10 +138,13 @@ angular.module('SNAP.controllers')
   $scope.submitOrder = () => {
     NavigationManager.goBack();
     CartModel.cartState = CartModel.STATE_CART;
-    CartModel.isCartOpen = true;
   };
 
   NavigationManager.locationChanging.add(location => {
+    if (location.type === 'item') {
+      destinations = DataManager.getDestinationPath(location);
+    }
+
     DataManager.item = location.type === 'item' ? location.token : undefined;
     $scope.visible = Boolean(DataManager.item);
 

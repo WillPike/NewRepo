@@ -7,7 +7,10 @@ angular.module('SNAP.controllers')
   $scope.options = {};
 
   $scope.state = CartModel.cartState;
-  CartModel.cartStateChanged.add(state => $timeout(() => $scope.state = state));
+  $scope.visible = CartModel.cartState !== CartModel.STATE_NONE;
+  CartModel.cartStateChanged.add(state => $timeout(() => {
+    $scope.state = CartModel.cartState !== CartModel.STATE_NONE;
+  }));
 
   $scope.currentOrder = OrderManager.model.orderCart;
   OrderManager.model.orderCartChanged.add(value => $scope.currentOrder = value);
@@ -24,17 +27,11 @@ angular.module('SNAP.controllers')
   $scope.requestCloseoutAvailable = true;
   $scope.checkoutEnabled = CustomerManager.model.isEnabled;
   $scope.toGoOrder = false;
-  $scope.visible = CartModel.isCartOpen;
 
   NavigationManager.locationChanging.add(location => {
     if (location.type !== 'category') {
-      CartModel.isCartOpen = false;
+      CartModel.cartState = CartModel.STATE_NONE;
     }
-  });
-
-  CartModel.isCartOpenChanged.add(value => {
-    $scope.showCart();
-    $scope.visible = value;
   });
 
   $scope.seat_name = LocationModel.seat ?
@@ -103,8 +100,7 @@ angular.module('SNAP.controllers')
   };
 
   $scope.closeCart = () => {
-    CartModel.isCartOpen = false;
-    $scope.showCart();
+    CartModel.cartState = CartModel.STATE_NONE;
   };
 
   $scope.showHistory = () => CartModel.cartState = CartModel.STATE_HISTORY;

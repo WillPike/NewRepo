@@ -8,6 +8,8 @@
     this._activeChanged = new signals.Signal();
     this.enabled = true;
 
+    this.onActivityDetected = new signals.Signal();
+
     var self = this;
 
     this.$$rootScope.$on('$locationChangeSuccess', function() {
@@ -71,6 +73,8 @@
     if (changed && this.enabled) {
       this.activeChanged.dispatch(this.active);
     }
+
+    this.$$timeout(() => this.onActivityDetected.dispatch());
   };
 
   window.app.ActivityMonitor = ActivityMonitor;

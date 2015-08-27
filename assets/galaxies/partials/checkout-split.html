@@ -28,7 +28,7 @@
           <td class="cart-column-description">
             <h3>{{item.name || item.item.title}}</h3>
             <ul class="cart-modifiers" ng-show="item.hasModifiers">
-              <li ng-repeat="modifier in getModifiers(item)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> +{{formatPrice(modifier.data.price)}}</i></li>
+              <li ng-repeat="modifier in getModifiers(item)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> +{{modifier.data.price | formatprice}}</i></li>
             </ul>
             <ul class="cart-checks">
               <li ng-repeat="check in data">

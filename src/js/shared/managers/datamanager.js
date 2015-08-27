@@ -290,6 +290,39 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
         return res;
       }, []);
     }
+    else if (destination.type === 'item') {
+      return menus.reduce((res, menu) => {
+        var item = menu.items[destination.token];
+
+        if (item) {
+          var category = menu.categories[item.category];
+
+          res.push({
+            type: 'category',
+            token: category.token,
+            title: category.title
+          });
+
+          while (category.parent) {
+            category = menu.categories[category.parent];
+
+            res.push({
+              type: 'category',
+              token: category.token,
+              title: category.title
+            });
+          }
+
+          res.push({
+            type: 'menu',
+            token: menu.token,
+            title: menu.title
+          });
+        }
+
+        return res;
+      }, []);
+    }
 
     return [];
   }
@@ -317,34 +350,54 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
   }
 
   _loadContent(digest, fetch) {
-    var menuMap = digest.menu_sets.reduce((res, menu) => {
-      res[menu.token] = {
-        token: menu.token,
-        categories: {}
-      };
+    var menuMap;
 
-      return res;
-    }, {});
+    if (fetch) {
+      menuMap = digest.menu_sets.reduce((res, menu) => {
+        res[menu.token] = {
+          token: menu.token,
+          categories: {},
+          items: {}
+        };
+
+        return res;
+      }, {});
+    }
 
     var menuSets = (digest.menu_sets || []).map(m => {
       return this.model.menu(m.token, fetch).then(data => {
-        let menu = menuMap[m.token];
-        menu.title = data.title;
+        if (fetch) {
+          let menu = menuMap[m.token];
+          menu.title = data.title;
+        }
       });
     });
 
     var menuCategories = (digest.menu_categories || []).map(c => {
       return this.model.category(c.token, fetch).then(data => {
-        let menu = menuMap[data.menu_id];
-        menu.categories[c.token] = {
-          token: c.token,
-          title: data.title,
-          parent: data.category_id
-        };
+        if (fetch) {
+          let menu = menuMap[data.menu_id];
+          menu.categories[c.token] = {
+            token: c.token,
+            title: data.title,
+            parent: data.category_id
+          };
+        }
       });
     });
 
-    var menuItems = (digest.menu_items || []).map(i => this.model.item(i.token, fetch));
+    var menuItems = (digest.menu_items || []).map(i => {
+      this.model.item(i.token, fetch).then(data => {
+        if (fetch) {
+          let menu = menuMap[data.menu_id];
+          menu.items[i.token] = {
+            token: i.token,
+            title: data.title,
+            category: data.category_id
+          };
+        }
+      });
+    });
 
     this._Logger.debug(`Digest contains ${menuSets.length} menus, ` +
       `${menuCategories.length} categories and ` +
@@ -362,7 +415,9 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
       .concat(menuItems);
 
     return Promise.all(tasks).then(() => {
-      this.model.menuMap = menuMap;
+      if (fetch) {
+        this.model.menuMap = menuMap;
+      }
     });
   }
 

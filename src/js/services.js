@@ -118,7 +118,7 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
     monitor.timeout = 5 * 60 * 1000;
 
     if (SNAPEnvironment.debug) {
-      monitor.timeout *= 9000;
+      monitor.timeout *= 10;
     }
 
     return monitor;

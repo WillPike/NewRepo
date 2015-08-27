@@ -43,7 +43,7 @@ angular.module('SNAP.controllers')
     }
 
     NavigationManager.location = { type: 'home' };
-    CartModel.isCartOpen = false;
+    CartModel.cartState = CartModel.STATE_NONE;
   };
 
   $scope.navigateBack = () => {
@@ -56,7 +56,7 @@ angular.module('SNAP.controllers')
 
     NavigationManager.goBack();
 
-    CartModel.isCartOpen = false;
+    CartModel.cartState = CartModel.STATE_NONE;
   };
 
   $scope.rotateScreen = () => {
@@ -72,7 +72,7 @@ angular.module('SNAP.controllers')
       return;
     }
 
-    CartModel.isCartOpen = !CartModel.isCartOpen;
+    CartModel.cartState = CartModel.STATE_CART;
   };
 
   $scope.openSettings = () => {

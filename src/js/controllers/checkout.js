@@ -195,9 +195,6 @@ angular.module('SNAP.controllers')
   //Calculate cart items price
   $scope.calculateTotalPrice = entries => OrderManager.calculateTotalPrice(entries);
 
-  //Output a formatted price string
-  $scope.formatPrice = value => ShellManager.formatPrice(value || 0);
-
   //------------------------------------------------------------------------
   //
   //  Startup

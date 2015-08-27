@@ -6,23 +6,19 @@ angular.module('SNAP.controllers')
       $scope.STATE_CART = CartModel.STATE_CART;
       $scope.STATE_HISTORY = CartModel.STATE_HISTORY;
 
-      $scope.formatPrice = value => ShellManager.formatPrice(value);
       $scope.options = {};
 
       $scope.currency = ShellManager.model.currency;
       ShellManager.model.currencyChanged.add(currency => $timeout(() => $scope.currency = currency));
 
-      $scope.state = CartModel.cartState;
-      CartModel.cartStateChanged.add(state => $timeout(() => $scope.state = state));
-
       $scope.editableItem = CartModel.editableItem;
       CartModel.editableItemChanged.add(item => $timeout(() => $scope.editableItem = item));
 
       $scope.currentOrder = OrderManager.model.orderCart;
-      OrderManager.model.orderCartChanged.add(value => $scope.currentOrder = value);
+      OrderManager.model.orderCartChanged.add(value => $timeout(() => $scope.currentOrder = value));
 
       $scope.totalOrder = OrderManager.model.orderCheck;
-      OrderManager.model.orderCheckChanged.add(value => $scope.totalOrder = value);
+      OrderManager.model.orderCheckChanged.add(value => $timeout(() => $scope.totalOrder = value));
 
       $scope.cartCount = OrderManager.calculateCount(OrderManager.model.orderCart);
       OrderManager.model.orderCartChanged.add(cart => {
@@ -40,16 +36,19 @@ angular.module('SNAP.controllers')
       });
 
       $scope.checkoutEnabled = CustomerManager.model.isEnabled;
-      $scope.visible = CartModel.isCartOpen;
+
+      $scope.state = CartModel.cartState;
+      $scope.visible = CartModel.cartState !== CartModel.STATE_NONE;
+      CartModel.cartStateChanged.add(state => $timeout(() => {
+        $scope.state = state;
+        $scope.visible = state !== CartModel.STATE_NONE;
+      }));
 
       NavigationManager.locationChanging.add(location => {
         if (location.type !== 'category') {
-          CartModel.isCartOpen = false;
-          CartModel.closeEditor();
+          CartModel.cartState = CartModel.STATE_NONE;
         }
       });
-
-      CartModel.isCartOpenChanged.add(value => $timeout(() => $scope.visible = value));
 
       $scope.seat_name = LocationModel.seat ?
         LocationModel.seat.name :
@@ -135,8 +134,7 @@ angular.module('SNAP.controllers')
       };
 
       $scope.closeCart = () => {
-        CartModel.isCartOpen = false;
-        CartModel.cartState = CartModel.STATE_CART;
+        CartModel.cartState = CartModel.STATE_NONE;
         NavigationManager.location = { type: 'home' };
       };
 

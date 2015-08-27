@@ -18,14 +18,14 @@ angular.module('SNAP.controllers')
     }
   };
 
-  NavigationManager.locationChanging.add(function(location) {
+  NavigationManager.locationChanging.add(location => {
     if (location.type !== 'menu' && location.type !== 'category') {
       $scope.exit();
     }
   });
 
-  CartModel.isCartOpenChanged.add(function(value) {
-    if (value) {
+  CartModel.cartStateChanged.add(state => {
+    if (state !== CartModel.STATE_NONE) {
       $scope.exit();
     }
   });
@@ -109,7 +109,7 @@ angular.module('SNAP.controllers')
     }
 
     $scope.exit();
-    CartModel.isCartOpen = true;
+    CartModel.cartState = CartModel.STATE_CART;
   };
 
   $scope.exit = function() {
