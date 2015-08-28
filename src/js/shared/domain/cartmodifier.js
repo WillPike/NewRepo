@@ -1,47 +1,31 @@
-(function() {
-
-  //------------------------------------------------------------------------
-  //
-  //  CartModifier
-  //
-  //------------------------------------------------------------------------
-
-  var CartModifier = function(data, isSelected) {
+window.app.CartModifier = class CartModifier {
+  constructor(data, isSelected, isExtra) {
     this.data = data;
     this.isSelected = isSelected || false;
-  };
+    this.isExtra = isExtra || false;
+  }
 
-  CartModifier.prototype.clone = function() {
-    return new app.CartModifier(this.data, this.isSelected);
-  };
+  clone() {
+    return new app.CartModifier(this.data, this.isSelected, this.isExtra);
+  }
 
-  CartModifier.prototype.restore = function(data) {
-    return new app.CartModifier(data.data, data.isSelected);
-  };
+  restore(data) {
+    return new app.CartModifier(data.data, data.isSelected, data.isExtra);
+  }
+};
 
-  window.app.CartModifier = CartModifier;
-
-  //------------------------------------------------------------------------
-  //
-  //  CartModifierCategory
-  //
-  //------------------------------------------------------------------------
-
-  var CartModifierCategory = function(data, modifiers) {
+window.app.CartModifierCategory = class CartModifierCategory {
+  constructor(data, modifiers) {
     this.data = data;
     this.modifiers = modifiers;
-  };
+  }
 
-  CartModifierCategory.prototype.clone = function() {
-    var modifiers = this.modifiers.map(function(modifier) {
-      return modifier.clone();
-    });
+  clone() {
+    let modifiers = this.modifiers.map(modifier => modifier.clone());
     return new app.CartModifierCategory(this.data, modifiers);
-  };
+  }
 
-  CartModifierCategory.prototype.restore = function(data) {
-    return new app.CartModifierCategory(data.data, data.modifiers.map(CartModifier.prototype.restore));
-  };
-
-  window.app.CartModifierCategory = CartModifierCategory;
-})();
+  restore(data) {
+    return new app.CartModifierCategory(data.data, data.modifiers.map(app.CartModifier.prototype.restore));
+  }
+};

@@ -9,13 +9,21 @@ angular.module('SNAP.directives')
     scope: {
       entry: '='
     },
-    link: function (scope, elem) {
+    link: function(scope, elem) {
       scope.updateModifiers = (category, modifier) => {
         if (category.data.selection === 1) {
           angular.forEach(category.modifiers, m => m.isSelected = (m === modifier));
         }
         else {
-          modifier.isSelected = !modifier.isSelected;
+          if (!modifier.isSelected) {
+            modifier.isSelected = true;
+          }
+          else if (!modifier.isExtra) {
+            modifier.isExtra = true;
+          }
+          else {
+            modifier.isSelected = modifier.isExtra = false;
+          }
         }
       };
     },

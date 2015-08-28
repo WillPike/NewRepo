@@ -1,15 +1,31 @@
 .modifier-checkbox {
 	display: none;
+
+	& + label {
+	  background: url('@{images}/checkbox-off.png') no-repeat center center #e6e6e6;
+		display: inline-block;
+		position: relative;
+	  height:3.5em;
+	  max-width:15em;
+	}
+
+	&:checked + label {
+	  background: url('@{images}/checkbox-on.png') no-repeat center center #8ac435;
+	}
 }
 
-.modifier-checkbox + label {
-  background: url('@{images}/checkbox-off.png') no-repeat center center #e6e6e6;
-	display: inline-block;
-	position: relative;
-  height:3.5em;
-  max-width:15em;
-}
+.modifier-checkbox-extra {
+	display: none;
 
-.modifier-checkbox:checked + label {
-  background: url('@{images}/checkbox-on.png') no-repeat center center #8ac435;
+	& + label {
+		display: none;
+		position: relative;
+	  height:3.5em;
+	  max-width:15em;
+	}
+
+	&:checked + label {
+		display: inline-block;
+	  background: url('@{images}/checkbox-on-extra.png') no-repeat center center #8ac435;
+	}
 }

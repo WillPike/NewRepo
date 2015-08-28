@@ -18,11 +18,10 @@ window.app.CartItem = class CartItem {
       this.modifiers = [];
     }
     else if (!modifiers) {
-      this.modifiers = item.modifiers.map(function(category) {
-        return new app.CartModifierCategory(category, category.items.map(function(modifier) {
-          return new app.CartModifier(modifier);
-        }));
-      });
+      this.modifiers = item.modifiers.map(category => new app.CartModifierCategory(
+        category,
+        category.items.map(modifier => new app.CartModifier(modifier, Boolean(modifier.is_default)))
+      ));
     }
     else {
       this.modifiers = modifiers;
@@ -31,14 +30,6 @@ window.app.CartItem = class CartItem {
 
   get hasModifiers() {
     return this.item.modifiers !== null && this.item.modifiers.length > 0;
-  }
-
-  get selectedModifiers() {
-    return this.modifiers.reduce(function(previousCategory, category, i, array) {
-      return array.concat(category.items.filter(function(modifier) {
-        return modifier.isSelected;
-      }));
-    }, []);
   }
 
   get quantity() {

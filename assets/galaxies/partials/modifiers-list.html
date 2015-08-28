@@ -9,11 +9,21 @@
               <h4>{{modifier.data.title}}<span ng-show="modifier.data.price > 0">&nbsp;+{{modifier.data.price | formatprice}}</span></h4>
               <img ng-src="{{modifier.data.image | thumbnail:100:100}}" />
               <input
-                type="checkbox"
-                class="modifier-checkbox"
                 id="{{modifier.data.id}}"
+                class="modifier-checkbox"
+                type="checkbox"
                 ng-model="modifier.isSelected" />
-              <label for="{{modifier.data.id}}"></label>
+              <label class="modifier-checkbox-label" for="{{modifier.data.id}}"></label>
+              <input
+                id="{{modifier.data.id}}_extra"
+                class="modifier-checkbox-extra"
+                type="checkbox"
+                ng-show="category.data.selection === 2 && modifier.isSelected"
+                ng-model="modifier.isExtra" />
+              <label
+                class="modifier-checkbox-extra-label"
+                for="{{modifier.data.id}}_extra"
+                ng-show="category.data.selection === 2 && modifier.isSelected"></label>
             </li>
           </ul>
         </td>

@@ -75,7 +75,9 @@ angular.module('SNAP.controllers')
         }
 
         return entry.modifiers.reduce((result, category) => {
-          let modifiers = category.modifiers.filter(modifier => modifier.isSelected);
+          let modifiers = category.modifiers.filter(modifier => {
+            return (!modifier.data.is_default && modifier.isSelected) || (modifier.data.is_default && !modifier.isSelected) || modifier.isExtra;
+          });
           result = result.concat(modifiers);
           return result;
         }, []);
@@ -85,15 +87,6 @@ angular.module('SNAP.controllers')
       $scope.calculateTotalPrice = entries => OrderManager.calculateTotalPrice(entries);
 
       $scope.editItem = entry => CartModel.openEditor(entry, false);
-
-      $scope.updateModifiers = (category, modifier) => {
-        if (category.data.selection === 1) {
-          angular.forEach(category.modifiers, m => m.isSelected = (m === modifier));
-        }
-        else {
-          modifier.isSelected = !modifier.isSelected;
-        }
-      };
 
       $scope.removeFromCart = entry => {
         DialogManager.confirm(app.Alert.ITEM_REMOVE_FROM_CART).then(() => {

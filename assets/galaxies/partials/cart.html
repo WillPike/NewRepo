@@ -27,7 +27,7 @@
                 </span>
               </h3>
               <ul class="cart-modifiers" ng-show="data.hasModifiers">
-                <li ng-repeat="modifier in getModifiers(data)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> (+{{modifier.data.price | formatprice}})</i></li>
+                <li ng-repeat="modifier in getModifiers(data)"><b ng-show="!modifier.isSelected && modifier.data.is_default">No </b><b ng-show="modifier.isSelected && modifier.isExtra">Extra </b>{{modifier.data.title}}<i ng-show="modifier.isSelected && modifier.data.price > 0"> (+{{modifier.data.price | formatprice}})</i></li>
               </ul>
             </td>
             <td class="cart-column-quantity">
@@ -95,7 +95,7 @@
             <td class="cart-column-description">
               <h3>{{data.name || data.item.title}}</h3>
               <ul class="cart-modifiers" ng-show="data.hasModifiers">
-                <li ng-repeat="modifier in getModifiers(data)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> (+{{modifier.data.price | formatprice}})</i></li>
+                <li ng-repeat="modifier in getModifiers(data)"><b ng-show="!modifier.isSelected && modifier.data.is_default">No </b><b ng-show="modifier.isSelected && modifier.isExtra">Extra </b>{{modifier.data.title}}<i ng-show="modifier.isSelected && modifier.data.price > 0"> (+{{modifier.data.price | formatprice}})</i></li>
               </ul>
             </td>
             <td class="cart-column-reorder">

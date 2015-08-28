@@ -80,73 +80,80 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
       options |= 4;
     }
 
-    var self = this;
-
     var request = {
       kind: this.model.REQUEST_KIND_ORDER,
       items: this.model.orderCart.map(entry => {
         return {
           token: entry.item.order.token,
           quantity: entry.quantity,
-          modifiers: entry.modifiers.reduce((result, category) => {
+          modifiers: [],
+          modifiers_list: entry.modifiers.reduce((result, category) => {
             return result.concat(category.modifiers.reduce((result, modifier) => {
-              if (modifier.isSelected) {
-                result.push(modifier.data.token);
+              if (modifier.isSelected || modifier.isDefault) {
+                let payload = {
+                  token: modifier.data.token,
+                  is_selected: modifier.isSelected
+                };
+
+                if (modifier.isExtra) {
+                  payload.is_extra = modifier.isExtra;
+                }
+
+                result.push(payload);
               }
+
               return result;
             }, []));
           }, []),
           note: entry.name || ''
         };
       }),
-      ticket_token: self.model.orderTicket.token,
-      seat_token: self._ChatModel.giftSeat,
+      ticket_token: this.model.orderTicket.token,
+      seat_token: this._ChatModel.giftSeat,
       options: options
     };
 
     return new Promise((resolve, reject) => {
-      self._DtsApi.waiter.placeOrder(request).then(response => {
+      this._DtsApi.waiter.placeOrder(request).then(response => {
         if (response.item_tokens) {
           for (var i = 0; i < response.item_tokens.length; i++) {
-            self.model.orderCart[i].request = response.item_tokens[i];
+            this.model.orderCart[i].request = response.item_tokens[i];
           }
         }
 
-        self.model.orderTicket = { token: response.ticket_token };
+        this.model.orderTicket = { token: response.ticket_token };
 
-        self.model.$moveCartToCheck();
+        this.model.$moveCartToCheck();
 
-        self._ChatModel.giftSeat = null;
+        this._ChatModel.giftSeat = null;
 
-        let watcher = self._createWatcher(self.model.REQUEST_KIND_ORDER, response);
+        let watcher = this._createWatcher(this.model.REQUEST_KIND_ORDER, response);
         resolve(watcher);
       }, reject);
     });
   }
 
   requestCloseout() {
-    var self = this;
     var request = {
       kind: this.model.REQUEST_KIND_CLOSEOUT,
       ticket_token: this.model.orderTicket.token,
     };
 
     return this._DtsApi.waiter.placeRequest(request).then(response => {
-      self.model.orderTicket = { token: response.ticket_token };
-      return self._createWatcher(self.model.REQUEST_KIND_CLOSEOUT, response);
+      this.model.orderTicket = { token: response.ticket_token };
+      return this._createWatcher(this.model.REQUEST_KIND_CLOSEOUT, response);
     });
   }
 
   requestAssistance() {
-    var self = this;
     var request = {
       kind: this.model.REQUEST_KIND_ASSISTANCE,
       ticket_token: this.model.orderTicket.token,
     };
 
     return this._DtsApi.waiter.placeRequest(request).then(response => {
-      self._saveTicket(response);
-      return self._createWatcher(self.model.REQUEST_KIND_ASSISTANCE, response);
+      this._saveTicket(response);
+      return this._createWatcher(this.model.REQUEST_KIND_ASSISTANCE, response);
     });
   }
 
