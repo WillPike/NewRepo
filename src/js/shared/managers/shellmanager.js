@@ -132,7 +132,7 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
   }
 
   getAssetUrl(file) {
-    var path = this._getPath(this._Hosts.static);
+    var path = this._DataModel.getPath(this._Hosts.static);
 
     return `${path}assets/${this._SNAPLocation.theme.layout}/${file}`;
   }
@@ -141,80 +141,12 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
     return this.getAssetUrl(`partials/${name}.html`);
   }
 
-  getMediaUrl(media, width, height, extension) {
-    if (!media) {
-      return null;
-    }
-
-    var path = this._getPath(this._Hosts.media);
-
-    if (typeof media === 'string' || media instanceof String) {
-      if (media.indexOf('/') === -1 && media.indexOf('.') === -1) {
-        extension = extension || 'jpg';
-        return `${path}media/${media}_${width}_${height}.${extension}`;
-      }
-
-      return media;
-    }
-
-    if (!media.token) {
-      return media;
-    }
-
-    var type = this.getMediaType(media);
-    var url = `${path}media/${media.token}`;
-
-    if (!type) {
-      return null;
-    }
-    else if (type === 'video') {
-      url += '.webm';
-    }
-    else if (type === 'flash') {
-      url += '.swf';
-    }
-    else if (type === 'image') {
-      if (width && height) {
-        url += '_' + width + '_' + height;
-      }
-
-      if (extension) {
-        url += '.' + extension;
-      }
-      else {
-        if (!media || !media.mime_type) {
-          return undefined;
-        }
-        switch (media.mime_type) {
-          case 'image/png':
-            url += '.png';
-            break;
-          default:
-            url += '.jpg';
-            break;
-        }
-      }
-    }
-
-    return url;
+  getMediaUrl(...args) {
+    return this._DataModel.getMediaUrl(...args);
   }
 
-  getMediaType(media) {
-    if (!media || !media.mime_type) {
-      return undefined;
-    }
-
-    if (media.mime_type.substring(0, 5) === 'image'){
-      return 'image';
-    }
-    else if (media.mime_type.substring(0, 5) === 'video') {
-      return 'video';
-    }
-    else if (media.mime_type === 'application/x-shockwave-flash') {
-      return 'flash';
-    }
-
-    return undefined;
+  getMediaType(...args) {
+    return this._DataModel.getMediaType(...args);
   }
 
   get tileStyle() {
@@ -237,36 +169,5 @@ window.app.ShellManager = class ShellManager extends app.AbstractManager {
   get predicateOdd() {
     var index = 0;
     return () => index++ % 2 === 0;
-  }
-
-  _getPath(res) {
-    var path = '';
-
-    if (res.protocol) {
-      path += `${res.profocol}://`;
-    }
-    else if (res.secure) {
-      path += `https://`;
-    }
-    else if (res.secure === false) {
-      path += `http://`;
-    }
-
-    if (res.host) {
-      if (!res.protocol && path === '') {
-        path += '//';
-      }
-      path += res.host;
-    }
-
-    if (res.path) {
-      path += res.path;
-    }
-
-    if (path.length > 0 && !path.endsWith('/')) {
-      path += '/';
-    }
-
-    return path;
   }
 };

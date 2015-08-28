@@ -64,7 +64,7 @@ window.app.DataModel = class DataModel extends app.AbstractModel {
       }
 
       if (m.width && m.height) {
-        var src = this._getMediaUrl(m, m.width, m.height, m.extension);
+        var src = this.getMediaUrl(m, m.width, m.height, m.extension);
 
         if (!src) {
           reject('Invalid media URL');
@@ -125,6 +125,113 @@ window.app.DataModel = class DataModel extends app.AbstractModel {
         resolve(data);
       });
     });
+  }
+
+  getMediaUrl(media, width, height, extension) {
+    if (!media) {
+      return null;
+    }
+
+    var path = this.getPath(this._SNAPHosts.media);
+
+    if (typeof media === 'string' || media instanceof String) {
+      if (media.indexOf('/') === -1 && media.indexOf('.') === -1) {
+        extension = extension || 'jpg';
+        return `${path}media/${media}_${width}_${height}.${extension}`;
+      }
+
+      return media;
+    }
+
+    if (!media.token) {
+      return media;
+    }
+
+    var type = this.getMediaType(media);
+    var url = `${path}media/${media.token}`;
+
+    if (!type) {
+      return null;
+    }
+    else if (type === 'video') {
+      url += '.webm';
+    }
+    else if (type === 'flash') {
+      url += '.swf';
+    }
+    else if (type === 'image') {
+      if (width && height) {
+        url += '_' + width + '_' + height;
+      }
+
+      if (extension) {
+        url += '.' + extension;
+      }
+      else {
+        if (!media || !media.mime_type) {
+          return undefined;
+        }
+        switch (media.mime_type) {
+          case 'image/png':
+            url += '.png';
+            break;
+          default:
+            url += '.jpg';
+            break;
+        }
+      }
+    }
+
+    return url;
+  }
+
+  getMediaType(media) {
+    if (!media || !media.mime_type) {
+      return undefined;
+    }
+
+    if (media.mime_type.substring(0, 5) === 'image'){
+      return 'image';
+    }
+    else if (media.mime_type.substring(0, 5) === 'video') {
+      return 'video';
+    }
+    else if (media.mime_type === 'application/x-shockwave-flash') {
+      return 'flash';
+    }
+
+    return undefined;
+  }
+
+  getPath(res) {
+    var path = '';
+
+    if (res.protocol) {
+      path += `${res.profocol}://`;
+    }
+    else if (res.secure) {
+      path += `https://`;
+    }
+    else if (res.secure === false) {
+      path += `http://`;
+    }
+
+    if (res.host) {
+      if (!res.protocol && path === '') {
+        path += '//';
+      }
+      path += res.host;
+    }
+
+    if (res.path) {
+      path += res.path;
+    }
+
+    if (path.length > 0 && !path.endsWith('/')) {
+      path += '/';
+    }
+
+    return path;
   }
 
   _getSnapData(name, method, id, fetch) {
@@ -192,9 +299,5 @@ window.app.DataModel = class DataModel extends app.AbstractModel {
     }
 
     return this._storageProvider(`snap_cache_${group}`);
-  }
-
-  _getMediaUrl() {
-
   }
 };

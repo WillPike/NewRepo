@@ -154,11 +154,7 @@ angular.module('SNAP.services', ['ngResource', 'SNAP.configs'])
     return new app.SessionManager(SNAPEnvironment, AnalyticsModel, CustomerModel, LocationModel, OrderModel, SurveyModel, StorageProvider, Logger);
   }])
   .factory('ShellManager', ['DataModel', 'LocationModel', 'ShellModel', 'SNAPLocation', 'SNAPEnvironment', 'SNAPHosts', 'Logger', (DataModel, LocationModel, ShellModel, SNAPLocation, SNAPEnvironment, SNAPHosts, Logger) => {
-    let manager = new app.ShellManager(DataModel, LocationModel, ShellModel, SNAPLocation, SNAPEnvironment, SNAPHosts, Logger);
-
-    DataModel._getMediaUrl = (media, width, height, extension) => manager.getMediaUrl(media, width, height, extension); //ToDo: refactor
-
-    return manager;
+    return new app.ShellManager(DataModel, LocationModel, ShellModel, SNAPLocation, SNAPEnvironment, SNAPHosts, Logger);
   }])
   .factory('SocialManager', ['SNAPEnvironment', 'DtsApi', 'WebBrowser', 'Logger', (SNAPEnvironment, DtsApi, WebBrowser, Logger) => {
     return new app.SocialManager(SNAPEnvironment, DtsApi, WebBrowser, Logger);
