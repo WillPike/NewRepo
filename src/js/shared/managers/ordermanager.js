@@ -89,7 +89,7 @@ window.app.OrderManager = class OrderManager extends app.AbstractManager {
           modifiers: [],
           modifiers_list: entry.modifiers.reduce((result, category) => {
             return result.concat(category.modifiers.reduce((result, modifier) => {
-              if (modifier.isSelected || modifier.isDefault) {
+              if (modifier.isSelected || modifier.data.is_default) {
                 let payload = {
                   token: modifier.data.token,
                   is_selected: modifier.isSelected
