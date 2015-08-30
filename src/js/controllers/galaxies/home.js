@@ -29,20 +29,30 @@ angular.module('SNAP.controllers')
       return;
     }
 
-    var tiles = home.menus
-    .map(menu => {
-      let destination = {
-        type: 'menu',
-        token: menu.token,
-        title: menu.title
-      };
+    var tiles = home.menus.reduce((res, menu) => {
+      if (menu.promos && menu.promos.length > 0) {
+        menu.promos.forEach(promo => {
+          res.push({
+            title: promo.title,
+            image: promo.image,
+            destination: promo.destination
+          });
+        });
+      }
+      else {
+        res.push({
+          title: menu.title,
+          image: menu.image,
+          destination: {
+            type: 'menu',
+            token: menu.token,
+            title: menu.title
+          }
+        });
+      }
 
-      return {
-        title: menu.title,
-        image: menu.image,
-        destination: destination
-      };
-    });
+      return res;
+    }, []);
 
     var element = document.getElementById(elementId);
 

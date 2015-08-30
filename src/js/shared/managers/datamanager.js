@@ -145,6 +145,10 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
                     width = 160;
                     height = 160;
                   }
+                  else if (layout === 'galaxies') {
+                    width = 470;
+                    height = 410;
+                  }
                   break;
               }
 
@@ -328,8 +332,15 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
   }
 
   _filterHome(data) {
-    data.menus = data.menus
-      .filter(menu => this._SNAPEnvironment.platform === 'desktop' || menu.type !== 3);
+    if (data.menus) {
+      data.menus = data.menus
+        .filter(menu => this._SNAPEnvironment.platform === 'desktop' || menu.type !== 3);
+    }
+
+    if (data.promos) {
+      data.promos = data.promos
+        .filter(promo => this._SNAPEnvironment.platform === 'desktop' || promo.type !== 3);
+    }
 
     return data;
   }
