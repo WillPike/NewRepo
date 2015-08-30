@@ -332,15 +332,11 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
   }
 
   _filterHome(data) {
-    if (data.menus) {
-      data.menus = data.menus
-        .filter(menu => this._SNAPEnvironment.platform === 'desktop' || menu.type !== 3);
-    }
+    data.menus = (data.menus || [])
+      .filter(menu => this._SNAPEnvironment.platform === 'desktop' || menu.type !== 3);
 
-    if (data.promos) {
-      data.promos = data.promos
-        .filter(promo => this._SNAPEnvironment.platform === 'desktop' || promo.type !== 3);
-    }
+    data.promos = (data.promos || [])
+      .filter(promo => this._SNAPEnvironment.platform === 'desktop' || promo.type !== 3);
 
     return data;
   }
@@ -354,7 +350,7 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
   }
 
   _filterCategory(data) {
-    data.items = data.items
+    data.items = (data.items || [])
       .filter(item => this._SNAPEnvironment.platform === 'desktop' || item.type !== 3);
 
     return data;
@@ -364,7 +360,7 @@ window.app.DataManager = class DataManager extends app.AbstractManager {
     var menuMap;
 
     if (fetch) {
-      menuMap = digest.menu_sets.reduce((res, menu) => {
+      menuMap = (digest.menu_sets || []).reduce((res, menu) => {
         res[menu.token] = {
           token: menu.token,
           categories: {},

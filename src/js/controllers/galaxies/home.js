@@ -30,7 +30,7 @@ angular.module('SNAP.controllers')
     }
 
     var tiles = home.menus.reduce((res, menu) => {
-      if (menu.promos && menu.promos.length > 0) {
+      if (menu.promos.length > 0) {
         menu.promos.forEach(promo => {
           res.push({
             title: promo.title,
