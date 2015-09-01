@@ -150,12 +150,14 @@ window.app.OrderModel = class OrderModel {
     this.orderCart.forEach(entry => entry.quantityChanged.removeAll());
     this.orderCartStash.forEach(entry => entry.quantityChanged.removeAll());
 
-    let cart = this.orderCart.concat(this.orderCartStash);
+    let items = this.orderCart
+      .concat(this.orderCartStash)
+      .concat(this.orderCheck);
 
     this.orderCart = [];
     this.orderCartStash = [];
 
-    this.orderCheck = cart;
+    this.orderCheck = items;
   }
 
   $orderCheckClear(items) {
