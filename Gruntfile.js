@@ -148,7 +148,7 @@ module.exports = function(grunt) {
     aws_s3: {
       options: {
         region: 'us-west-2',
-        bucket: 'portal.managesnap.com',
+        bucket: 'web.managesnap.com',
         accessKeyId: '<% process.env.AWS_ACCESS_KEY_ID %>',
         secretAccessKey: '<% process.env.AWS_SECRET_ACCESS_KEY %>'
       },
