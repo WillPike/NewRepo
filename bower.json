@@ -1,0 +1,12 @@
+{
+  "name": "dts-snap-web",
+  "version": "3.5.4",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "dts-snap": "git@bitbucket.org:digitaltouch/dts-snap.git#3.0.3"
+  }
+}

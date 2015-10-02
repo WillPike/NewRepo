@@ -1,0 +1,9 @@
+{
+  "ext": "css js json jade ejs",
+  "ignore": [ ".git", "bower_components/**", "node_modules/**", "src/**", "temp/**/*", "www/**/*" ],
+  "env": {
+    "HOSTNAME": "0.0.0.0",
+    "PORT": 3300,
+    "NODE_ENV": "development"
+  }
+}
