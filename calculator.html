@@ -37,10 +37,12 @@
 			text-align: center;
 			cursor: pointer;
 			font-weight: bold;
+			border-radius: 5px;
 		}
 		.equals {
 			border: 3px solid green;
 			background-color: lightgreen;
+			border-radius: 15px;
 		}
 
 		input {
@@ -58,17 +60,24 @@
 			border: 3px solid blue;
 			font-weight: bolder;
 			background-color: lightskyblue;
+			border-radius: 15px;
+
 
 		}
 		.delete {
 			background-color: darksalmon;
 			border: 3px solid red;
 			font-weight: bolder;
+			border-radius: 15px;
 		}
 		.clear {
 			background-color: darksalmon;
 			border: 3px solid red;
 			font-weight: bolder;
+			border-radius: 15px;
+		}
+		.decimal {
+			border-radius: 15px;
 		}
 	</style>
 </head>
@@ -95,7 +104,7 @@
 				<td class="button operator" onclick="multiply()">*</td>
 			</tr>
 			<tr>
-				<td class="button number">.</td>
+				<td class="button decimal">.</td>
 				<td class="button number" onclick="addNumber('0')"">0</td>
 				<td class="button equals" onclick="equals()">=</td>
 				<td class="button operator" onclick="divide()">/</td>
