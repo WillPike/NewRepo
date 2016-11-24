@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JS Code</title>
+	<script type="text/javascript">
+		// var entry = prompt("Type 'Hello', or not");
+		function greaterTen(entry){
+			if(entry.toUpperCase() == "HELLO"){
+				console.log("Same same");
+			}
+			else {
+				console.log("different");
+			}
+		}
+		// greaterTen(entry);
+		function printThis(printIt) {
+			alert(printIt);
+		}
+		// var choice = prompt("Do you want Door 1, 2, or 3?");
+		function whichDoor(choice) {
+			if(choice == "1"){
+				alert("You fell down the stairs");
+			}
+			else if(choice == "2"){
+				alert("You found the treasure");
+			}
+			else if(choice == "3"){
+				alert("You are outside now");
+			}
+			else{
+				alert("Please enter 1, 2 or 3")
+				var choice = prompt("Do you want Door 1, 2, or 3?");
+				whichDoor(choice);
+			}	
+		}
+		// whichDoor(choice);
+		friendNames = ["Will","Daniel","AJ","Kevin","Bryan","Jeff" ];
+		for(var i=0; i<friendNames.length; i++){
+			console.log(friendNames[i] + " is my friend");
+		}
+		var beers = 99;
+		while(beers>0) {
+			console.log(beers + " bottles of beer on the wall" + beers + "bottles of beer. Take one down, pass it around, " + (beers-1) + "bottles of beer on the wall");
+			beers--;
+
+		}
+		
+	</script>
+	<style type="text/css">
+		.door {
+			width: 200px;
+			height: 300px;
+			border: 1px solid black;
+			float: left;
+			margin-left: 15px;
+			border-radius: 10px;
+			text-align: center;
+			font-size: 54px;
+			cursor: pointer;
+		}
+		.red {
+			background-color: red;
+		}
+		.blue {
+			background-color: blue;
+		}
+		.green {
+			background-color: green;
+		}
+	</style>
+</head>
+<body>
+	<div class="door red" onclick="whichDoor('1')">1</div>
+	<div class="door blue" onclick="whichDoor('2')">2</div>
+	<div class="door green" onclick="whichDoor('3')">3</div>
+	<div class="door" onclick="alert('That is not a door')">Window</div>
+</body>
+</html>
