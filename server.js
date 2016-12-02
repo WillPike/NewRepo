@@ -1,5 +1,6 @@
 var express = require('express'),
     app = express(),
+<<<<<<< HEAD
     bodyParser = require('body-parser'),
     errorHandler = require('errorhandler'),
     methodOverride = require('method-override'),
@@ -35,6 +36,14 @@ app.get('/reset.html', function(req, res) { res.render('reset', { devCredentials
 app.get('/startup.html', function(req, res) { res.render('startup', { devCredentials: devCredentials }); });
 app.get('/snap_classic.html', function(req, res) { res.render('snap_classic', { devCredentials: devCredentials }); });
 app.get('/snap_galaxies.html', function(req, res) { res.render('snap_galaxies', { devCredentials: devCredentials }); });
+=======
+    hostname = process.env.HOSTNAME || 'localhost',
+    port = parseInt(process.env.PORT, 10) || 3000;
+
+app.use(express.static(__dirname + '/www'));
+
+app.get('/', function(req, res) { res.redirect('/index.html'); });
+>>>>>>> 8caf959da8f7546d302bd5cbf5caaa778bf7334b
 
 console.log("Server listening at http://%s:%s", hostname, port);
 app.listen(port, hostname);

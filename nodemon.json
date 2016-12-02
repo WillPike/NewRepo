@@ -1,7 +1,16 @@
 {
   "ext": "css js json jade ejs",
+<<<<<<< HEAD
   "execMap": {
     "js": "iojs"
   },
   "ignore": [ ".git", "node_modules/**", "temp/**/*", "*.min.js", "src/**", "assets/**/*" ]
+=======
+  "ignore": [ ".git", "bower_components/**", "node_modules/**", "src/**", "temp/**/*", "www/**/*" ],
+  "env": {
+    "HOSTNAME": "0.0.0.0",
+    "PORT": 3300,
+    "NODE_ENV": "development"
+  }
+>>>>>>> 8caf959da8f7546d302bd5cbf5caaa778bf7334b
 }

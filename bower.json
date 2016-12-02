@@ -1,5 +1,6 @@
 {
   "name": "dts-snap-web",
+<<<<<<< HEAD
   "version": "1.0.57",
   "main": "dist/js/snap.js",
   "ignore": [
@@ -84,5 +85,15 @@
       "bxslider-4/dist/jquery.bxslider.js",
       "socketcluster-client/socketcluster.js"
     ]
+=======
+  "version": "3.5.6",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "dts-snap": "git@bitbucket.org:digitaltouch/dts-snap.git#3.0.4"
+>>>>>>> 8caf959da8f7546d302bd5cbf5caaa778bf7334b
   }
 }

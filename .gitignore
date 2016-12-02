@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .DS_Store
 .idea
 
@@ -7,3 +8,12 @@ libs
 temp
 
 npm-debug.log
+=======
+bower_components
+node_modules
+www
+temp
+
+*.DS_Store
+*.log
+>>>>>>> 8caf959da8f7546d302bd5cbf5caaa778bf7334b
