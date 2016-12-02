@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inventory</title>
+	<script type="text/javascript">
+		function addNumber() {
+			var numString = document.getElementById('counter24').value;
+			var num1 = prompt("# of screens to add:");
+			numString += ("+" + num1);
+			document.getElementById('counter24').value = eval(numString);
+		}
+		
+	</script>
+	<style type="text/css">
+		.inventory {
+			width: 800px;
+			margin: 0 auto;
+		}
+		.button {
+			width: 160px;
+			height: 30px;
+			border: 1px solid black;
+			border-radius: 6px;
+			background-color: orange;
+			color: white;
+			font-size: 24px;
+			font-weight: bold;
+			text-align: center;
+			clear: all;
+			float: left;
+		}
+		input {
+			width: 100px;
+			height: 40px;
+			border-radius: 8px;
+			border: 1px solid black;
+			font-size: 30px;
+			font-weight: bold;
+			clear: all;
+			float: left;
+
+		}
+		label {
+			float: left;
+		}
+	</style>
+</head>
+<body>
+	<div class="inventory">
+
+		<label>Number Available</label>
+		<table>
+			<tr>
+				<p># Available</p>
+				<input id="counter24" type="text" name="field24">
+				<td class="button add" onclick="addNumber()">Add Screens</td>
+
+			</tr>
+		</table>
+
+	</div>
+
+</body>
+</html>

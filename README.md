@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # SNAP - client web application
 
 Shared SNAP client web application files. See `dts-snap-mobile` and `dts-snap-desktop` for platform-specific wrapper applications.
@@ -40,3 +41,7 @@ Run `grunt dev` to launch the development environment.
 
 When running the application locally for the first time, you need to obtain an access key. Follow the registration process and once you'll get redirected to and error page, copy the URL part starting from `#` and open `http://localhost:3300/startup.html#copied_part_here`.
 >>>>>>> 8caf959da8f7546d302bd5cbf5caaa778bf7334b
+=======
+# NewRepo
+Test repository
+>>>>>>> 68f9f8a20d263ea9249b9895b0f8d1cecfd37127
