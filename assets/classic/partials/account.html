@@ -1,0 +1,89 @@
+<div class="content-box">
+  <div class="layout-left">
+    <form class="form">
+      <h1>Customer Details</h1>
+      <table class="form-table">
+        <tr>
+          <td><label>Name:</label></td>
+          <td><span>{{profile.first_name}} {{profile.last_name}}</span></td>
+        </tr>
+        <tr ng-show="canChangeEmail">
+          <td><label>E-mail:</label></td>
+          <td><span>{{profile.email}}</span></td>
+        </tr>
+        <tr>
+          <td><label>Phone:</label></td>
+          <td><span>{{profile.phone}}</span></td>
+        </tr>
+      </table>
+      <p class="form-bottom"><button type="button" ng-click="editProfile()">Edit Customer Details</button></p>
+    </form>
+  </div>
+</div>
+
+<form id="profileedit-form" class="modal-form form" ng-class="{visible: showProfileEdit}" ng-submit="profileEditSubmit()">
+  <div class="modal-form-container">
+    <h1>Edit Customer Details</h1>
+    <table class="form-table">
+      <tr>
+        <td><label for="first_name">Name:</label></td>
+        <td>
+          <input id="profileedit-firstname" type="text" name="first_name" placeholder="First name" ng-model="profileedit.first_name" autocomplete="off" required/>
+          <input id="profileedit-lastname" type="text" name="last_name" placeholder="Last name" ng-model="profileedit.last_name" autocomplete="off" required/>
+        </td>
+      </tr>
+      <tr ng-show="canChangeEmail">
+        <td><label for="profileedit-email">E-mail:</label></td>
+        <td><input id="profileedit-email" type="email" name="email" ng-model="profileedit.email" autocomplete="off" required/></td>
+      </tr>
+      <tr>
+        <td><label for="phone">Phone:</label></td>
+        <td><input id="profileedit-phone" type="tel" name="phone" ng-model="profileedit.phone" autocomplete="off" /></td>
+      </tr>
+    </table>
+    <p ng-show="canChangePassword"><span class="action-link" ng-click="editPassword()">Change password</span></p>
+    <p class="form-bottom">
+      <button type="submit">Save</button>
+      <button type="button" ng-click="profileEditCancel()">Cancel</button>
+    </p>
+  </div>
+</form>
+
+<form id="passwordedit-form" class="modal-form form" ng-class="{visible: showPasswordEdit}" ng-submit="passwordEditSubmit()">
+  <div class="modal-form-container">
+    <h1>Change Password</h1>
+    <table class="form-table">
+      <tr>
+        <td><label for="old-password">Old Password:</label></td>
+        <td><input id="passwordedit-old-password" type="password" name="old_password" ng-model="passwordedit.old_password" autocomplete="off" required/></td>
+      </tr>
+      <tr>
+        <td><label for="new-password">New Password:</label></td>
+        <td><input id="passwordedit-new-password" type="password" name="new_password" ng-model="passwordedit.new_password" minlength="6" autocomplete="off" required/></td>
+      </tr>
+      <tr>
+        <td><label for="new-password2">Confirm New Pass:</label></td>
+        <td><input id="passwordedit-new-password2" type="password" name="new_password2" autocomplete="off" required/></td>
+      </tr>
+    </table>
+    <p class="form-bottom">
+      <button type="submit">Save</button>
+      <button type="button" ng-click="passwordEditCancel()">Cancel</button>
+    </p>
+  </div>
+  <script type="text/javascript">
+    var password1 = document.getElementById('passwordedit-new-password');
+    var password2 = document.getElementById('passwordedit-new-password2');
+
+    var checkPasswordValidity = function() {
+        if (password1.value !== password2.value) {
+            password1.setCustomValidity('Passwords must match.');
+        } else {
+            password1.setCustomValidity('');
+        }
+    };
+
+    password1.addEventListener('change', checkPasswordValidity, false);
+    password2.addEventListener('change', checkPasswordValidity, false);
+  </script>
+</form>

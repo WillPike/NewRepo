@@ -1,0 +1,25 @@
+<div class="home-background">
+  <table id="home-menu-management" class="home-menu">
+    <tr>
+      <td></td>
+      <td class="home-menu-item">
+        <a ng-click="requestAssistance()" ng-class="{disabled: !requestAssistanceAvailable}"><img ng-src="{{elements.button_waiter | thumbnail:160:160}}" /></a>
+      </td>
+      <td class="home-menu-item">
+        <a ng-click="requestCloseout()" ng-class="{disabled: !requestCloseoutAvailable}"><img ng-src="{{elements.button_check | thumbnail:160:160}}" /></a>
+      </td>
+      <td class="home-menu-item" ng-if="surveyAvailable">
+        <a ng-click="openSurvey()" ng-class="{disabled: !surveyAvailable}"><img ng-src="{{elements.button_survey | thumbnail:160:160}}" /></a>
+      </td>
+      <td class="home-menu-item" ng-if="chatAvailable">
+        <a ng-click="openChat()" ng-class="{disabled: !chatAvailable}"><img ng-src="{{elements.button_chat | thumbnail:160:160}}" /></a>
+      </td>
+      <td></td>
+    </tr>
+  </table>
+
+  <div id="home-menu-main" class="home-menu"></div>
+
+  <h2 id="seat-name" ng-click="seatClicked()">{{seat_name}}</h2>
+  <h2 id="customer-name" ng-click="customerClicked()">{{customer_name}}</h2>
+</div>

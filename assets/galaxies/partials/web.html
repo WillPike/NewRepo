@@ -1,0 +1,31 @@
+<div class="page" ng-show="type === 'iframe'">
+  <form class="page-web-controls">
+    <div class="page-web-url">{{browserUrl}}</div>
+    <button class="button" ng-click="close()">Close</button>
+  </form>
+
+  <iframe
+    id="page-web-iframe"
+    width="100%"
+    height="100%"
+    class="web-browser" />
+</div>
+
+<div class="page" ng-show="type === 'webview'">
+  <form class="page-web-controls">
+    <div class="page-web-url">{{browserUrl}}</div>
+    <button class="button" ng-click="close()">Close</button>
+  </form>
+
+  <webview
+    id="page-web-webview"
+    width="100%"
+    height="100%"
+    class="web-browser"
+    partition="persist:"
+    plugins />
+</div>
+
+<div class="page" ng-show="type === 'external'">
+  <p>Loading {{browserUrl}}...</p>
+</div>

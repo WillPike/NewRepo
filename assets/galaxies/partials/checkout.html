@@ -1,0 +1,100 @@
+<div id="screen-checkout" class="screen" ng-show="state === STATE_CART">
+  <div class="screen-title">
+    <h1>{{checkName}}</h1>
+    <ol>
+      <li ng-class="{ disabled: options.step !== STEP_CHECK_SPLIT }">Split</li>
+      <li ng-class="{ disabled: options.step !== STEP_TIPPING }">Tip</li>
+      <li ng-class="{ disabled: options.step !== STEP_PAYMENT }">Pay</li>
+      <li ng-class="{ disabled: options.step !== STEP_SIGNATURE }">E-Sign</li>
+      <li ng-class="{ disabled: options.step !== STEP_RECEIPT }">Receipt</li>
+    </ol>
+  </div>
+
+  <div class="screen-body border">
+    <div class="screen-body-part checkout-body-total" ng-show="options.step !== STEP_CHECK_SPLIT || options.check_split !== CHECK_SPLIT_BY_ITEMS">
+      <form class="form">
+        <table class="checkout-subtotal">
+          <tr>
+            <td>Subtotal</td>
+            <td>{{current.subtotal | formatprice}}</td>
+          </tr>
+          <tr>
+            <td>Tax</td>
+            <td>{{current.tax | formatprice}}</td>
+          </tr>
+          <tr ng-if="current.tip > 0">
+            <td>Tip</td>
+            <td>{{current.tip | formatprice}}</td>
+          </tr>
+        </table>
+
+        <table class="checkout-total">
+          <tr>
+            <td>Total</td>
+            <td>{{(current.tip + current.subtotal + current.tax) | formatprice}} <i class="currency" ng-show="currency"> {{currency}}</i></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+
+  <!-- Step: check splitting -->
+
+  <div
+    class="screen-body"
+    ng-show="options.step === STEP_CHECK_SPLIT"
+    ng-controller="GalaxiesCheckoutSplitCtrl"
+    ng-include src="getPartialUrl('checkout-split')"/>
+
+  <!-- Step: tipping -->
+
+  <div
+    class="screen-body"
+    ng-show="options.step === STEP_TIPPING"
+    ng-controller="CheckoutTipCtrl"
+    ng-include src="getPartialUrl('checkout-tip')"/>
+
+  <!-- Step: payment -->
+
+  <div
+    class="screen-body"
+    ng-show="options.step === STEP_PAYMENT"
+    ng-controller="CheckoutPaymentCtrl"
+    ng-include src="getPartialUrl('checkout-payment')"/>
+
+  <!-- Step: signature -->
+
+  <div
+    class="screen-body"
+    ng-show="options.step === STEP_SIGNATURE"
+    ng-controller="CheckoutSignatureCtrl"
+    ng-include src="getPartialUrl('checkout-signature')"/>
+
+  <!-- Step: receipt -->
+
+  <div
+    class="screen-body"
+    ng-show="options.step === STEP_RECEIPT"
+    ng-controller="CheckoutReceiptCtrl"
+    ng-include src="getPartialUrl('checkout-receipt')"/>
+
+</div>
+
+<form class="form vertical screen-floater screen-checkout-checks" ng-show="options.step === STEP_CHECK_SPLIT && options.check_split === CHECK_SPLIT_BY_ITEMS">
+  <table class="table zebra">
+    <thead>
+      <tr>
+        <th class="name">Name</th>
+        <th class="amount">Items</th>
+        <th class="price">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="check in data">
+        <td class="name"><h3>{{check.name}}</h3></td>
+        <td class="amount"><h3>{{check.items.length}}</h3></td>
+        <td class="price"><h3>{{calculateTotalPrice(check.items) | formatprice}}</h3></td>
+      </tr>
+    </tbody>
+  </table>
+</form>

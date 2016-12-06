@@ -1,0 +1,63 @@
+<div class="content-box">
+  <form class="survey-main" ng-submit="nextStep()">
+    <table class="survey-table">
+      <tr>
+        <td class="survey-side">
+          <button type="button" class="blue" ng-click="previousPage()" ng-show="pageIndex > 0 && step === 0">Back</button>
+        </td>
+
+        <td class="survey-content">
+          <div ng-show="step === 0" id="survey-question-rating" class="survey-question">
+            <h1>Rate Your Experience</h1>
+            <table class="table survey-question-1" ng-if="step === 0">
+              <tbody>
+                <tr ng-repeat="question in page">
+                  <td class="survey-question-1-a">
+                    <label>{{question.text}}</label>
+                  </td>
+                  <td class="survey-question-1-b">
+                    <input ng-attr-id="{{ 'range-' + question.token }}" type="range" min="0" max="5" step="1" ng-model="question.feedback" />
+                    <div ng-attr-id="{{ 'rate-' + question.token }}" data-rateit-starwidth="75" data-rateit-starheight="75"></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div ng-show="step === 1" id="survey-question-yesno" class="survey-question">
+            <h2>Did You Have Any Problems With Your Visit?</h2>
+            <p>
+              <button type="button" class="blue" ng-click="submitProblem(true)">Yes</button>
+              <button type="button" class="blue" ng-click="submitProblem(false)">No</button>
+            </p>
+          </div>
+
+          <div ng-show="step === 2" id="survey-question-comment" class="survey-question">
+            <h2>Are there any additional comments you would like to share with us?</h2>
+            <p><textarea ng-model="comment" rows="5"></textarea></p>
+            <p><button type="submit">Submit</button></p>
+          </div>
+
+          <div ng-show="step === 3" id="survey-question-email" class="survey-question">
+            <h1>Thank you for your Visit!</h1>
+            <h2>Enter Your email Below to receive a free appetizer on your next visit</h2>
+            <p><span><input type="email" ng-model="email" /> *Optional</span></p>
+            <p><button type="submit">Submit</button></p>
+          </div>
+        </td>
+
+        <td class="survey-side">
+          <button type="button" ng-click="nextPage()" ng-show="pageIndex < pageCount && step === 0">Next</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+
+  <div class="survey-progress" ng-show="step < 3">
+    Survey Progress: {{ pageIndex + step + 1 }} of {{ pageCount + 2 }}
+  </div>
+
+  <div class="survey-exit">
+    <button class="red" ng-click="exit()">Exit</button>
+  </div>
+</div>

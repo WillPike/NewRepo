@@ -1,0 +1,63 @@
+<div id="page-navigation">
+  <table id="page-navigation-table">
+    <tr>
+      <td id="page-navigation-logo">
+        <a class="clickable" ng-click="navigateHome()"><img ng-src="{{elements.location_logo | thumbnail:100:100}}" /></a>
+      </td>
+      <td id="page-navigation-menu">
+        <table>
+          <tr>
+            <td ng-repeat="menu in menus">
+              <a class="clickable" ng-class="{ active: menu.selected }" ng-click="navigate(menu.destination)">{{menu.title}}</a>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+      <td id="page-navigation-controls">
+        <a id="page-navigation-options" class="clickable" ng-class="{ active: settingsOpen }" ng-click="toggleSettings()"><img ng-src="{{elements.button_settings | thumbnail:100:100}}" /></a>
+        <a id="page-navigation-rotate" class="clickable" ng-click="rotateScreen()" ng-show="showRotate"><img ng-src="{{elements.button_rotate | thumbnail:100:100}}" /></a>
+      </td>
+      <td id="page-navigation-profile" ng-click="toggleMenu()">
+        <table id="page-navigation-profile-name">
+          <tr>
+            <td>&nbsp;</td>
+            <td id="page-navigation-count" ng-show="cartCount > 0"><span>{{cartCount}}</span></td>
+            <td id="page-navigation-customer"><span>{{customerName}}</span></td>
+          </tr>
+        </table>
+        <button id="page-navigation-dropdown" class="clickable" ng-class="{ active: menuOpen }">&nbsp;</button>
+      </td>
+    </tr>
+  </table>
+
+  <form id="page-navigation-actions" class="form page-navigation-dropmenu" ng-show="menuOpen" ng-click="toggleMenu()">
+    <ul class="vertical">
+      <li ng-show="cartCount > 0"><button class="button" ng-click="submitOrder()">Submit Order ({{cartCount}})</button></li>
+      <li ng-show="cartCount > 0"><button class="button" ng-click="viewOrder()">View Order</button></li>
+      <li ng-show="checkoutEnabled && (totalOrder.length > 0)"><button class="button green" ng-click="payBill()">View / Pay Bill</button></li>
+      <li ng-show="surveyAvailable"><button class="button" ng-click="openSurvey()">Rate us</button></li>
+      <li><hr/></li>
+      <li><button class="button button-assistance" ng-click="requestAssistance()" ng-class="{disabled: !requestAssistanceAvailable}">Request Server</button></li>
+    </ul>
+    <div id="page-navigation-profile-ad" ng-show="advertisements">
+      <slider source="advertisements" slideclick="advertisementClick" slideshow="advertisementImpression" timeout="20000" />
+    </div>
+  </form>
+
+  <form id="page-navigation-settings" class="form vertical page-navigation-dropmenu" ng-show="settingsOpen">
+    <div ng-show="showBrightness">
+      <input id="page-navigation-brightness" class="range" type="range" min="10" max="100" step="10" ng-model="settings.displayBrightness" />
+      <label for="page-navigation-brightness">Brightness<span class="range-plus">+</span><span class="range-minus">-</span></label>
+      <hr/>
+    </div>
+    <div ng-show="showVolume">
+      <input id="page-navigation-volume" class="range" type="range" min="0" max="100" step="10" ng-model="settings.soundVolume" />
+      <label for="page-navigation-volume">Volume<span class="range-plus">+</span><span class="range-minus">-</span></label>
+      <hr/>
+    </div>
+    <h1 id="page-navigation-seat" ng-click="resetTable()">{{seatName}}</h1>
+    <label>Table Number</label>
+    <div class="application-version">v{{applicationVersion}}</div>
+  </form>
+</div>

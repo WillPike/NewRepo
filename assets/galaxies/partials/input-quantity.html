@@ -1,0 +1,7 @@
+<table class="quantity">
+  <tr>
+    <td><button type="button" class="quantity-decrease" ng-click="decrease()">-</button></td>
+    <td><input type="number" class="quantity-number" ng-model="quantity" editable="false" min="{{min}}" max="{{max}}" step="{{step}}" tabIndex="-1" onfocus="this.blur();" readonly /><span class="quantity-appendix">{{appendix}}</span></td>
+    <td><button type="button" class="quantity-increase" ng-click="increase()">+</button></td>
+  </tr>
+</table>

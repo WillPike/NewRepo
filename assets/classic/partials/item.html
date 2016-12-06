@@ -1,0 +1,43 @@
+<div class="item-content" ng-show="type === 1">
+  <div class="content-box">
+    <div class="item-main">
+      <div id="item-photo" class="item-photo"></div>
+    </div>
+
+    <div class="item-editor">
+    <div class="item-main-header">
+        <h1 class="item-title">{{entry.item.title}}</h1>
+        <h1 class="item-price">{{formatPrice(entry.item.order.price)}}</h1>
+      </div>
+      <div class="item-text">
+        <p>{{entry.item.description}}</p>
+      </div>
+
+      <table class="item-editor-main">
+        <tr>
+      <td><h1 class="h1">How many?</h1></td>
+          <td><button class="button quantity-button quantity-button-decrease" ng-click="entry.quantity = entry.quantity > 1 ? entry.quantity - 1 : 1">-</button></td>
+          <td><input class="quantity-indicator" type="number" name="count" ng-model="entry.quantity" editable="false" min="1" max="9" tabIndex="-1" onfocus="this.blur();" readonly /></td>
+          <td><button class="button quantity-button quantity-button-increase" ng-click="entry.quantity = entry.quantity < 9 ? entry.quantity + 1 : 9">+</button></td>
+        </tr>
+      </table>
+
+      <div ng-if="!giftSeat" class="item-editor-submit">
+        <!--<input class="item-editor-itemname" type="text" placeholder="Name your item..." ng-model="entry.name" />-->
+        <button ng-class="{ 'button-wide': entry.hasModifiers }" ng-click="addToCart()">{{ entry.hasModifiers ? 'Done! Lets start customizing.' : 'Add to Cart'}}</button>
+      </div>
+
+      <div ng-if="giftSeat" class="item-editor-submit">
+        <button class="button-wide" ng-click="addToCart()">{{ entry.hasModifiers ? 'Customize gift item to ' + giftSeat.name : 'Gift item to ' + giftSeat.name }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="item-content" ng-show="type === 2">
+  <span class="loading">Loading {{websiteUrl}}...</span>
+  <iframe ng-show="websiteBrowserUrl" ng-src="{{websiteBrowserUrl | trustUrl}}" class="web-browser" height="100%" width="100%"></iframe>
+</div>
+<div class="item-content" ng-show="type === 3">
+  <span class="loading">Loading {{flashUrl}}...</span>
+  <iframe ng-show="flashBrowserUrl" ng-src="{{flashBrowserUrl | trustUrl}}" class="web-browser" height="100%" width="100%"></iframe>
+</div>

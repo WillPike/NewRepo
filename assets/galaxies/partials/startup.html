@@ -1,0 +1,14 @@
+<div id="page-startup" class="page">
+  <div class="column">
+    <form class="form huge center">
+      <div class="busy" />
+      <h3>
+        <span ng-show="step === 0">Please stand by...</span>
+        <span ng-show="step === 1">Starting the application...</span>
+        <span ng-show="step === 2">Updating content...</span>
+      </h3>
+    </form>
+  </div>
+
+  <div class="application-version">v{{version}}</div>
+</div>

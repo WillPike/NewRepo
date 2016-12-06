@@ -1,0 +1,79 @@
+.screen {
+  background:#fafafa;
+  position:relative;
+  overflow:auto;
+  position:absolute;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+
+  .screen-title {
+    position:absolute;
+    left: @screen-padding-left;
+    right: @screen-padding-right;
+    top: @screen-padding-top;
+
+    h1 {
+      font-size: 3.6em;
+      font-weight: @font-weight-light;
+      padding:0;
+      margin:0 2em 0 0;
+      float:left;
+    }
+
+    ol {
+      list-style-type: none;
+      display: table;
+      overflow: hidden;
+      margin:0;
+      padding:0;
+      float:left;
+
+      li {
+        padding:0.5em 3em 0.5em 2.2em;
+        font-size:2em;
+        display: table-cell;
+        vertical-align:center;
+        background:url('@{images}/icon-progress-list.png') no-repeat left center;
+      }
+
+      li.disabled {
+        opacity:0.3;
+      }
+    }
+  }
+
+  .screen-body {
+    position:absolute;
+    left: @screen-padding-left;
+    right: @screen-padding-right;
+    top: @screen-body-y;
+  }
+
+  .screen-body.border {
+      border-top:1px solid @form-border-color;
+  }
+
+  .screen-body-part {
+    position:absolute;
+    top:0;
+  }
+}
+
+.screen-floater {
+  position:absolute;
+  left: @screen-padding-left;
+  right: @screen-padding-right;
+  top: @screen-body-y;
+}
+
+.screen-modal {
+  position:absolute;
+  overflow:hidden;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom:0;
+  background-color: rgba(0,0,0,0.5);
+}

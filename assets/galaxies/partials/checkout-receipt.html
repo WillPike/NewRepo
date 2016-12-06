@@ -1,0 +1,17 @@
+<div class="screen-body-part checkout-body-main">
+  <form class="form checkout-right-block" ng-show="!emailEditorOpen">
+    <h2><span>Would you like a receipt?</span></h2>
+    <ul class="vertical">
+      <li><button class="button" ng-click="receiptEditEmail()">E-mail</button></li>
+      <li><button class="button" ng-click="receiptPrint()">Print</button></li>
+      <li><button class="button" ng-click="receiptNone()">None</button></li>
+    </ul>
+  </form>
+
+  <form class="form checkout-right-block" ng-show="emailEditorOpen" ng-submit="receiptEmail()">
+    <h2><span>Enter your e-mail address</span></h2>
+    <ul class="vertical">
+      <li><email placeholder="E-mail address" ng-model="current.receipt_email" /></li>
+    </ul>
+  </form>
+</div>

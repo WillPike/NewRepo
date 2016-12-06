@@ -1,0 +1,54 @@
+<div class="screen-body-part checkout-body-main">
+  <form class="form checkout-right-block" ng-show="options.check_split !== CHECK_SPLIT_BY_ITEMS && !guestEditorType">
+    <h2><span>How would you like to split bill?</span></h2>
+    <ul class="vertical">
+      <li><button class="button" type="button" ng-click="editGuestCount(CHECK_SPLIT_EVENLY)">Evenly</button></li>
+      <li><button class="button" type="button" ng-click="editGuestCount(CHECK_SPLIT_BY_ITEMS)">By items</button></li>
+      <li><button class="button" type="button" ng-click="splitCheck(CHECK_SPLIT_NONE)">Don't split</button></li>
+    </ul>
+  </form>
+
+  <form class="form huge checkout-right-block" ng-show="guestEditorType" ng-submit="splitCheck(guestEditorType)">
+    <h2><span>How many checks?</span></h2>
+    <ul class="horizontal">
+      <li><quantity min="{{options.guest_count_min}}" max="{{options.guest_count_max}}" quantity="options.guest_count" /></li>
+    </ul>
+    <ul class="horizontal">
+      <li><button class="button secondary" type="button" ng-click="cancelEditGuestCount()">Back</button></li>
+      <li><button class="button" type="submit">Next</button></li>
+    </ul>
+  </form>
+
+  <form class="checkout-right-container" ng-show="options.check_split === CHECK_SPLIT_BY_ITEMS && !guestEditorType">
+    <h2 class="title">Split accordingly</h2>
+    <h4 class="title">Select the check number for each item</h4>
+    <table class="table">
+      <tbody>
+        <tr ng-repeat="item in split_items">
+          <td class="cart-column-description">
+            <h3>{{item.name || item.item.title}}</h3>
+            <ul class="cart-modifiers" ng-show="item.hasModifiers">
+              <li ng-repeat="modifier in getModifiers(item)">{{modifier.data.title}}<i ng-show="modifier.data.price > 0"> +{{modifier.data.price | formatprice}}</i></li>
+            </ul>
+            <ul class="cart-checks">
+              <li ng-repeat="check in data">
+                <input
+                  id="{{'radio-' + $index + '-' + $parent.$index}}"
+                  type="radio"
+                  class="checkmark"
+                  ng-change="calculateChecks()"
+                  ng-model="item.check"
+                  ng-value="check" />
+                <label for="{{'radio-' + $index + '-' + $parent.$index}}">{{check.name}}</label>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ul class="horizontal">
+      <li><button class="button secondary" type="button" ng-click="cancelSplitting()">Back</button></li>
+      <li><button class="button" type="button" ng-click="doneSplitting()">Next</button></li>
+    </ul>
+  </form>
+</div>

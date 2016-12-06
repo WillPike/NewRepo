@@ -1,0 +1,14 @@
+<div class="checkout-group" ng-show="current.payment_method !== PAYMENT_METHOD_CARD">
+  <h2 class="checkout-group-title">Choose a payment method below.</h2>
+  <ul class="buttons-vertical">
+    <li><button id="checkout-button-card" class="button" ng-click="payCard()">Card</button></li>
+    <li><button id="checkout-button-cash" class="button" ng-click="payCash()">Cash</button></li>
+    <li>&nbsp;</li>
+    <li>&nbsp;</li>
+  </ul>
+</div>
+
+<div class="checkout-group" ng-show="current.payment_method === PAYMENT_METHOD_CARD">
+  <h2 class="checkout-group-title">Please Swipe your card when ready.</h2>
+  <div id="checkout-cardreader"></div>
+</div>

@@ -1,0 +1,30 @@
+<div class="screen-body-part checkout-body-main">
+  <form id="checkout-block-tip" class="form checkout-right-block" ng-show="!tipEditorOpen">
+    <h2><span>Tip amount</span></h2>
+    <table class="checkout-tip-table">
+      <tr>
+        <td><button class="button" ng-click="addTip(0.15);applyTip();"><b>15%</b> <span>{{(current.subtotal * 0.15) | formatprice}}</span></button></td>
+        <td><button class="button" ng-click="addTip(0.2);applyTip();"><b>20%</b> <span>{{(current.subtotal * 0.20) | formatprice}}</span></button></td>
+        <td><button class="button" ng-click="addTip(0.25);applyTip();"><b>25%</b> <span>{{(current.subtotal * 0.25) | formatprice}}</span></button></td>
+      </tr>
+      <tr>
+        <td colspan="3"><button class="button" ng-click="editTip()">Custom tip amount</button></td>
+      </tr>
+      <tr>
+        <td colspan="3"><button class="button" ng-click="addTip(0.0);applyTip();">No tip</button></td>
+      </tr>
+    </table>
+  </form>
+
+  <form id="checkout-block-customtip" class="form huge checkout-right-block" ng-show="tipEditorOpen" ng-submit="applyTip()">
+    <h2><span>Custom tip amount</span></h2>
+    <ul class="vertical">
+      <li><output id="checkout-tip-output" class="output" for="checkout-tip-input">{{current.tip | formatprice}}</output></li>
+      <li><quantity id="checkout-tip-input" min="0" max="50" step="5" appendix="%" quantity="data.tipAmountInt" /></li>
+    </ul>
+    <ul class="horizontal">
+      <li><button class="button secondary" type="button" ng-click="cancelEditTip()">Back</button></li>
+      <li><button class="button" type="submit">Next</button></li>
+    </ul>
+  </form>
+</div>

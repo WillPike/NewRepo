@@ -1,0 +1,54 @@
+.quantity {
+  input[type='number'] {
+    font-size:2.7em;
+    text-align:center;
+    position: relative;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    color:#000;
+    background:rgba(0,0,0,0);
+
+    /* Spin Buttons modified */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+  }
+
+  td {
+    padding:0 !important;
+    vertical-align:center;
+  }
+
+  .quantity-decrease, .quantity-increase {
+    border:0;
+    overflow:hidden;
+    shadow:none;
+    text-indent:-10em;
+    width:5em;
+    height:5em;
+  }
+
+  .quantity-decrease {
+    background:url('@{images}/button-decrease.png') no-repeat center center;
+  }
+
+  .quantity-increase {
+    background:url('@{images}/button-increase.png') no-repeat center center;
+  }
+
+  .quantity-appendix {
+    font-size:2.7em;
+    opacity:0.5;
+  }
+}
+
+.huge .quantity {
+  width:20em;
+  margin:0 auto;
+
+  input[type='number'], .quantity-appendix {
+    font-size:8em;
+  }
+}

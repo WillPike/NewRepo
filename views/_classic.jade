@@ -1,0 +1,11 @@
+extends _base
+
+block head
+  title SNAP
+  link(href=getLib('normalize-css/normalize.css'), rel='stylesheet')
+  link(href=getLib('roboto-fontface/roboto-fontface.css'), rel='stylesheet')
+  link(href=getSnap('dist/css/classic_main.min.css'), rel='stylesheet')
+  if platform === 'desktop'
+    link(href=getSnap('dist/css/classic_desktop.min.css'), rel='stylesheet')
+  else
+    link(href=getSnap('dist/css/classic_mobile.min.css'), rel='stylesheet')

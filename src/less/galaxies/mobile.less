@@ -1,0 +1,49 @@
+html {
+  font-size:10px;
+}
+
+@media only screen and (min-resolution: 120dpi) {
+  .item-editor-main .quantity-indicator {
+    font-size: 64px;
+    width: 1.3em;
+  }
+
+  .item-editor-main .h1 {
+    font-size: 42px;
+    width: 300px;
+    padding-right: 30px;
+  }
+
+  .item-editor-header {
+    height: 6.0em;
+  }
+
+  #checkout-card-form .modal-form-container, #checkout-card-form-2  .modal-form-container {
+    font-size: 0.7em;
+  }
+}
+
+.tile-table {
+  border-spacing: @menu-tile-spacing-big;
+}
+
+@page-item-box-width-big: (@menu-tile-width * 2.5) + @menu-tile-spacing-big;
+@page-item-box-height-big: (@menu-tile-height * 2) + @menu-tile-spacing-big;
+@page-item-box-y-big: @page-content-y + @menu-tile-spacing-big;
+
+.page-item-box {
+  width:@page-item-box-width-big;
+  height:@page-item-box-height-big;
+  top:@page-item-box-y-big;
+}
+
+@page-scrollee-padding-left-big: @page-padding-left - @menu-tile-spacing-big;
+@page-scrollee-padding-right-big: @page-padding-right - @menu-tile-spacing-big;
+
+.page .scrollee {
+  padding-left:@page-scrollee-padding-left-big;
+}
+
+.page .tile-table {
+  padding-right:@page-scrollee-padding-right-big;
+}

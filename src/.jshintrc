@@ -1,0 +1,14 @@
+{
+  "esnext": true,
+  "expr": true,
+  "curly": true,
+  "eqeqeq": true,
+  "eqnull": true,
+  "browser": true,
+  "unused": false,
+  "globals": {
+    "jQuery": true,
+    "signals": true,
+    "moment": true
+  }
+}

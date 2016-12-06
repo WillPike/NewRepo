@@ -1,0 +1,112 @@
+@input-switch-width: 12em;
+@input-switch-height: 4.6em;
+@input-switch-padding: 0.2em;
+@input-switch-handle-width: 6em;
+@input-switch-handle-height: @input-switch-height - (@input-switch-padding * 2);
+@input-switch-handle-x: @input-switch-width - @input-switch-padding - @input-switch-handle-width;
+@input-switch-line-height: @input-switch-height / 1.8em;
+@input-switch-animation-duration: 0.4s;
+@input-switch-color-on: #8ac435;
+@input-switch-color-off: #a0a0a0;
+@input-switch-border-radius: 0.75em;
+
+.switch {
+  position: relative;
+  overflow: hidden;
+  width: @input-switch-width;
+  height: @input-switch-height;
+  border-radius: @input-switch-border-radius;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  background: #a0a0a0;
+  box-shadow: inset 0 0.1em 0.1em rgba(51,51,51,0.5);
+
+  .switch-label-on, .switch-label-off {
+    position: absolute;
+    top: 0;
+    bottom:0;
+    width: 50%;
+    font-weight: @font-weight-bold;
+    line-height: @input-switch-line-height;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.8em;
+    color: #fff;
+  }
+
+  .switch-label-on {
+    left: 0;
+  }
+
+  .switch-label-off {
+    right: 0;
+  }
+
+  .switch-handle {
+    position: absolute;
+    width: @input-switch-handle-width;
+    height: @input-switch-handle-height;
+    background-color: #fff;
+    border-radius: @input-switch-border-radius;
+    top: @input-switch-padding;
+    box-shadow: 0 0.1em 0.2em rgba(51,51,51,0.75);
+  }
+
+  &.disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.switch-on{
+    background-color: @input-switch-color-on;
+
+    .switch-handle {
+      left: @input-switch-handle-x;
+    }
+  }
+
+  &.switch-off {
+    background-color: @input-switch-color-off;
+
+    .switch-handle {
+      left: @input-switch-padding;
+    }
+  }
+
+  @keyframes track_turn_on {
+    from { background-color: @input-switch-color-off; }
+    to { background-color: @input-switch-color-on; }
+  }
+
+  @keyframes handle_turn_on {
+    from { left: @input-switch-padding; }
+    to { left: @input-switch-handle-x; }
+  }
+
+  @keyframes track_turn_off {
+    from { background-color: @input-switch-color-on; }
+    to { background-color: @input-switch-color-off; }
+  }
+
+  @keyframes handle_turn_off {
+    from { left: @input-switch-handle-x; }
+    to { left: @input-switch-padding; }
+  }
+
+  &.switch-on.changed {
+    animation: track_turn_on @input-switch-animation-duration;
+
+    .switch-handle {
+      animation: handle_turn_on @input-switch-animation-duration;
+    }
+  }
+
+  &.switch-off.changed {
+    animation: track_turn_off @input-switch-animation-duration;
+
+    .switch-handle {
+      animation: handle_turn_off @input-switch-animation-duration;
+    }
+  }
+}

@@ -1,0 +1,138 @@
+<div id="page-signin-splash" class="page" ng-show="step === STEP_SPLASH && initialized">
+  <form class="form huge">
+    <h1><span>Are you a {{locationName}} VIP?</span></h1>
+    <ul class="horizontal">
+      <li><button class="button" ng-click="login()">Yes</button></li>
+      <li><button class="button" ng-click="register()">No</button></li>
+    </ul>
+    <p class="right"><a class="clickable link" ng-click="guestLogin()">Skip</a></p>
+  </form>
+</div>
+
+<div id="page-signin-login" class="page" ng-show="step === STEP_LOGIN && initialized">
+  <form class="form huge">
+    <h2><span>Log in</span></h2>
+    <p>Using VIP account or another account</p>
+  </form>
+  <div class="page-split">
+    <form class="form huge page-left" ng-submit="doLogin()">
+      <ul class="vertical">
+        <li><email placeholder="E-mail" ng-disabled="isBusy" ng-model="credentials.login" nosubmit /></li>
+        <li><password placeholder="Password" ng-disabled="isBusy" ng-model="credentials.password" /></li>
+      </ul>
+      <ul class="horizontal">
+        <li><p><a ng-click="resetPassword()" class="clickable link">Forgot password</a></p></li>
+        <li><p class="right"><a class="clickable link" ng-click="guestLogin()">Skip</a></p></li>
+      </ul>
+    </form>
+
+    <hr />
+
+    <form class="form huge page-right">
+      <ul class="vertical">
+        <li><button type="button" class="button icon button-facebook" ng-click="loginFacebook()"></button></li>
+        <!-- <li><button type="button" class="button icon button-twitter" ng-click="loginTwitter()"></button></li>
+        <li><button type="button" class="button icon button-google" ng-click="loginGoogle()"></button></li> -->
+      </ul>
+    </form>
+  </div>
+</div>
+
+<div id="page-signin-registration" class="page" ng-show="step === STEP_REGISTRATION && initialized">
+  <form class="form huge">
+    <h2><span>Sign up</span></h2>
+    <p>Create a VIP account or use another account</p>
+  </form>
+  <div class="page-split">
+    <form class="form huge page-left" ng-submit="doRegistration()">
+      <ul class="horizontal">
+        <li><input type="text" class="input" placeholder="First Name" ng-disabled="isBusy" ng-model="registration.first_name" autocomplete="off" required /></li>
+        <li><input type="text" class="input" placeholder="Last Name" ng-disabled="isBusy" ng-model="registration.last_name" autocomplete="off" required /></li>
+      </ul>
+      <ul class="vertical">
+        <li><input type="email" class="input" placeholder="E-mail" ng-disabled="isBusy" ng-model="registration.email" autocomplete="off" required /></li>
+      </ul>
+      <ul class="horizontal">
+        <li><input id="registration-password" type="password" class="input" placeholder="Password" ng-disabled="isBusy" ng-model="registration.password" autocomplete="off" minlength="6" required /></li>
+        <li><input id="registration-password2" type="password" class="input" placeholder="Confirm Password" ng-disabled="isBusy" ng-model="registration.password2" autocomplete="off" required /></li>
+      </ul>
+      <ul>
+        <li><button type="submit" ng-disabled="isBusy" class="button">Sign Me Up</button></li>
+      </ul>
+      <ul class="horizontal">
+        <li><p class="right"><a class="clickable link" ng-click="guestLogin()">Skip</a></p></li>
+      </ul>
+    </form>
+
+    <hr />
+
+    <form class="form huge page-right">
+      <ul class="vertical">
+        <li><button type="button" ng-disabled="isBusy" class="button icon button-facebook" ng-click="loginFacebook()"></button></li>
+        <!-- <li><button type="button" class="button icon button-twitter" ng-click="loginTwitter()"></button></li>
+        <li><button type="button" class="button icon button-google" ng-click="loginGoogle()"></button></li> -->
+      </ul>
+    </form>
+  </div>
+
+  <script type="text/javascript">
+    var password1 = document.getElementById('registration-password');
+    var password2 = document.getElementById('registration-password2');
+
+    var checkPasswordValidity = function() {
+        if (password1.value !== password2.value) {
+            password2.setCustomValidity('Passwords must match.');
+        } else {
+            password2.setCustomValidity('');
+        }
+    };
+
+    password1.addEventListener('change', checkPasswordValidity, false);
+    password2.addEventListener('change', checkPasswordValidity, false);
+  </script>
+</div>
+
+<div id="page-signin-guests" class="page" ng-show="step === STEP_GUESTS && initialized">
+  <form class="form huge" ng-submit="submitGuestCount()">
+    <h1><span>Number of guests</span></h1>
+    <ul class="vertical">
+      <li><output id="guests-count-output" class="output" for="guests-count">{{session.guestCount}}</output></li>
+      <li><input id="guests-count" class="range" type="range" ng-model="session.guestCount" min="1" max="10" /></li>
+      <li><button class="button" type="submit">Next</button></li>
+    </ul>
+  </form>
+</div>
+
+<div id="page-signin-event" class="page" ng-show="step === STEP_EVENT && initialized">
+  <form class="form huge">
+    <h1><span>Is this a special event?</span></h1>
+    <ul class="horizontal">
+      <li><button class="button" ng-click="submitSpecialEvent(true)">Yes</button></li>
+      <li><button class="button" ng-click="submitSpecialEvent(false)">No</button></li>
+    </ul>
+  </form>
+</div>
+
+<div id="page-signin-reset" class="page" ng-show="step === STEP_RESET && initialized">
+  <form class="form huge" ng-submit="passwordResetSubmit()">
+    <h1><span>Retrieve Password</span></h1>
+    <p>To reset your password, enter the e-mail associated with this account.</p>
+    <ul class="half">
+      <li><email placeholder="E-mail" ng-disabled="isBusy" ng-model="passwordreset.email" /></li>
+    </ul>
+    <ul class="horizontal">
+      <li><p class="right"><a class="clickable link" ng-click="guestLogin()">Skip</a></p></li>
+    </ul>
+  </form>
+</div>
+
+<div id="page-signin-social" class="page" ng-show="step === STEP_SOCIAL && initialized">
+  <div class="column">
+    <form class="form huge center">
+      <div class="busy" />
+      <ul class="horizontal">
+        <li><button class="button" ng-click="loginSocialCancel()">Cancel</button></li>
+      </ul>
+    </form>
+  </div>
+</div>

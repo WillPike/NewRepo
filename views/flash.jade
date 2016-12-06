@@ -1,0 +1,12 @@
+extends _galaxies
+
+block body
+  #body
+    #area-container
+      #area-content
+        #area-flash(class='area-view fullscreen', ng-controller='FlashCtrl', ng-include=getSnap('assets/galaxies/partials/flash.html', true))
+    #area-notifiation(ng-controller='NotificationCtrl',ng-include=getSnap('assets/galaxies/partials/notification.html', true),ng-show='visible')
+  script(type='text/javascript').
+    (function() {
+      (new snap.FlashApplication()).initialize();
+    })();

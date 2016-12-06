@@ -1,0 +1,12 @@
+<div id="action-button-back" class="action-button" ng-click="navigateBack()">
+  <img ng-src="{{elements.button_back | thumbnail:160:160}}" />
+</div>
+
+<div id="area-advertisement-bottom" class="area-advertisement">
+  <slider source="advertisementsBottom" slideclick="advertisementClick" slideshow="advertisementImpression" timeout="20000" />
+</div>
+
+<div id="action-button-cart" class="action-button" ng-click="openCart()">
+  <img ng-src="{{elements.button_cart | thumbnail:160:160}}" />
+  <span class="cart-count-badge" ng-show="cartCount > 0">{{cartCount}}</span>
+</div>
