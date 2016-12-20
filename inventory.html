@@ -2,6 +2,8 @@
 <html>
 <head>
 	<title>Inventory</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+	<script src="transit.min.js"></script>
 	<script type="text/javascript">
 		function addNumber() {
 			var numString = document.getElementById('counter24').value;
@@ -9,7 +11,9 @@
 			numString += ("+" + num1);
 			document.getElementById('counter24').value = eval(numString);
 		}
-		
+	$('.box').transition({ 
+			scale: [2.0, 1.5] 
+		});	
 	</script>
 	<style type="text/css">
 		.inventory {
@@ -29,6 +33,11 @@
 			clear: all;
 			float: left;
 		}
+		.box {
+			width: 200px;
+			height: 200px;
+			border: 1px solid black;
+		}
 		input {
 			width: 100px;
 			height: 40px;
@@ -43,6 +52,7 @@
 		label {
 			float: left;
 		}
+		
 	</style>
 </head>
 <body>
@@ -57,6 +67,7 @@
 
 			</tr>
 		</table>
+		<div class="box">  </div>
 
 	</div>
 
